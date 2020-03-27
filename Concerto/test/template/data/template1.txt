@@ -1,0 +1,8 @@
+テンプレート
+
+シンプル：<?= $string; ?> 
+
+繰り返し
+<?php foreach ((array)$dataset as $list): ?>
+    ループデータ<?= $list['no']; ?>:名前=<?= $list['name']; ?> 年齢=<?= $list['age']; ?> 
+<?php endforeach; ?>

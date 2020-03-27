@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit
+	bootstrap='.\bootstrap.php'
+>
+	<php>
+		<var name="DB_DSN" value="pgsql:host=localhost port=5430 dbname=itc_work1" />
+		<var name="DB_USER" value="concerto" />
+		<var name="DB_PASSWD" value="manager" />
+		<var name="DB_DBNAME" value="itc_work1" />
+		
+		<var name="SYMPHONY_DSN" value="oci:dbname=ITCA;" />
+		<var name="SYMPHONY_USER" value="ITC_USER" />
+		<var name="SYMPHONY_PASSWD" value="ITC_201304" />
+		
+		<!-- E_ALL & !E_DEPRECATED & ! E_STRICT & !E_STRICT -->
+		<ini name="error_reporting" value="6143"/>
+		
+		<!-- desable xdebug var_dump -->
+		<ini name="xdebug.var_display_max_children" value="-1" />
+		<ini name="xdebug.var_display_max_data" value="-1" />
+		<ini name="xdebug.var_display_max_depth" value="-1" />
+		
+        <!-- 効果なし -->
+		<ini name="default_charset" value="ISO-8859-1" />
+        
+	</php>
+	
+	<testsuites>
+		<testsuite name="main">
+			<directory>.\</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

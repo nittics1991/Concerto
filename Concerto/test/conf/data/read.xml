@@ -1,0 +1,21 @@
+<config>
+	<database>
+		<default>
+			<adapter>pgsql</adapter>
+			<params>
+				<host>localhost</host>
+				<port>5432</port>
+				<dbname>postgres</dbname>
+				<user>postgres</user>
+				<password>manager</password>
+			</params>
+		</default>
+	</database>
+	
+	<log>
+		<default>
+			<stream>err.log</stream>
+			<format>%s:%s</format>
+		</default>
+	</log>
+</config>

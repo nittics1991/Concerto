@@ -1,0 +1,181 @@
+object(stdClass)#2 (7) {
+  ["fieldsName"]=>
+  array(39) {
+    [0]=>
+    string(9) "fg_delete"
+    [1]=>
+    string(6) "no_cyu"
+    [2]=>
+    string(8) "no_sheet"
+    [3]=>
+    string(7) "no_line"
+    [4]=>
+    string(6) "no_rev"
+    [5]=>
+    string(9) "no_cyumon"
+    [6]=>
+    string(9) "nm_syohin"
+    [7]=>
+    string(9) "cd_syohin"
+    [8]=>
+    string(8) "nm_maker"
+    [9]=>
+    string(8) "nm_model"
+    [10]=>
+    string(11) "cd_torihiki"
+    [11]=>
+    string(8) "no_tehai"
+    [12]=>
+    string(8) "nm_tehai"
+    [13]=>
+    string(8) "yn_tanka"
+    [14]=>
+    string(8) "no_suryo"
+    [15]=>
+    string(7) "cd_unit"
+    [16]=>
+    string(5) "no_ko"
+    [17]=>
+    string(8) "cd_tanto"
+    [18]=>
+    string(8) "nm_tanto"
+    [19]=>
+    string(7) "cd_user"
+    [20]=>
+    string(8) "fg_tehai"
+    [21]=>
+    string(6) "cd_sbl"
+    [22]=>
+    string(7) "cd_part"
+    [23]=>
+    string(8) "dt_yokyu"
+    [24]=>
+    string(7) "dt_noki"
+    [25]=>
+    string(9) "dt_ptehai"
+    [26]=>
+    string(9) "dt_hattyu"
+    [27]=>
+    string(10) "yn_hatuban"
+    [28]=>
+    string(9) "yn_kijyun"
+    [29]=>
+    string(9) "yn_target"
+    [30]=>
+    string(8) "yn_money"
+    [31]=>
+    string(5) "yn_cd"
+    [32]=>
+    string(5) "ri_cd"
+    [33]=>
+    string(6) "no_adr"
+    [34]=>
+    string(6) "nm_adr"
+    [35]=>
+    string(6) "no_tel"
+    [36]=>
+    string(5) "nm_to"
+    [37]=>
+    string(8) "nm_biko2"
+    [38]=>
+    string(7) "nm_biko"
+  }
+  ["recordType"]=>
+  string(5) "array"
+  ["parameters"]=>
+  object(stdClass)#3 (0) {
+  }
+  ["action"]=>
+  string(4) "save"
+  ["insertedRecords"]=>
+  array(0) {
+  }
+  ["updatedRecords"]=>
+  array(1) {
+    [0]=>
+    array(39) {
+      [0]=>
+      string(0) ""
+      [1]=>
+      string(8) "ICH30K01"
+      [2]=>
+      int(0)
+      [3]=>
+      int(0)
+      [4]=>
+      int(0)
+      [5]=>
+      string(9) "KICH12345"
+      [6]=>
+      string(9) "品名111"
+      [7]=>
+      string(15) "品名コード"
+      [8]=>
+      string(12) "メーカー"
+      [9]=>
+      string(9) "モデル"
+      [10]=>
+      string(6) "T12345"
+      [11]=>
+      string(1) "1"
+      [12]=>
+      string(6) "記事"
+      [13]=>
+      int(0)
+      [14]=>
+      int(1)
+      [15]=>
+      string(2) "KB"
+      [16]=>
+      string(4) "CH01"
+      [17]=>
+      string(8) "91308ITC"
+      [18]=>
+      string(15) "谷田　正雄"
+      [19]=>
+      string(8) "w11308ic"
+      [20]=>
+      string(1) "1"
+      [21]=>
+      string(1) "1"
+      [22]=>
+      string(1) "0"
+      [23]=>
+      string(8) "20150610"
+      [24]=>
+      string(0) ""
+      [25]=>
+      string(8) "20150601"
+      [26]=>
+      string(0) ""
+      [27]=>
+      int(100)
+      [28]=>
+      int(90)
+      [29]=>
+      int(80)
+      [30]=>
+      int(0)
+      [31]=>
+      int(0)
+      [32]=>
+      int(0)
+      [33]=>
+      string(8) "183-8511"
+      [34]=>
+      string(66) "東京都府中市東芝町1　東芝府中事業所　44C号館6F"
+      [35]=>
+      string(12) "042-333-4510"
+      [36]=>
+      string(6) "谷田"
+      [37]=>
+      string(1) "0"
+      [38]=>
+      string(0) ""
+    }
+  }
+  ["deletedRecords"]=>
+  array(0) {
+  }
+}
+

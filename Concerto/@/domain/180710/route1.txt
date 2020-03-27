@@ -1,0 +1,173 @@
+<?php
+
+//extends DiContainer
+class Controller
+{
+	public function index();	//GET /aaa
+	public function create();	//GET /aaa/create
+	public function store();	//POST /aaa
+	public function show();		//GET /aaa/ID
+	public function edit();		//GET /aaa/ID/edit
+	public function update();	//PUT.PATCH /aaa/ID
+	public function destoroy();	//DELETE /aaa/ID
+}
+
+//RESTfil
+//cyuban_soneki/?kb_nendo=2018K
+//cyuban_soneki/kb_nendo/
+//cyuban_soneki/grid/
+
+//seiban_furikae/
+//seiban_furikae/cd_bumon/
+//seiban_furikae/grid1/
+//seiban_furikae/grid_before/
+
+//cyunyu_inf/aaa/bbb	GET index&show&edit POSTなども同じURI
+//cyunyu_inf/?key1=aaa&key2=bbb		GET index&show&edit POSTなども同じURI
+
+//nomal
+//cyuban_soneki/index.php
+//cyuban_soneki/kb_nendo.php
+//cyuban_soneki/grid.php
+
+//seiban_furikae/index.php?kb_nendo=2018K
+//seiban_furikae/cd_bumon.php
+//seiban_furikae/grid1.php
+//seiban_furikae/grid_before.php
+
+//cyunyu_inf/index.php?key1=aaa&key2=bbb GET... POSTなども同じURI
+//hiddenでaction判定
+
+//legacy
+//cyuban_soneki.php
+//cyuban_soneki_kb_nendo.php
+//cyuban_soneki_grid.php
+
+//seiban_furikae.php?kb_nendo=2018K
+//seiban_furikae_cd_bumon.php
+//seiban_furikae_grid1.php
+//seiban_furikae_grid_before.php
+//==>1つのcontrollerにどうやってまとめる?
+
+////////////////////////////////////////////////////////
+
+//nomalの場合
+
+Route::match(['get', 'post'], '{action}/{resource}.php', function($action, $resource) use ($container){
+	//containerで解決?
+	$controller = $container->get("{$action}.{$resource}");
+	//CyubanSonekiController
+	//CyubanSonekiCdBumonController
+	
+	//上手い方法がないか?
+	
+	
+	
+	$request = $this->get('request');
+	$method = $request->get('_method');
+	
+	//copyの動作もあるので、RESTfulでは面倒そう
+	if (empty($act) {
+		$method = 'index';
+	}
+	call_user_func([$controller, $method]); };
+
+//restでcopyやるには?
+//POST /aaa/?action=copy
+
+namespace cyuban_soneki
+
+class CyubanSonekiController //has DiContainer {
+	public function index()
+	public function create()
+	public function update()
+	public function delete()
+	public function copy()
+}
+
+
+////////////////////////////////////////////////////////
+
+class HtmlSelect
+{
+	public $value;
+	public $text;
+	public $selected;
+	
+	public function __construct(array $options)
+	{
+		//
+	}
+	
+	public function attribute($name, $value = null)
+	{
+		if is_null($value)	
+	}
+	
+	
+	//xml機能を使えないか? simpleXml?
+	public function render()
+	{
+		//htmlを組み立ててprint
+		
+		$element = '<option ';
+		
+		foreach ($this->attributes as $name, $value) {
+			if is_null($value) {
+				$element .= " {}=\"{$value}\"";
+			} else {
+				$element .= " {}=\"{$value}\"";
+			}
+		
+		}
+		
+		//valueやtextを組み立て
+		$element .= ...
+		
+		
+		echo $element;
+	}
+	
+}
+
+//View内で
+
+?>
+<select name="cd_bumon">
+	//cd_bumon + 'list'
+	<? foreach $cd_bumon_list as $option): ?>
+	
+	<option value="<?= option->value; ?>" <?= option->selected; ?>><?=
+option->text; ?></option>
+	
+	//$option->render()でHTMLを出力
+	<?= $option->render(); ?>
+	
+	<? endforeach; ?>
+
+
+<?
+
+foreach
+$cd_bumon_list[]['value'] = $domain->bumons->cd_bumon;
+$cd_bumon_list[]['text'] = $domain->bumons->nm_bumon;	//configから取得の場合も
+$cd_bumon_list[]['selected'] = $domain->bumons->cd_bumon == $domain->cd_bumon; $cd_bumon_list = new HtmlSelect($cd_bumon_list);
+//自動化できないか
+
+$cd_bumon_list = new HtmlSelect($obj, 'valKey', 'textKey',
+mixed|callable($value, $text) $selected, $args = null);
+
+//$value == $cd_bumonをHtmlSelectで判定
+$cd_bumon_list = new HtmlSelect($domain->bumons, 'cd_bumon', 'nm_bumon', $cd_bumon, null);
+
+//渡されたcallableで判定
+$cd_bumon_list = new HtmlSelect($domain->bumons, 'cd_bumon', 'nm_bumon', function($val, $text) use ($args) {
+	$data = $args[0]['common.kb_nendo'];
+	return $val == $data
+},
+null);
+
+
+//configがnm_nendoのようにcallableの場合はどうする?
+//引数のルールは?==>select box の$value, $textで
+//ルールとしてinvokableとするか?

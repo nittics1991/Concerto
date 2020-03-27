@@ -1,0 +1,5 @@
+テストのアノテーションに
+@runInSeparateProcess
+を付ける
+
+定数defineのテストも同様

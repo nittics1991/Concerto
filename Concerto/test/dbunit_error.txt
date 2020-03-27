@@ -1,0 +1,10 @@
+Dbunitを継承してsetUp()をover witeしている場合、
+宣言をphp7形式にしないとエラーになる
+
+protected function setUp():void <==voidが必要
+
+例
+Fatal error: Declaration of Concerto\test\database\CyunyuInfTest::setUp() must
+e compatible with PHPUnit\DbUnit\TestCase::setUp(): void in D:\Public\www\itc_
+velop\itc_main.files\_mvc\Concerto\test\database\CyunyuInfTest.php on line 0
+

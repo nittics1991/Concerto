@@ -1,0 +1,67 @@
+
+///////////////////////////////////////////////
+
+Eventはデータのコンテナになるが、何を?
+    呼び出し元(dispatchするmethodの)this
+    methodの引数
+    methodのreturn値
+
+Eventを生成するEventFactoryTrait作るか?
+    Eventのclassを自由にできない?
+
+
+///////////////////////////////////////////////
+例えばmail送信を各処理を分解して個別実行出来るように考えると
+
+mail_infに履歴保存(mail_data)
+    履歴保存Service?
+
+mail送信(mail_data)   //smtp切り替えは何処に位置する?
+    手動 mail_clientで
+    自動 何かmethod
+
+mail_inf組み立て
+    手動 mail_clientで
+    自動 mail_inf自動組み立てclass
+
+mail_client
+    wf_newはwf_new独自の初期値作成ルールclass
+    ユースケースで初期値作成ルールclassがある==>interface?
+        ルールclass->createInitData()呼び出し?
+   
+mail_inf自動組み立てclass
+    mail_clientと同様
+
+mail_clientとmail_inf自動組み立てclassは同じmail_infを作成する処理
+    ==>interface? createMailData()実装?
+
+mail初期値作成処理
+    ユースケースで色々==>interface?
+    自動の場合 初期値作成==mail_data作成
+
+///////////////////////////////////////////////
+PSR14 Event Dispatcher
+
+/**
+ * Defines a dispatcher for events.
+ */
+interface EventDispatcherInterface
+    public function dispatch(object $event);
+
+/**
+ * Mapper from an event to the listeners that are applicable to that event.
+ */
+interface ListenerProviderInterface
+    public function getListenersForEvent(object $event) : iterable;
+
+/**
+ * An Event whose processing may be interrupted when the event has been handled.
+ *
+ */
+interface StoppableEventInterface
+    public function isPropagationStopped() : bool;
+
+
+https://github.com/phly/phly-event-dispatcher
+
+///////////////////////////////////////////////

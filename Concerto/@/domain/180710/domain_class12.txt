@@ -1,0 +1,292 @@
+<?php
+
+/*-----------------------------------------------------------*/
+/*****************************/
+//common class
+
+class DateTimeObject implements ChronosInterface
+class DateObject extends DateTimeObject
+class TimeObject extends DateTimeObject
+class YearMonth extends DateTimeObject
+class FiscalYear extends DateTimeObject
+
+//foreach (new FiscalYearPeriod(new FiscalYear('2018K')) as $val)
+//$obj->toArray
+class FiscalYearPeriod extends DatePeriod
+
+class EmailAddress
+class HttpUrl
+
+/*****************************/
+//domain common
+
+class Money
+    amount
+    add()
+    sub()
+    mul()
+    div()
+
+class UnitEnum extends Enum
+
+class PostalAddreess
+    zip     //SE10 8JL,183-0057
+    address
+    countoryCode    //JP,JPN
+    
+    
+class TelephonNo    //+80-42-314-1517
+    
+
+
+
+
+
+    
+    
+
+/*-----------------------------------------------------------*/
+/*****************************/
+//購入品を注文する
+
+
+//購入品E
+class PurchaseParts
+	purchasePartsId
+	purchasePartsName
+
+//注文(契約[書])R
+class PurchasePartsOrder
+	purchasePartsOrderId	//依頼番号
+	orderDate	//注文日
+	employeeId	//社員が
+	purchasePartsId	//購入品を
+	supplierId	//仕入先に
+	deliveryDate	//納期
+	unitPrice	//単価
+    quantity    //数量
+    unit    //単位
+	purchasePartsPrice	//購入価格
+    
+    
+	//-----------
+    //まずは必要最小の洗い出し
+	//どこに納入場所==>宛先==>配達するための情報
+	//荷渡し条件
+    //支払条件
+    
+//注文詳細に分ける場合
+class PurchasePartsOrderItem
+    
+    
+//仕入先E
+class Supplier
+	supplierId
+	supplierName
+
+//社員E
+class Employee
+	employeeId
+	employeeName
+	
+
+/*****************************/
+//購入品を注文する前に見積依頼
+
+
+//仕入先見積依頼R
+class RequestedForEstimate
+	RequestedForEstimateId	//依頼番号
+	requestDate	//依頼日
+	employeeId	//社員が
+	purchasePartsId	//購入品を
+	supplierId	//仕入先に
+	desiredRequestDate	//希望回答日までに
+
+/*****************************/
+
+//共通?
+//購入品,支給品=>商品,部品(product,materialParts)
+
+//関心事
+//人　物　イベント　日時　金
+
+
+/*****************************/
+
+//納入場所V
+//海外とかも考慮?
+//住所なんて国で色々
+class DeliveryAddress
+	postalZip	//郵便番号
+	postalAddress	//住所
+	countoryCode	//国
+
+//class PostalAddress
+
+/*****************************/
+
+//配達するための情報
+
+postalName//宛名	企業の場合部署なども書くけど...
+PostalAddress deliveryAddress//住所
+telephoneNo//+TEL
+notes//備考
+
+//宅配の場合
+//++希望配達日
+//++希望配達時間帯
+
+
+/*-----------------------------------------------------------*/
+/*****************************/
+//購入品受入R
+
+//注文品を受取り、在庫が出来る
+class ReceiptOfPurchase
+    acceptanceDate  //受取日=検収日
+    employeeId    //受取人
+	purchasePartsOrderId	//依頼番号
+	purchasePartsId	//購入品を
+	supplierId	//仕入先から
+	unitPrice	//単価
+    quantity    //数量
+    unit    //単位
+	purchasePartsPrice	//購入価格
+    purchasePartsStockId //在庫が出来る
+    //
+    //分割納入を考えると分割SEQ
+
+//在庫
+//商品・部品・受給品・仕掛品・半製品・・・
+//購入品在庫E
+//class Stock
+class PurchasePartsInventory
+    purchasePartsInventoryId
+    startDate   //入庫日
+	purchasePartsId	//購入品
+	unitPrice	//単価
+    quantity    //数量
+    unit    //単位
+	purchasePartsPrice	//購入価格
+    endDate     //出庫日 = soft delete?
+    //
+    //warehouseId //倉庫保管情報  ==>入庫情報?
+    //
+    //商品・部品・受給品・仕掛品・半製品・・・
+    //これらを示すコードを持つ? 在庫というと製品・仕掛品・材料だが
+    
+    
+/*****************************/
+//商品==>部品
+
+//部品
+class MaterialParts
+    materialPartsId
+    materialPartsName
+    makerName   //メーカ    
+    modelCode   //モデル
+    //parentMaterialPartsId
+
+//商品価格
+class ProductPrice
+    materialPartsId
+    salsePrice
+    startDate
+    endDate
+
+/*****************************/
+//倉庫
+class Warehouse
+    warehouseId
+    warehouseName
+    warehouseCode   //倉庫
+    locationCode    //ロケーション
+    rackCode    //棚
+    positionCode    //棚位置
+    //
+    //倉庫情報　住所とか連絡先
+    
+/*****************************/
+//入庫R
+class EnteringWerehouse
+    warehouseId //どこに
+    purchasePartsInventoryId    //何を
+    materialPartsId //何を
+    enteringDate//何時
+    EmployeeId  //誰が
+    //
+    //在庫データの持ち方次第
+    //quantity    //数量
+    //unit    //単位
+
+//出庫R
+class LeavingWerehouse
+    //
+    
+/*-----------------------------------------------------------*/
+/*****************************/
+//顧客注文
+class CustomerOrder
+	customerOrderId	//注文番号
+	orderDate	//注文日
+	employeeId	//社員が
+	productId	//商品を
+	customerId	//得意先に
+	deliveryDate	//納期
+	unitPrice	//単価
+    quantity    //数量
+    unit    //単位
+	salsePrice	//販売価格
+    
+	//納入場所
+	//荷渡し条件
+    //支払条件
+
+
+class CustomerOrderItem
+    
+//得意先
+class Customer
+    customerId
+    customerName
+
+/*-----------------------------------------------------------*/
+/*****************************/
+
+//出荷
+class Shipping
+    shippingId
+    customerOrderId
+    shippingDate
+    //scheduledShippingDate   //依頼書は別class?
+    employeeId
+    //出荷先
+    
+    
+//出荷詳細
+class ShippingItem
+    shippingItemId
+    shippingId
+    materialPartsId
+    quantity
+    unit
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*-----------------------------------------------------------*/
+/*****************************/

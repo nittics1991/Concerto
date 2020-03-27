@@ -1,0 +1,105 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Concerto\test\test;
+
+use Concerto\test\abstractSqliteTestCase;
+use PHPUnit\DbUnit\DataSet\YamlDataSet as PHPUnit_Extensions_Database_DataSet_YamlDataSet;
+use Concerto\database\MailInf;
+use Concerto\database\MailInfData;
+use Concerto\sql\simpleTable\Sqlite;
+use PDO;
+use Concerto\standard\ModelDb;
+use Concerto\standard\ModelData;
+
+class _ModelDb extends ModelDb
+{
+    protected $schema = '_modeldb';
+}
+
+class _ModelData extends ModelData
+{
+    protected static $schema = [
+        'b_data' => parent::BOOLEAN
+        , "i_data" => parent::INTEGER
+        , "f_data" => parent::FLOAT
+        , "d_data" => parent::DOUBLE
+        , "s_data" => parent::STRING
+        , "t_data" => parent::DATETIME
+    ];
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+class SqliteTestCaseTest extends abstractSqliteTestCase
+{
+    public function getDataSet()
+    {
+        return new PHPUnit_Extensions_Database_DataSet_YamlDataSet(
+            __DIR__ . '\\data\\_modeldb.yml'
+        );
+    }
+    
+    //parent not called
+    protected function setUp(): void
+    {
+    }
+    
+    /**
+    *   phunitオブジェクトの確認するもので、テストじゃないよ
+    *
+    *   @test
+    **/
+    public function dumpObject()
+    {
+        $this->markTestIncomplete();
+        
+        /*
+        $ref = new \ReflectionClass($this->getConnection());
+        var_dump($ref->getMethods());echo "<hr>\r";
+
+        $ref = new \ReflectionClass($this->getDataSet());
+        var_dump($ref->getMethods());echo "<hr>\r";
+        */
+    }
+    
+    /**
+    *   @test
+    **/
+    public function testInitSqlitePdo()
+    {
+//      $this->markTestIncomplete();
+        
+        $this->initPdo();
+        $this->assertInstanceOf(PDO::class, self::$pdo);
+    }
+    
+    /**
+    *   @test
+    **/
+    public function testSetupTable()
+    {
+//      $this->markTestIncomplete();
+        
+        $pdo = $this->initPdo();
+        $mailInf = new MailInf($pdo);
+        $mailInfData = new MailInfData();
+        
+        $tablename = $this->setupTable($mailInf, $mailInfData);
+        $this->assertEquals('public_mail_inf', $tablename);
+        
+        $sql = "
+            PRAGMA table_info({$tablename})
+        ";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $def = $stmt->fetchAll();
+        
+        $info = $mailInfData->getInfo();
+        
+        $columns = array_column($def, 'name');
+        $this->assertEquals(array_keys($info), $columns);
+    }
+}

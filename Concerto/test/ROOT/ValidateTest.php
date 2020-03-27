@@ -1,0 +1,1572 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Concerto\test\ROOT;
+
+use Concerto\test\ConcertoTestCase;
+use Concerto\Validate;
+use Concerto\standard\StringUtil;
+
+class ValidateTest extends ConcertoTestCase
+{
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   ASCII文字
+    */
+    public static function isSuccessAsciiProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('!!', null, null)
+            , array('00', 2, null)
+            , array('99', null, 3)
+            , array('AA', 2, 2)
+            , array('zz', null, null)
+            , array('~~', 1, 3)
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessAsciiProvider
+    *
+    **/
+    public function testSuccessIsAscii($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isAscii($val));
+    }
+    
+    public static function isFailureAsciiProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('0123', 5, null)
+            , array('0123', null, 3)
+            , array('0123', 1, 3)
+            , array('0123', 5, 4)
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureAsciiProvider
+    *
+    **/
+    public function testFailureIsAscii($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isAscii($val, $min, $max));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   部門コード
+    */
+    public static function isSuccessBumonProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('PB12')
+            , array('I0C12')
+            , array('IBB12')
+            , array('12345')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessBumonProvider
+    *
+    **/
+    public function testSuccessIsBumon($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isBumon($val));
+    }
+    
+    public static function isFailureBumonProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('PB1')
+            , array('I0C123')
+            , array(12345)
+            , array(null)
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureBumonProvider
+    *
+    **/
+    public function testFailureIsBumon($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isBumon($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   注番
+    */
+    public static function isSuccessCyubanProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('IBB12345')
+            , array('I0C00A3')
+            , array('ICH30123')
+            , array('3PB1234')
+            , array('LS18320')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessCyubanProvider
+    *
+    **/
+    public function testSuccessIsCyuban($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isCyuban($val));
+    }
+    
+    public static function isFailureCyubanProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('IBB123450')
+            , array('LS123')
+            , array('IBB1-345')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureCyubanProvider
+    *
+    **/
+    public function testFaulureIsCyuban($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isCyuban($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   注文番号
+    */
+    public static function isSuccessCyumonProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('KIBB12345')
+            , array('GI0C00837')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessCyumonProvider
+    *
+    **/
+    public function testSuccessIsCyumon($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isCyumon($val));
+    }
+    
+    public static function isFailureCyumonProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('0IBB12345')
+            , array('GI0C008379')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureCyumonProvider
+    *
+    **/
+    public function testFailureIsCyumon($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isCyumon($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   Email
+    */
+    public static function isEmailProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('namae.sei@mail.google.co.jp')
+            , array('seimei@yahoo.com')
+            , array('_.-!#$%&+*?@domain.co.jp')
+        );
+    }
+    
+    /**
+    * @test
+    * @dataProvider isEmailProvider
+    *
+    **/
+    public function failureIsEmail($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isEmail($val));
+    }
+    
+    /**
+    *   Email
+    */
+    public static function isEmailProviderOK()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('namae.sei@toshiba.co.jp')
+            , array('seimei@glb.toshiba.co.jp')
+            , array('012adJN@toshiba.co.jp')
+        );
+    }
+    
+    /**
+    * @test
+    * @dataProvider isEmailProviderOK
+    *
+    **/
+    public function isEmail($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isEmail($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   Email Text
+    */
+    public static function isEmailTextProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('namae.sei@mail.google.co.jp;itc123@gmail.com;123@gmail.com')
+            , array('seimei@yahoo.com')
+            , array('_.-!#$%&+*?@domain.co.jp')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isEmailTextProvider
+    *
+    **/
+    public function testIsEmailText($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isEmailText($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   浮動小数(isFloat, isDouble)
+    */
+    public static function isSuccessFloatProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array(+100.3, null, null)
+            , array(99.9, 0, 100)
+            , array(1.01, 1, 100)
+            , array(-1.01, -2, 0)
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessFloatProvider
+    *
+    **/
+    public function testSuccessIsFloat($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isFloat($val, $min, $max));
+    }
+    
+    public static function isFailureFloatProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array(+100, 100.01, null)
+            , array(100, null, 99)
+            , array('10', 0, 100)
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureFloatProvider
+    *
+    **/
+    public function testFailureIsFloat($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isFloat($val, $min, $max));
+    }
+    
+    //以下isDouble
+    
+    /**
+    *
+    * @dataProvider isSuccessFloatProvider
+    *
+    **/
+    public function testSuccessIsDouble($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isDouble($val, $min, $max));
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureFloatProvider
+    *
+    **/
+    public function testFailureIsDouble($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isDouble($val, $min, $max));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   原価要素
+    */
+    public static function isSuccessGenkaYosoProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('A')
+            , array('B')
+            , array('C')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessGenkaYosoProvider
+    *
+    **/
+    public function testSuccessIsGenkaYoso($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isGenkaYoso($val));
+    }
+    
+    public static function isFailureGenkaYosoProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('a')
+            , array('E')
+            , array('A1')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureGenkaYosoProvider
+    *
+    **/
+    public function testFailureIsGenkaYoso($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isGenkaYoso($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   整数
+    */
+    public static function isSuccessIntProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array(100, null, null)
+            , array(100, 0, 100)
+            , array(0, 0, 100)
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessIntProvider
+    *
+    **/
+    public function testSuccessIsInt($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isInt($val, $min, $max));
+    }
+    
+    public static function isFailureIntProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array(101, 0, 100)
+            , array(9, 10, 100)
+            , array(-1, 0, 100)
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureIntProvider
+    *
+    **/
+    public function testFailureIsInt($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isInt($val, $min, $max));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   項番
+    */
+    public static function isSuccessKobanProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('PB12')
+            , array('CH12')
+            , array('CF123')
+            , array('3PB4')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessKobanProvider
+    *
+    **/
+    public function testSuccessIsKoban($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isKoban($val));
+    }
+    
+    public static function isFailureKobanProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('PB1')
+            , array('CF1235')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureKobanProvider
+    *
+    **/
+    public function testFailureIsKoban($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isKoban($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   数値(金額)
+    */
+    public function testIsMoney()
+    {
+        $this->assertTrue(Validate::isMoney('0'));
+        $this->assertTrue(Validate::isMoney('1'));
+        $this->assertTrue(Validate::isMoney('+1'));
+        $this->assertTrue(Validate::isMoney('-1'));
+        $this->assertTrue(Validate::isMoney('12'));
+        $this->assertTrue(Validate::isMoney('+12'));
+        $this->assertTrue(Validate::isMoney('-12'));
+        $this->assertTrue(Validate::isMoney('123'));
+        $this->assertTrue(Validate::isMoney('+123'));
+        $this->assertTrue(Validate::isMoney('-123'));
+        $this->assertTrue(Validate::isMoney('1234'));
+        $this->assertTrue(Validate::isMoney('+1234'));
+        $this->assertTrue(Validate::isMoney('-1234'));
+        $this->assertTrue(Validate::isMoney('123.456789'));
+        $this->assertTrue(Validate::isMoney('+123.456789'));
+        $this->assertTrue(Validate::isMoney('-123.456789'));
+        $this->assertTrue(Validate::isMoney('1234.56789'));
+        $this->assertTrue(Validate::isMoney('+1234.56789'));
+        $this->assertTrue(Validate::isMoney('-1234.56789'));
+        $this->assertTrue(Validate::isMoney('1,234'));
+        $this->assertTrue(Validate::isMoney('+1,234'));
+        $this->assertTrue(Validate::isMoney('-1,234'));
+        $this->assertTrue(Validate::isMoney('12,345'));
+        $this->assertTrue(Validate::isMoney('+12,345'));
+        $this->assertTrue(Validate::isMoney('-12,345'));
+        $this->assertTrue(Validate::isMoney('123,456'));
+        $this->assertTrue(Validate::isMoney('1,234,567'));
+        $this->assertTrue(Validate::isMoney('+1,234,567'));
+        $this->assertTrue(Validate::isMoney('-1,234,567'));
+        $this->assertTrue(Validate::isMoney('1,234,567.89'));
+        $this->assertTrue(Validate::isMoney('+1,234,567.89'));
+        $this->assertTrue(Validate::isMoney('-1,234,567.89'));
+        
+        $this->assertFalse(Validate::isMoney('1,23'));
+        $this->assertFalse(Validate::isMoney(',234'));
+        $this->assertFalse(Validate::isMoney('1.'));
+        $this->assertFalse(Validate::isMoney('.1'));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   年度コード
+    */
+    public static function isSuccessNendoProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('2014K')
+            , array('2015S')
+            , array('0000K')
+            , array('9999S')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessNendoProvider
+    *
+    **/
+    public function testSuccessIsNendo($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isNendo($val));
+    }
+    
+    public static function isFailureNendoProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('2014A')
+            , array('2015')
+            , array('2015SS')
+            , array('A000K')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureNendoProvider
+    *
+    **/
+    public function testFailureIsNendo($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isNendo($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   社員番号
+    */
+    public static function isSuccessTantoProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('00000ITC')
+            , array('99999ITC')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessTantoProvider
+    *
+    **/
+    public function testSuccessIsTanto($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isTanto($val));
+    }
+    
+    public static function isFailureTantoProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('00000IT')
+            , array('1234ITC')
+            , array('X9999ITC')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureTantoProvider
+    *
+    **/
+    public function testFailureIsTanto($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isTanto($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   文字列
+    */
+    public static function isSuccessTextProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('aaa', null, null)
+            , array('漢字', 0, 100)
+            , array('abc', 3, 100)
+            , array('abc', 1, 3)
+            , array('ひらがな', 4, 4)
+            , array('カタカナ', 4, 4)
+            , array('ｶﾀｶﾅ', 4, 4)
+            , array('ｶﾀｶﾅﾀﾞﾊﾟ', 6, 6)   //半角カタカナ文字数
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessTextProvider
+    *
+    **/
+    public function testSuccessIsText($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isText($val, $min, $max));
+    }
+    
+    public static function isFailureTextProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('aaa', null, 2)
+            , array('abc', 4, null)
+            , array('漢字', null, 1)
+            , array('漢字', 3, null)
+            , array(123, 1, 3)
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureTextProvider
+    *
+    **/
+    public function testFailureIsText($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isText($val, $min, $max));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   文字列フラグ
+    */
+    public static function isSuccessTextBoolProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('0')
+            , array('1')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessTextBoolProvider
+    *
+    **/
+    public function testSuccessIsTextBool($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isTextBool($val));
+    }
+    
+    public static function isFailureTextBoolProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array(0)
+            , array(1)
+            , array('2')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureTextBoolProvider
+    *
+    **/
+    public function testFailureIsTextBool($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isTextDate($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   日付文字列yyyymmdd
+    */
+    public static function isSuccessTextDate()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('20150131')
+            , array('19800101')
+            , array('29991231')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessTextDate
+    *
+    **/
+    public function testSuccessIsTextDate($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isTextDate($val));
+    }
+    
+    public static function isFailureTextDate()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+             array('2015930')
+            , array('201511221')
+            , array('20150231')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureTextDate
+    *
+    **/
+    public function testFailureIsTextDate($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isTextDate($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   日付文字列yyyymmdd HHiiss
+    */
+    public static function isSuccessTextDateTime()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('20150131 000000')
+            , array('19800101 235959')
+            , array('20991231 123456')
+            , array('29991231 123456')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessTextDateTime
+    *
+    **/
+    public function testSuccessIsTextDateTime($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isTextDateTime($val));
+    }
+    
+    public static function isFailureTextDateTime()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('20150131 00000')
+            , array('19800101 240000')
+            , array('20150229 123456')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureTextDateTime
+    *
+    **/
+    public function testFailureIsTextDateTime($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isTextDateTime($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   日付文字列yyyymm
+    */
+    public static function isSuccessTextDateYYYYMM()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('201501')
+            , array('199912')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessTextDateYYYYMM
+    *
+    **/
+    public function testSuccessIsTextDateYYYYMM($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isTextDateYYYYMM($val));
+    }
+    
+    public static function isFailureTextDateYYYYMM()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('201500')
+            , array('199913')
+            , array('2014011')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureTextDateYYYYMM
+    *
+    **/
+    public function testFailureIsTextDateYYYYMM($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isTextDateYYYYMM($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   日付文字列yyyy-mm-dd
+    */
+    public static function isSuccessTextDateYYYYMMDDHyphen()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('2015-01-29')
+            , array('1999-12-31')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessTextDateYYYYMMDDHyphen
+    *
+    **/
+    public function testSuccessIsTextDateYYYYMMDDHyphen($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isTextDateYYYYMMDDHyphen($val));
+    }
+    
+    public static function isFailureTextDateYYYYMMDDHyphen()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('2015-00-01')
+            , array('1999-13-01')
+            , array('20140131')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureTextDateYYYYMMDDHyphen
+    *
+    **/
+    public function testFailureIsTextDateYYYYMMDDHyphen($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isTextDateYYYYMMDDHyphen($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   文字列浮動小数
+    */
+    public static function isSuccessTextFloatProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('1.05', null, null)
+            , array('-10.3', -20, 100)
+            , array('+1.33', 1, 1.5)
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessTextFloatProvider
+    *
+    **/
+    public function testSuccessIsTextFloat($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isTextFloat($val, $min, $max));
+    }
+    
+    public static function isFailureTextFloatProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('105', null, null)
+            , array('10.0', 11, 100)
+            , array('10.0', 1, 9.9)
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureTextFloatProvider
+    *
+    **/
+    public function testFailureIsTextFloat($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isTextFloat($val, $min, $max));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   文字列整数
+    */
+    public static function isSuccessTextIntProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('105', null, null)
+            , array('10', 10, 100)
+            , array('100', 10, 100)
+            , array('+11', null, null)
+            , array('-11', null, null)
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessTextIntProvider
+    *
+    **/
+    public function testSuccessIsTextInt($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isTextInt($val, $min, $max));
+    }
+    
+    public static function isFailureTextIntProvider()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('99', 100, null)
+            , array('101', 10, 100)
+            , array(101, 10, 100)
+            , array(2.2, null, null)
+            , array("2.2", 1, 3)
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureTextIntProvider
+    *
+    **/
+    public function testFailureIsTextInt($val, $min, $max)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isTextInt($val, $min, $max));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   統一ユーザID
+    */
+    public static function isSuccessUser()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('w12345iC')
+            , array('12345678')
+            // , array('ZA123')
+            // , array('Z1234')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessUser
+    *
+    **/
+    public function testSuccessIsUser($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isUser($val));
+    }
+    
+    public static function isFailureUser()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('w12345iCx')
+            , array('1234567')
+            , array('w_2345iC')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureUser
+    *
+    **/
+    public function testFailureIsUser($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isUser($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    *   URL
+    */
+    public static function isSuccessUrl()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('https://www.toshiba.co.jp:8080/test.htm?key=AAA&val=BBB')
+            , array('http://toshiba/')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isSuccessUrl
+    *
+    **/
+    public function testSuccessIsUrl($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertTrue(Validate::isUrl($val));
+    }
+    
+    public static function isFailureUrl()
+    {
+//      $this->markTestIncomplete();
+
+        return array(
+            array('ftp://www.toshiba.co.jp:8080/test.htm?key=AAA&val=BBB')
+            , array('http://東芝/')
+        );
+    }
+    
+    /**
+    *
+    * @dataProvider isFailureUrl
+    *
+    **/
+    public function testFailureIsUrl($val)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertFalse(Validate::isUrl($val));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    * @test
+    *
+    **/
+    public function isTextEscape()
+    {
+//      $this->markTestIncomplete();
+        
+        //英数漢字許可
+        $data = '01234asdfghjkQWERTY漢字許可';
+        $this->assertTrue(Validate::isTextEscape($data));
+        
+        //英数漢字許可 記号不許可
+        $data = '01234asdfghjkQWERTY漢字@';
+        $this->assertFalse(Validate::isTextEscape($data));
+        
+        //英数漢字許可 記号不許可
+        $data = '01234!asdfghjk{QWERTY漢字}@';
+        $this->assertFalse(Validate::isTextEscape($data, null, null));
+        
+        //英数漢字許可 記号不許可
+        $data = '01234!asdfghjk{QWERTY漢字}@';
+        $this->assertFalse(Validate::isTextEscape($data, null, null, ''));
+        
+        //英数漢字許可 指定記号許可
+        $data = '01234!asdfghjk{QWERTY漢字}@';
+        $this->assertTrue(Validate::isTextEscape($data, null, null, '@!}{%'));
+        
+        //英数漢字許可 指定記号許可 SP \t不許可
+        $data = '012    34!asd fghjk{QWERTY漢字}@';
+        $this->assertFalse(Validate::isTextEscape($data, null, null, '@!}{%'));
+        
+        //英数漢字許可 指定記号 SP \t許可
+        $data = '012    34!asd fghjk{QWERTY漢字}@';
+        $this->assertTrue(Validate::isTextEscape($data, null, null, '@!} {\t%'));
+        
+        //英数漢字許可 記号許可
+        $data = '01234!asdfghjk{QWERTY漢字}@';
+        $this->assertTrue(Validate::isTextEscape($data, null, null, null, ''));
+        
+        //英数漢字許可 指定記号不許可
+        $data = '01234!asdfghjk {QWERTY漢字}@';
+        $this->assertFalse(Validate::isTextEscape($data, null, null, null, '@!}{%'));
+        
+        //英数漢字許可 指定記号以外許可
+        $data = '01234$asdfghjk)QWERTY(?';
+        $this->assertTrue(Validate::isTextEscape($data, null, null, null, '@!}{%'));
+        
+        //英数漢字許可 指定記号 \t以外許可
+        $data   =   '01234$asdf					ghjk)QWERTY漢字(?';
+        $this->assertFalse(Validate::isTextEscape($data, null, null, null, '@!}{%\t'));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    * @test
+    *
+    **/
+    public function isTextHiragana()
+    {
+//      $this->markTestIncomplete();
+        
+        $data = 'あおんぁぽが';
+        $this->assertTrue(Validate::isTextHiragana($data));
+        
+        $data = 'aあおんぁぽが';
+        $this->assertFalse(Validate::isTextHiragana($data));
+        
+        $data = 'ら';
+        $this->assertFalse(Validate::isTextHiragana($data, 2));
+        
+        $data = 'っきゅ';
+        $this->assertFalse(Validate::isTextHiragana($data, null, 2));
+        
+        $data = 'ちぃぐぜ';
+        $this->assertTrue(Validate::isTextHiragana($data, 0, 4));
+        
+        $data = '';
+        $this->assertTrue(Validate::isTextHiragana($data, 0, 4));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    * @test
+    *
+    **/
+    public function isTextKatakana()
+    {
+//      $this->markTestIncomplete();
+        
+        $data = 'アオンァポガ';
+        $this->assertTrue(Validate::isTextKatakana($data));
+        
+        $data = 'aアオンァポガ';
+        $this->assertFalse(Validate::isTextKatakana($data));
+        
+        $data = 'ラ';
+        $this->assertFalse(Validate::isTextKatakana($data, 2));
+        
+        $data = 'ッキュ';
+        $this->assertFalse(Validate::isTextKatakana($data, null, 2));
+        
+        $data = 'チィグゼ';
+        $this->assertTrue(Validate::isTextKatakana($data, 0, 4));
+        
+        $data = '';
+        $this->assertTrue(Validate::isTextKatakana($data, 0, 4));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    * @test
+    *
+    **/
+    public function isTextHankaku()
+    {
+//      $this->markTestIncomplete();
+        
+        $data = 'ｱｵﾝｧﾎﾟｶﾞ';
+        $this->assertTrue(Validate::isTextHankaku($data));
+        
+        $data = 'aｱｵﾝｧﾎﾟｶﾞ';
+        $this->assertFalse(Validate::isTextHankaku($data));
+        
+        $data = 'ﾗ';
+        $this->assertFalse(Validate::isTextHankaku($data, 2));
+        
+        $data = 'ｯｷｭ';
+        $this->assertFalse(Validate::isTextHankaku($data, null, 2));
+        
+        $data = 'ﾁｨｸﾞｾﾞ';
+        $this->assertTrue(Validate::isTextHankaku($data, 0, 4));
+        
+        $data = '';
+        $this->assertTrue(Validate::isTextHankaku($data, 0, 4));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    * @test
+    *
+    **/
+    public function hasTextDatabase()
+    {
+//      $this->markTestIncomplete();
+        
+        $data = '文%字ｱa1２';
+        $this->assertTrue(Validate::hasTextDatabase($data));
+        
+        $data = 'a1２文字';
+        $this->assertFalse(Validate::hasTextDatabase($data));
+        
+        $expect = ['%', '_', "'", '"'];
+        
+        foreach ($expect as $val) {
+            $this->assertTrue(Validate::hasTextDatabase($val));
+        }
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    * @test
+    *
+    **/
+    public function hasTextHankaku()
+    {
+//      $this->markTestIncomplete();
+        
+        $data = '文#字ｱa1２';
+        $this->assertTrue(Validate::hasTextHankaku($data));
+        
+        $data = '文#字ﾝa1２';
+        $this->assertTrue(Validate::hasTextHankaku($data));
+        
+        $data = 'a1２文字';
+        $this->assertFalse(Validate::hasTextHankaku($data));
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    * @test
+    *
+    **/
+    public function hasTextHtml()
+    {
+//      $this->markTestIncomplete();
+        
+        $data = '文<字ｱa1２';
+        $this->assertTrue(Validate::hasTextHtml($data));
+        
+        $data = 'a1２文字';
+        $this->assertFalse(Validate::hasTextHtml($data));
+        
+        $expect = ['<', '>', '&', "'", '"'];
+        
+        foreach ($expect as $val) {
+            $this->assertTrue(Validate::hasTextHtml($val));
+        }
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    * @test
+    *
+    **/
+    public function hasTextSymbole()
+    {
+//      $this->markTestIncomplete();
+        
+        $data = '文#字ｱa1２';
+        $this->assertTrue(Validate::hasTextSymbole($data));
+        
+        $data = 'ｱa1２文字';
+        $this->assertFalse(Validate::hasTextSymbole($data));
+        
+        $expect = ['!', '"', '#', '$', '%', '&'     , "'", '(', ')'
+            , '-', '=', '^', '~', '\\', '|'
+            , '@', '`', '[', '{'
+            , ';', '+', ':', '*', ']', '}'
+            , ',', '<', '.', '?', '\\', '_'
+        ];
+        
+        foreach ($expect as $val) {
+            $this->assertTrue(Validate::hasTextSymbole($val));
+        }
+    }
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function isFilenameProvider()
+    {
+        return [
+            [
+                "09Az漢字ひらがなｶﾀｶﾅ!#$%&'()=-~^@`[{]}+,._",
+                true
+            ],
+            ['/Az', false],
+            ['A\z', false],
+            ['Az<', false],
+            ['Az>', false],
+            ['Az*', false],
+            ['Az?', false],
+            ['Az"', false],
+            ['Az|', false],
+            ['Az;', false],
+            ['Az:', false],
+            [str_repeat('x', 107), true],
+            [str_repeat('x', 108), false],
+            
+        ];
+    }
+    
+    /**
+    * @test
+    * @dataProvider isFilenameProvider
+    **/
+    public function isFilename($data, $expect)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertEquals($expect, Validate::isFilename($data));
+    }
+    
+    public function isTextTimeProvider()
+    {
+        return [
+            ['000000', true],
+            ['235959', true],
+            ['240000', false],
+            ['006000', false],
+            ['000060', false],
+        ];
+    }
+    
+    /**
+    * @test
+    * @dataProvider isTextTimeProvider
+    **/
+    public function isTextTime($data, $expect)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertEquals($expect, Validate::isTextTime($data));
+    }
+    
+    public function isTextTimeHHIIProvider()
+    {
+        return [
+            ['0000', true],
+            ['2359', true],
+            ['2400', false],
+            ['0060', false],
+        ];
+    }
+    
+    /**
+    * @test
+    * @dataProvider isTextTimeHHIIProvider
+    **/
+    public function isTextTimeHHII($data, $expect)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertEquals($expect, Validate::isTextTimeHHII($data));
+    }
+    
+    public function isColorProvider()
+    {
+        return [
+            ['#000000', true],
+            ['#999999', true],
+            ['#aaaaaa', true],
+            ['#ffffff', true],
+            ['#AAAAAA', true],
+            ['#FFFFFF', true],
+            ['#00000g', false],
+            ['#12345', false],
+            ['#1234567', false],
+        ];
+    }
+    
+    /**
+    * @test
+    * @dataProvider isColorProvider
+    **/
+    public function isColor($data, $expect)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertEquals($expect, Validate::isColor($data));
+    }
+    
+    public function isMitumoriProvider()
+    {
+        return [
+            ['12345678', true],
+            [12345678, false],
+            ['1234567', false],
+            ['F1234567', false],
+        ];
+    }
+    
+    /**
+    * @test
+    * @dataProvider isMitumoriProvider
+    **/
+    public function isMitumori($data, $expect)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertEquals($expect, Validate::isMitumori($data));
+    }
+    
+    public function isIpv4Provider()
+    {
+        return [
+            ['10.43.19.104', true],
+            ['192.168.0.256', false],
+        ];
+    }
+    
+    /**
+    * @test
+    * @dataProvider isIpv4Provider
+    **/
+    public function isIpv4($data, $expect)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertEquals($expect, Validate::isIpv4($data));
+    }
+    
+    public function isIpv6Provider()
+    {
+        return [
+            ['FF01:0:0:0:0:0:0:101', true],
+            ['FF01::101', true],
+            ['192.168.0.256', false],
+        ];
+    }
+    
+    /**
+    * @test
+    * @dataProvider isIpv6Provider
+    **/
+    public function isIpv6($data, $expect)
+    {
+//      $this->markTestIncomplete();
+        
+        $this->assertEquals($expect, Validate::isIpv6($data));
+    }
+}

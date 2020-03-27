@@ -1,0 +1,8 @@
+Rマークが出た場合
+
+×引数に --tap を付けると、何がRなのか表示する模様
+--debug or -v でメッセージは出せるが・・・
+
+
+ex)
+ob_end_cleanがあると出た==> Concerto\test\template\PhpTemplateTest::render()
