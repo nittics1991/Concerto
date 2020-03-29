@@ -3,6 +3,8 @@
 
 //ストーリーからclassを考える
 
+
+
 ///////////////////////////////////////////////////
 
 //@sample Centinel
@@ -43,15 +45,30 @@ interface PermissionsInterface
 
 ///////////////////////////////////////////////////
 
+//current usecase
+
+class MstTanto
+{
+    
+}
+
+//社員
 class Employee
 {
     $employee_no;
     $employee_name;
     $unified_user_id;
     $email_address;
-    Sectiion $bumon_code;
+    CostDepartment $cost_department;
     
 }
+
+class EmployeeNo
+{
+    
+}
+
+
 
 //資格
 class Credential
@@ -77,16 +94,16 @@ class EmployeePermission implements PermissionInterface
 }
 
 //組織許諾
-class SectionPermission
+class DepartmentPermission
 {
 }
 
 //組織
-class Section
+class Department
 {
-    $section_code;
-    $section_name;
-    SectionPermission[] $permissions;
+    $department_code;
+    $department_name;
+    DepartmentPermission[] $permissions;
     
 }
 
