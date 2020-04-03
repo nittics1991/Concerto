@@ -1,0 +1,8 @@
+mst_mitumori_bunruiなどcd_system追加したtable
+    JOIN条件追加
+project_inf cd_system追加必要
+jyukyu_inf cd_bumon追加? no_koは難しい
+整番確認 削除?
+
+
+
