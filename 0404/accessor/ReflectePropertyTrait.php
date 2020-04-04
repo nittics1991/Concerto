@@ -23,10 +23,10 @@ trait ReflectePropertyTrait implements ReflectePropertyTraitInterface
     //protected array $users;      case <input name="users[first_name]">
     
     /**
-    *   {inherit}
+    *   classのpropertyを解析してpropertiesに定義
     *
     */
-    protected function reflecteProperty()
+    private function reflecteProperty()
     {
         $reflectionClass = new ReflectionClass($this);
         $properties = $reflectionClass->getProperties(
@@ -34,11 +34,11 @@ trait ReflectePropertyTrait implements ReflectePropertyTraitInterface
             ReflectionProperty::IS_PUBLIC
         );
         
-        $this->properties = array_map(
-            function($property) {
-                return [$property->getName() => $property];
-            },
-            $properties
-        );
+        foreach($properties as $property) {
+            if ($property->getName() == 'properties') {
+                continue;
+            }
+            $this->properties[$property->getName() => $property];
+        }
     }
 }

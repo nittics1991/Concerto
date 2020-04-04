@@ -14,7 +14,7 @@ trait ReflectePropertyArrayExchangerTrait implements
     *
     *   @param array $data
     */
-    public function fromArray(array $data)
+    private function fromArray(array $data)
     {
         foreach($data as $name => $val) {
             if (!array_key_exists($name, $this->properties)) {
@@ -37,7 +37,7 @@ trait ReflectePropertyArrayExchangerTrait implements
     *
     *   @return array
     */
-    public function toArray():array
+    private function toArray():array
     {
         return array_map(
             function($name) {
