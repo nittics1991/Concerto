@@ -12,3 +12,10 @@ toArray()を持つ
 ArrayAccessを持つ
 
 
+Database
+    phpのsql buidを考えると日付は文字列
+    従ってTEXT,int(場合によってintX)が主
+    floatをどうする?=>numericが基本==>なるべくfloat使わない
+    Concertoでは直課時間ぐらい
+    bcmath.scaleを使うか? float計算はBCMathのWrapperClass?
+
