@@ -19,3 +19,11 @@ Database
     Concertoでは直課時間ぐらい
     bcmath.scaleを使うか? float計算はBCMathのWrapperClass?
 
+
+
+ReflectAttributeTrait作成中
+    現在のConcerto\accessorは凝っている
+    簡単化できないか?
+    
+Postの組み立て　上記定義を実現できるか
+UsecasePostで　子クラスの実現を確認する
