@@ -8,7 +8,7 @@ jyukyu_inf cd_bumon追加? no_koは難しい
 200404
     Concerto2 次期システム検討の開始
     array\ArrayDot Flatten で　1次元に平坦化
-    
+    accessor typed properyによるreflectACCESSOR
     
     
     
