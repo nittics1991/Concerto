@@ -4,10 +4,8 @@ declare(type_stricts=1);
 namespace Concerto\accessor\reflectable;
 
 use InvalidArgumentException;
-use Concerto\accessor\reflectable\ReflectePropertyTraitInterface;
 
-trait ReflectePropertyArrayExchangerTrait implements
-    ReflectePropertyTraitInterface
+trait ReflectePropertyArrayExchangerTrait
 {
     /**
     *   fromArray
@@ -16,6 +14,10 @@ trait ReflectePropertyArrayExchangerTrait implements
     */
     private function fromArray(array $data)
     {
+        if (!isset($this->properties)) {
+            $this->reflecteProperty();
+        }
+        
         foreach($data as $name => $val) {
             if (!array_key_exists($name, $this->properties)) {
                 throw new InvalidArgumentException(
@@ -39,6 +41,10 @@ trait ReflectePropertyArrayExchangerTrait implements
     */
     private function toArray():array
     {
+        if (!isset($this->properties)) {
+            $this->reflecteProperty();
+        }
+        
         return array_map(
             function($name) {
                 return $this->$name;

@@ -5,16 +5,15 @@ namespace Concerto\accessor\reflectable;
 
 use ReflectionClass;
 use ReflectionProperty;
-use Concerto\accessor\reflectable\ReflectePropertyTraitInterface;
 
-trait ReflectePropertyTrait implements ReflectePropertyTraitInterface
+trait ReflectePropertyTrait
 {
     /**
     *   properties
     *
     *   @var ReflectionProperty[] [name=>val, ...]
     */
-    protected array $properties = [];
+    protected array $properties;
     
     //classで定義されたpropertyを解析する
     //public string $fullName;     set/get OK property
