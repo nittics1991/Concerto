@@ -7,7 +7,7 @@ Psr7Request->body()からobjectを生成
 __construct(array $data)
 初期値は外部で作成
 初期値を設定==>append() methodで 追加
-validateを内部で定義
+validateを内部で定義==>外だし
 toArray()を持つ
 ArrayAccessを持つ
 
