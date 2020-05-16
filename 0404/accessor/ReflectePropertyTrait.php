@@ -128,7 +128,7 @@ trait ReflectePropertyTrait
         }
         return $this;
     }
-        
+    
     /**
     *   toArray
     *
