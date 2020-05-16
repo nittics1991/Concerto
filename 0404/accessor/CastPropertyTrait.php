@@ -41,7 +41,44 @@ trait CastPropertyTrait
             return $val;
         }
         
-        $type = ($this->properties[$name])->
+        //accessor
+        if (method_exists($this, 'hasAccessor')
+            && $this->hasSetter('set' . ucfirst($name))
+        ) {
+           call_user_func(
+                [$this'set' . ucfirst($name)],
+                $val
+            );
+            
+            //return  hasGetter?
+                this->getZZZZ()
+                this->$name
+            
+            
+        }
+        
+        $type = ($this->properties[$name])
+            ->getType()
+            ->getName();
+        
+        switch ($type) {
+            case 'bool':
+                return boolval($val);
+            case 'float':
+                return floatval($val);
+            case 'int':
+                return intval($val);
+            case 'string':
+                return strval($val);
+            case 'array':
+                return (array)$val;
+            case 'object':
+                return (object)$val;
+            default:
+                //accessorを作るか?
+                
+            
+        }
         
         
         
