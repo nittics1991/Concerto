@@ -3,7 +3,7 @@
 /**
 *   ReflectAttributeTrait
 *
-*   @version 200405
+*   @version 200516
 */
 
 declare(type_stricts=1);
@@ -19,12 +19,13 @@ trait ReflectePropertyTrait
     /**
     *   properties
     *
-    *   @var ReflectionProperty[] [name=>val, ...]
+    *   @var ReflectionProperty[] [name=>ReflectionProperty, ...]
     */
     protected array $properties;
     
     /*
-    *   classで定義されたpropertyを解析する
+    *   classでpropertyを定義する
+    * 
     *   public string $fullName;     set/get OK
     *   protected string $fullName;  get only
     *   private string $fullName;    private
@@ -51,16 +52,26 @@ trait ReflectePropertyTrait
     }
     
     /**
+    *   has
+    * 
+    *   @param string $name
+    *   @return bool
+    */
+    public function has(string $name): bool
+    {
+        if (!isset($this->properties)) {
+            $this->reflecteProperty();
+        }
+        return array_key_exists($name, $this->properties);
+    }
+    
+    /**
     *   {inherit}
     *
     **/
     public function __get(string $name)
     {
-        if (!isset($this->properties)) {
-            $this->reflecteProperty();
-        }
-        
-        if (!array_key_exists($name, $this->properties)) {
+        if (!$this->has($name)) {
            throw new InvalidArgumentException(
                 "not defined property:{$name}"
             );
@@ -74,10 +85,20 @@ trait ReflectePropertyTrait
     **/
     public function __isset(string $name): bool
     {
-        if (!isset($this->properties)) {
-            $this->reflecteProperty();
-        }
-        return array_key_exists($name, $this->properties);
+        return $this->has($name)
+            && isset($this->$name);
+    }
+    
+    /**
+    *   isWritable
+    *   
+    *   @param string $name
+    *   @return bool
+    */
+    public function isWritable(string $name): bool
+    {
+        return $this->has($name)
+            && ($this->properties[$name])->isPublic();
     }
     
     /**
@@ -113,7 +134,7 @@ trait ReflectePropertyTrait
     *
     *   @return array
     */
-    public function toArray():array
+    public function toArray(): array
     {
         if (!isset($this->properties)) {
             $this->reflecteProperty();
@@ -125,5 +146,18 @@ trait ReflectePropertyTrait
             },
             array_keys($this->properties)
         );
+    }
+        
+    /**
+    *   getProperties
+    *
+    *   @return array
+    */
+    public function getProperties(): array
+    {
+        if (!isset($this->properties)) {
+            $this->reflecteProperty();
+        }
+        return $this->properties;
     }
 }

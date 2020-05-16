@@ -1,3 +1,4 @@
+//////////////////////////////
 POST/QUERY
 
 Requestとしてまとめない
@@ -27,3 +28,24 @@ ReflectAttributeTrait作成中
     
 Postの組み立て　上記定義を実現できるか
 UsecasePostで　子クラスの実現を確認する
+
+//////////////////////////////
+200516
+
+reflect accessorをベースにライブラリを検討
+POST/QUERY/ModelData/SESSION/COOKIE/DomeinObject
+基本的な機能ライブラリと、中間的なライブラリ、プロジェクトライブラリ、ドメインになる?
+
+ModelDataのvalidateでPOSTなどvalidate
+その為にはModelDataのように型定義が必要
+型変換してvalidate&mutate
+この場合、validateは外だしでなく、POST内に持つことになる
+
+
+
+
+
+
+
+
+
