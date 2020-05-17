@@ -35,7 +35,7 @@ trait ReflectePropertyTrait
     *   classのpropertyを解析してpropertiesに定義
     *
     */
-    private function reflecteProperty()
+    protected function reflecteProperty()
     {
         $reflectionClass = new ReflectionClass($this);
         $properties = $reflectionClass->getProperties(
@@ -106,7 +106,7 @@ trait ReflectePropertyTrait
     *
     *   @param array $data
     */
-    private function fromArray(array $data)
+    protected function fromArray(array $data)
     {
         if (!isset($this->properties)) {
             $this->reflecteProperty();

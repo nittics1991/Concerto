@@ -3,7 +3,7 @@
 /**
 *   AccessorTrait
 *
-*   @version 200516
+*   @version 200517
 */
 
 declare(type_stricts=1);
@@ -36,17 +36,11 @@ trait AccessorTrait
     *   @param string $type get|set
     *   @return bool
     */
-    private function hasAccessor(
+    protected function hasAccessor(
         string $method_name,
         string $type
     ): bool {
         if (!method_exists($method_name)) {
-            return false;
-        }
-        
-        $method = new ReflectionMethod($method_name);
-        
-        if (!$method->isPublic()) {
             return false;
         }
         
@@ -69,7 +63,7 @@ trait AccessorTrait
     *   @param string $method_name
     *   @return bool
     */
-    private function hasGetter(string $method_name): bool
+    protected function hasGetter(string $method_name): bool
     {
         return $this->hasAccessoor($method_name, 'get');
     }
@@ -80,7 +74,7 @@ trait AccessorTrait
     *   @param string $method_name
     *   @return bool
     */
-    private function hasSetter(string $method_name): bool
+    protected function hasSetter(string $method_name): bool
     {
         return $this->hasAccessoor($method_name, 'set');
     }
@@ -92,14 +86,10 @@ trait AccessorTrait
     *   @param array $arguments
     *   @return mixed
     */
-    private function callAccessor(string $name, array $arguments = [])
+    protected function callAccessor(string $name, array $arguments = [])
     {
-        if ($this->hasGetter($name)) {
-            return $this->$name();
-        }
-        
         if ($this->hasGetter($name)
-            && $this->hasSetter($name)
+            || $this->hasSetter($name)
         ) {
             return call_user_func_array([$this, $name], $arguments));
         }

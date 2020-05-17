@@ -19,7 +19,7 @@ trait InitializePropertyTrait
     *   @param array $init
     *   @return $this 
     */
-    private function initializeProperties(array $data, array init = [])
+    protected function initializeProperties(array $data, array init = [])
     {
         $this->importExceptUndefinedProperties($this->properties);
         $this->importExceptUndefinedProperties($init);
@@ -33,7 +33,7 @@ trait InitializePropertyTrait
     *   @param array $data
     *   @return $this 
     */
-    private function importExceptUndefinedProperties(array $data)
+    protected function importExceptUndefinedProperties(array $data)
     {
         if (!isset($this->properties)) {
             $this->reflecteProperty();
