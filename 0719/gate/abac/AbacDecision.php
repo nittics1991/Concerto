@@ -8,7 +8,9 @@
 
 namespace Concerto\gate\abac;
 
-class AbacDecision
+use Concerto\accessor\Enum;
+
+class AbacDecision extends Enum
 {
     /**
     *   許可

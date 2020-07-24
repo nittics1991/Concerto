@@ -3,7 +3,7 @@
 /**
 *   AbacResponseInterface
 *
-*   @version 200718
+*   @version 200725
 */
 
 namespace Concerto\gate\abac;
@@ -13,9 +13,9 @@ interface AbacResponseInterface
     /**
     *   getDecision
     *
-    *   @return mixed
+    *   @return AbacDecision
     */
-    public function getDecision();
+    public function getDecision():AbacDecision;
     
     /**
     *   getObligation

@@ -3,7 +3,7 @@
 /**
 *   AbacInformationPoint
 *
-*   @version 200718
+*   @version 200725
 */
 
 namespace Concerto\gate\abac;
@@ -36,10 +36,18 @@ class AbacInformationPoint implements AbacInformationPointInterface
     *   {inherit}
     *
     *   @param AbacRequestInterface $request
-    *   @return mixed
+    *   @return AbacAttributeInterface
     */
-    public function getAttribute(AbacRequestInterface $request)
-    {
-        return $this->container->get($id):
+    public function getAttribute(
+        AbacRequestInterface $request
+    ) :AbacAttributeInterface {
+        $repository = $this->container->get($request->getAction());
+        
+        $attribute = $this->container->get(AbacAttributeInterface::class);
+        $attribute->setSubject($repository->getSubject($request));
+        $attribute->setResource($repository->getResource($request));
+        $attribute->setEnvironment($repository->getEnvironment($request));
+        
+        return $attribute;
     }
 }

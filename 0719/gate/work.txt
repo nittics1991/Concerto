@@ -3,6 +3,8 @@ XACML
     https://www.atmarkit.co.jp/ait/articles/0211/15/news002.html
     
 200725
+    containerを直接使っているけど、factoryにするか?
+    
     main
         $actionid = 'portal.read';
         $userid = '12345XYZ';
