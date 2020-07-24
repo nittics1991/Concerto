@@ -13,8 +13,9 @@ INSERT
 
 
 もしかしてpostgres専用の部分はtraitではなく
-factoryにて
 construct injectionで可変にした方が？
     __call()でmethod_exists？
 
+factory？provider?
+    ModelDbは継承するのでtraitで良い?
 
