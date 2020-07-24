@@ -1,0 +1,20 @@
+
+ModelDbはtraitの集合とする
+
+propのschema/nameをtable_nameに変更
+
+isValidOrderとか変更したので反映が必要
+ ==>集約SQLとvalidateを一緒にする?
+ 
+copyコマンドはpostgresオリジナルとしてtrait
+
+INSERT
+    1SQLとするため、NULLでもbindできるか?
+
+
+もしかしてpostgres専用の部分はtraitではなく
+factoryにて
+construct injectionで可変にした方が？
+    __call()でmethod_exists？
+
+

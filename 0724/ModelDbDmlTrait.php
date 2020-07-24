@@ -70,102 +70,42 @@ trait ModelDbDmlTrait
             $dataset = [$dataset];
         }
         
-        $columns = [];
-        $placeholders = [];
+        $placeholders_all = [];
+        $sql_values = '';
         $i = 0;
         
-        foreach ($dataset as $obj) {
-            if (!$obj instanceof DataModelInterface) {
+        foreach ($dataset as $modelData) {
+            if (!$modelData instanceof DataModelInterface) {
                 throw new InvalidArgumentException(
                     "must be DataModelInterface"
                 );
             }
             
-            foreach ($obj as $prop_name => $val) {
-                if (!is_null($val)) {
-                    $columns[] = "{$prop_name}";
-                    $placeholders[":{$i}{$prop_name}"] = $val;
-                }
+            $placeholders = [];
+            foreach ($modelData as $prop_name => $val) {
+                $placeholders[":{$i}{$prop_name}"] = $val;
             }
+            
+            $placeholders_all[] = $placeholders;
+            $sql_values .= sprintf(", (%s)", array_keys($placeholders));
             $i++;
         }
         
+        $sql_values = mb_substr($sql_values, 1);
         
+        $sql = sprintf(
+            "INSERT INTO %s (%s) VALUES (%s) ",
+            $this->table_name,
+            implode(',', ($dataset[0])->getInfo()),
+            $sql_values
+        );
         
+        $stmt = $this->pdo->prepare($sql);
         
-        $schema_old = [];
-        $count = 0;
-        $stmt = null;
-        $sql = '';
-        $binds = [];
-        $i = 0;
-        
-        foreach ($dataset as $obj) {
-            if (!$obj instanceof DataModelInterface) {
-                throw new InvalidArgumentException("data type different");
-            }
-            
-            if ($schema_old == array_keys($obj->toArray())) {
-                $values = [];
-                $i++;
-                
-                foreach ($obj->toArray() as $key => $val) {
-                    if (!is_null($val)) {
-                        $values[] = ":{$i}{$key}";
-                    }
-                }
-                
-                $sql .= sprintf(
-                    " , (%s)",
-                    implode(',', $values)
-                );
-                $binds[] = $obj;
-            } else {
-                if ($schema_old != []) {
-                    $stmt = $this->pdo->prepare($sql);
-                    $j = 0;
-                    
-                    foreach ($binds as $obj1) {
-                        $this->bind($stmt, $obj1, ":{$j}");
-                        $j++;
-                    }
-                    $stmt->execute();
-                }
-                
-                $fields = [];
-                $values = [];
-                $binds = [];
-                $i = 0;
-                
-                foreach ($obj->toArray() as $key => $val) {
-                    if (!is_null($val)) {
-                        $fields[] = $key;
-                        $values[] = ":{$i}{$key}";
-                    }
-                }
-                
-                $sql = sprintf(
-                    "INSERT INTO %s (%s) VALUES (%s) ",
-                    $this->name,
-                    implode(',', $fields),
-                    implode(',', $values)
-                );
-                $binds[] = $obj;
-            }
-            $schema_old = array_keys($obj->toArray());
-            $count++;
+        foreach ($placeholders_all as $placeholders) {
+            $this->bind($stmt, $placeholders);
         }
-        
-        if ($schema_old != []) {
-            $stmt = $this->pdo->prepare($sql);
-            $j = 0;
-            
-            foreach ($binds as $obj1) {
-                $this->bind($stmt, $obj1, ":{$j}");
-                $j++;
-            }
-            $stmt->execute();
-        }
+        $stmt->execute();
     }
     
     /**

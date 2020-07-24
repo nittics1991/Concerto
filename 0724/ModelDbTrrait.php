@@ -38,20 +38,29 @@ trait ModelDbTrait
     protected PDO $pdo;
     
     /**
+    *   DataModelInterfaceオブジェクト生成
+    *
+    *   @return string
+    */
+    public static function createModel()
+    {
+        $namespace = get_called_class() . 'Data';
+        return new $namespace();
+    }
+    
+    /**
     *   バインド
     *
     *   @param PDOStatement $stmt
-    *   @param DataModelInterface $params バインドデータ
+    *   @param array $params バインドデータ
     */
     protected function bind(
         PDOStatement $stmt,
-        DataModelInterface $params
+        array $params
     ): array {
-        $prop_types = $params->getInfo();
-        
         foreach($params as $prop_name => &$val) {
             if (!is_null($val)) {
-                $pdo_type = $this->toPdoParamType($prop_types[$prop_name]);
+                $pdo_type = $this->toPdoParamType(gettype($val));
                 $stmt->bindParam(":{$prop_name}", $val, $type);
             }
         }
@@ -67,22 +76,12 @@ trait ModelDbTrait
     protected function toPdoParamType(string $type): int
     {
         switch ($type) {
+            case 'NULL':
+                return PDO::PARAM_NULL;
             case 'integer':
                 return PDO::PARAM_INT;
             default:
                 return PDO::PARAM_STR;
         }
     }
-    
-    /**
-    *   DataModelInterfaceオブジェクト生成
-    *
-    *   @return string
-    */
-    public static function createModel()
-    {
-        $namespace = get_called_class() . 'Data';
-        return new $namespace();
-    }
-    
 }
