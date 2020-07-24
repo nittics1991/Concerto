@@ -1,0 +1,44 @@
+
+XACML
+    https://www.atmarkit.co.jp/ait/articles/0211/15/news002.html
+    
+200725
+    main
+        $actionid = 'portal.read';
+        $userid = '12345XYZ';
+        $resourcename = $url.lastpath;
+        $gate->denied($actionid, $userid, $resoucename)
+        
+    PEP
+        public function denied($action, ...$arguments):bool;
+            $request = $factory->build($actionid, $arguments)
+            
+            $attribute = $pip->getAttribute($request);
+            list($decision, $obligation) = $pdp->decied($attribute);
+            
+            //obligationをどうやって実行する? 引数とか
+            if (is_callable($obligation)) {
+                call_user_func($obligation)
+            }
+            
+            return $decision == DECISION::PERMIT;
+            
+    PIP
+         public function getAttribute   
+            $repository = $factory->get($actionid);
+            $attribute->setSubject(
+                $repository->getSubject()
+                );
+            $attribute->setResource(
+                $repository->getResource()
+                );
+            $attribute->setEenvironment(
+                $repository->getEenvironment()
+                );
+                return $attribute
+            
+        PDP
+            public function decied($request, $attribute):Response
+                $dicider = $factory->getDecider($request);
+                return $dicider->decied($attribute);
+                
