@@ -6,6 +6,7 @@
 class Post
 {
     private $post;
+    public $AuthUser;
     public $user_id;
     public $port_no;
     public $base_user;
@@ -18,7 +19,7 @@ class Post
     
     public function posted()
     {
-        return isset($user_id);
+        return isset($this->base_password);
     }
     
     public function isValid()
@@ -26,6 +27,12 @@ class Post
         if (empty($this->post)) {
             return false;
         }
+        
+        //現在AuthUser
+        if (empty($this->post['auth']['authUser'])) {
+            return false;
+        }
+        $this->AuthUser = unserialize($this->post['auth']['authUser']);
         
         //aaa ログインユーザ
         if (!mb_ereg_match('\A[0-9]{5}ITC]\z', $this->post['aaa'])) {

@@ -6,6 +6,9 @@ require_once('auth.php');
 try {
     require_once('service.php');
 } catch (Throwable $e) {
+    $_SESSION['auth']['failed'] = true;
+    session_write_close();
+    
     ob_start();
     
     echo date('Ymd His') . '\\n';

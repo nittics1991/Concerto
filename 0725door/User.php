@@ -5,7 +5,8 @@
 */
 class User
 {
-    private $dns = 'pgsql:host=localhost;port=5430;dbname=itc_work;user=concerto;password=manager';
+    private $dns =
+        'pgsql:host=localhost;port=5430;dbname=itc_work;user=concerto;password=manager';
     
     private $post;
     private $pdo;
@@ -37,7 +38,7 @@ class User
         
         if (!password_verify(
             $this->post->user_password,
-            $user_data['hash_pass']
+            $user_data['cd_hash']
         ) {
             return false;
         }
@@ -59,6 +60,8 @@ class User
         
         $_SESSION['input_code'] = $user_data['cd_tanto'];
         $_SESSION['input_name'] = $user_data['nm_tanto'];
+        $_SESSION['auth']['authUser'] =
+            $this->replaceAuthUser($user_data);
         
         return true;
     }
@@ -80,5 +83,20 @@ class User
             return false;
         }
         return $result
+    }
+    
+    private function replaceAuthUser(array $user_list):string
+    {
+        $authUser = $this->authUser;
+        $authUser->id = $user_list['cd_tanto'];
+        $authUser->password = $user_list['cd_hash'];
+        $authUser->unifiedUserId = $user_list['username'];
+        $authUser->name = $user_list['nm_tanto'];
+        $authUser->section = $user_list['cd_bumon'];
+        $authUser->kengenDb = $user_list['kengen_db'];
+        $authUser->kengenMac = $user_list['kengen_sm'];
+        $authUser->kengenGpm = $user_list['kengen'];
+        
+        return (string)serialize($authUser);
     }
 }

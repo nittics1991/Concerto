@@ -14,7 +14,7 @@ class View
     public function render()
     {
         ob_start();
-        @include($this->tempalte);
+        include($this->tempalte);
          $contents = (string)ob_get_contents();
         ob_end_clean();
         

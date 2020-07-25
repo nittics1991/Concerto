@@ -1,7 +1,7 @@
 <?php
 
 require_once('Post.php');
-require_once('Post.php');
+require_once('User.php');
 
 $post = new Post();
 
@@ -12,19 +12,22 @@ if (!$post->posted()) {
 }
 
 if (!$post->isValid()) {
-    $_SESSION['auth']['failed'] = true;
-    die;
+    throw new RuntimeException(
+        "invalid post data"
+    );
 }
 
 $user = new User($post);
 if (!$user->login()) {
-    $_SESSION['auth']['failed'] = true;
-    die;
+    throw new RuntimeException(
+        "invalid login"
+    );
 }
 
 if (!$user->proxy()) {
-    $_SESSION['auth']['failed'] = true;
-    die;
+    throw new RuntimeException(
+        "invalid proxy"
+    );
 }
 
 $url = "https://itcv1800005m.toshiba.local:{$post->port_no}/itc_work1/index.php";
