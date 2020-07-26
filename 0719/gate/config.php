@@ -9,6 +9,9 @@
 *           'kengen_sm|null' =>
 *               'URL project名|null' =>
 *                       'URL PATH/queryの正規表現|null'で再帰的に表現
+*                               => container_id|null(XACMLでいうObligation)
+*                                       $container->get()で引数はURLとauthUser
+*                                           画面のcd_tanto絞り込みなどの上書き    
 */
 
 return [

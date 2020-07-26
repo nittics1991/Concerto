@@ -58,6 +58,10 @@ XACML
         //IDを使わないが・・・
         if ($gate->denied('url_gate', $authUser, $url);
         
+        GateInterfaceを使わない?
+        
+        Obligationの実行を行いたい
+            画面でcd_tanto絞り込み強制とか
         
         
             

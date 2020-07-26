@@ -35,6 +35,8 @@ class MandatoryPortalGate implements GateInterface
     
     
     //$idを使わないがどうする?
+    //XACMLのObligationに該当する処理を実行したい
+    //  cd_tantoの上書きとか
     /**
     *   {inherit}
     *
