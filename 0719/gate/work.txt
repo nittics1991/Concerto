@@ -44,3 +44,30 @@ XACML
                 $dicider = $factory->getDecider($request);
                 return $dicider->decied($attribute);
                 
+
+200725
+    abacでは大変なので、シンプル化する
+    
+    kengen_smとURLでの認可
+        $gate = $container->get('url_gate');    //MandatoryPortalGate
+        
+        $authUser = $session->get('authUser');
+        $authUser = $factory->get('authUser');
+        $url = $server->get('url');
+        
+        //IDを使わないが・・・
+        if ($gate->denied('url_gate', $authUser, $url);
+        
+        
+        
+            
+            
+        
+        
+        
+    
+    
+    
+    
+    
+    
