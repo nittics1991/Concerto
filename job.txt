@@ -10,7 +10,23 @@ jyukyu_inf cd_bumon追加? no_koは難しい
     array\ArrayDot Flatten で　1次元に平坦化
     accessor typed properyによるreflectACCESSOR
     
-    
+200729
+    gate検討
+
+200802
+    template
+        複数テンプレートの合成
+    日付のオブジェクト化
+        Concertoでよく使うパターンをobject化して扱えないか？
+        toStringで文字列化
+        configで定義した書式フォーマットを使いたい
+    databaseのコードの文字変換
+        configに移せないか？
+        Enum化？
+        ＝＝＞viewで固定文字を使っている所をconfig化できないか?
+    mail
+        メールサービスで複数メール送信,履歴保存も同時,MailCCの簡易化
+        
     
 
 
