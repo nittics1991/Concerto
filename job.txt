@@ -1,10 +1,3 @@
-mst_mitumori_bunruiなどcd_system追加したtable
-    JOIN条件追加
-project_inf cd_system追加必要
-jyukyu_inf cd_bumon追加? no_koは難しい
-整番確認 削除?
-
-
 200404
     Concerto2 次期システム検討の開始
     array\ArrayDot Flatten で　1次元に平坦化
@@ -16,10 +9,17 @@ jyukyu_inf cd_bumon追加? no_koは難しい
 200802
     template
         複数テンプレートの合成
+        abstractTemplateのcreate()をstatic化
+    object
+        toStringで文字列化をinterfaceにするか
     日付のオブジェクト化
         Concertoでよく使うパターンをobject化して扱えないか？
-        toStringで文字列化
+        Fiscalやyyyymmなどでinterface
+        Concertoの日付用interface(carbonとかも使えるよう注意)
         configで定義した書式フォーマットを使いたい
+        formatの変換をcallableで書き換えできないか？
+        
+        
     databaseのコードの文字変換
         configに移せないか？
         Enum化？
