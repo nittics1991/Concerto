@@ -1,0 +1,297 @@
+マッチ	1	cyuban_kanri\model\chart\	CyubanInfChart1.php	2020/08/03 08:38:53	113	28		ArrayUtil::	        $data['Values3'] = ArrayUtil::stepwise(	
+マッチ	2	cyuban_kanri\model\chart\	CyubanInfChart1.php	2020/08/03 08:38:53	120	28		ArrayUtil::	        $data['Values4'] = ArrayUtil::stepwise(	
+マッチ	3	fukayama_kanri2\model\	FukayamaInfDispControllerModel.php	2020/08/03 08:38:57	164	27		ArrayUtil::	        $tm_cyokka_list = ArrayUtil::transverse($tm_cyokka_list);	
+マッチ	4	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	135	21		ArrayUtil::	        $dt_start = ArrayUtil::first($dt_yyyymm);	
+マッチ	5	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	136	19		ArrayUtil::	        $dt_end = ArrayUtil::last($dt_yyyymm);	
+マッチ	6	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	150	21		ArrayUtil::	        $selected = ArrayUtil::selectBy(	
+マッチ	7	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	163	28		ArrayUtil::	            $toFillBlank = ArrayUtil::toFillBlank(	
+マッチ	8	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	175	24		ArrayUtil::	            $ordered = ArrayUtil::orderBy($toFillBlank, ['dt_yyyymm']);	
+マッチ	9	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	176	27		ArrayUtil::	            $transverse = ArrayUtil::transverse($ordered);	
+マッチ	10	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	249	21		ArrayUtil::	        $dt_start = ArrayUtil::first($dt_yyyymm);	
+マッチ	11	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	250	19		ArrayUtil::	        $dt_end = ArrayUtil::last($dt_yyyymm);	
+マッチ	12	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	372	21		ArrayUtil::	        $selected = ArrayUtil::selectBy($filterd, ['dt_kanjyo', 'tm_cyokka']);	
+マッチ	13	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	373	19		ArrayUtil::	        $gouped = ArrayUtil::groupBy(	
+マッチ	14	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	387	24		ArrayUtil::	        $toFillBlank = ArrayUtil::toFillBlank(	
+マッチ	15	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	395	20		ArrayUtil::	        $ordered = ArrayUtil::orderBy($toFillBlank, ['dt_kanjyo']);	
+マッチ	16	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	396	23		ArrayUtil::	        $transverse = ArrayUtil::transverse($ordered);	
+マッチ	17	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	589	21		ArrayUtil::	        $selected = ArrayUtil::selectBy($filterd, ['dt_kanjyo', 'tm_cyokka']);	
+マッチ	18	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	590	19		ArrayUtil::	        $gouped = ArrayUtil::groupBy(	
+マッチ	19	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	600	24		ArrayUtil::	        $toFillBlank = ArrayUtil::toFillBlank(	
+マッチ	20	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	608	20		ArrayUtil::	        $ordered = ArrayUtil::orderBy($toFillBlank, ['dt_kanjyo']);	
+マッチ	21	fukayama_kanri2\model\	FukayamaInfDispModel.php	2020/08/03 08:38:57	609	23		ArrayUtil::	        $transverse = ArrayUtil::transverse($ordered);	
+マッチ	22	fukayama_kanri2\model\chart\	FukayamaInfChart1.php	2020/08/03 08:38:56	179	27		ArrayUtil::	        $tm_cyokka_list = ArrayUtil::transverse($tm_cyokka_list);	
+マッチ	23	fukayama_kanri2\model\chart\	FukayamaInfChart2.php	2020/08/03 08:38:56	111	23		ArrayUtil::	        $transverse = ArrayUtil::transverse($cyunyu_list);	
+マッチ	24	konyu_haraidasi2\model\	HaraidasiInfDispMntModel.php	2020/08/03 08:39:11	177	22		ArrayUtil::	        $columnset = ArrayUtil::transverse($cyumons);	
+マッチ	25	konyu_haraidasi2\model\	HaraidasiSinseiDispMntModel.php	2020/08/03 08:39:13	361	22		ArrayUtil::	        $columnset = ArrayUtil::transverse($cyumons);	
+マッチ	26	mondaiten_inf2\model\	MondaitenTorokuChartBugChartModel.php	2020/08/03 08:39:25	101	24		ArrayUtil::	        $transversed = ArrayUtil::transverse($min_max);	
+マッチ	27	mondaiten_inf2\model\	MondaitenTorokuChartBugChartModel.php	2020/08/03 08:39:25	165	24		ArrayUtil::	        $transversed = ArrayUtil::transverse($dataset);	
+マッチ	28	mst_tanto2\model\	MstTantoDispMntModel.php	2020/08/03 08:39:37	241	32		ArrayUtil::	        $split2 = implode(' ', ArrayUtil::rotate(mb_split('\.', $split[0])));	
+マッチ	29	my_page2\model\	MyPageDispWfControllerModel.php	2020/07/21 09:13:47	78	23		ArrayUtil::	        $order_list = ArrayUtil::orderBy($all_items, array('start'));	
+マッチ	30	prospect_cyuban\model\	PostProspectCyubanDisp.php	2020/08/03 08:39:41	192	16		ArrayUtil::	        return ArrayUtil::some(	
+マッチ	31	prospect_cyuban\model\	ProspectCyubanDispModel.php	2020/08/03 08:39:42	164	24		ArrayUtil::	        $transversed = ArrayUtil::transverse($nm_users);	
+マッチ	32	prospect_cyuban\model\	ProspectInfDispModel.php	2020/08/07 13:10:57	64	24		ArrayUtil::	        $transversed = ArrayUtil::transverse($result);	
+マッチ	33	seiban_kanri2\model\	CyubanSonekiExcelReadModel.php	2020/08/14 09:35:23	392	20		ArrayUtil::	        $cyubans = ArrayUtil::selectBy($hist, ['no_cyu']);	
+マッチ	34	seiban_kanri2\model\	CyubanSonekiExcelReadModel.php	2020/08/14 09:35:23	393	23		ArrayUtil::	        $transverse = ArrayUtil::transverse($cyubans);	
+マッチ	35	seiban_kanri2\model\	KobanSonekiDispControllerModel - コピー.php	2020/08/19 06:57:02	692	32		ArrayUtil::	                $data_list[] = ArrayUtil::mergeKeepKey($items, $data);	
+マッチ	36	seiban_kanri2\model\	KobanSonekiDispControllerModel - コピー.php	2020/08/19 06:57:02	699	32		ArrayUtil::	                $data_list[] = ArrayUtil::mergeKeepKey($items, $empty);	
+マッチ	37	seiban_kanri2\model\	KobanSonekiDispControllerModel - コピー.php	2020/08/19 06:57:02	703	32		ArrayUtil::	                $data_list[] = ArrayUtil::mergeKeepKey($items, $data);	
+マッチ	38	seiban_kanri2\model\	KobanSonekiDispControllerModel - コピー.php	2020/08/19 06:57:02	712	36		ArrayUtil::	                    $data_list[] = ArrayUtil::mergeKeepKey($items, $data);	
+マッチ	39	seiban_kanri2\model\	KobanSonekiDispControllerModel - コピー.php	2020/08/19 06:57:02	717	36		ArrayUtil::	                    $data_list[] = ArrayUtil::mergeKeepKey($items, $empty);	
+マッチ	40	seiban_kanri2\model\	KobanSonekiDispControllerModel - コピー.php	2020/08/19 06:57:02	721	36		ArrayUtil::	                    $data_list[] = ArrayUtil::mergeKeepKey($items, $empty);	
+マッチ	41	seiban_kanri2\model\	KobanSonekiDispControllerModel - コピー.php	2020/08/19 06:57:02	725	36		ArrayUtil::	                    $data_list[] = ArrayUtil::mergeKeepKey($items, $data);	
+マッチ	42	seiban_kanri2\model\	KobanSonekiDispControllerModel - コピー.php	2020/08/19 06:57:02	734	32		ArrayUtil::	                $data_list[] = ArrayUtil::mergeKeepKey($items, $empty);	
+マッチ	43	seiban_kanri2\model\	KobanSonekiDispControllerModel - コピー.php	2020/08/19 06:57:02	738	32		ArrayUtil::	                $data_list[] = ArrayUtil::mergeKeepKey($items, $data);	
+マッチ	44	seiban_kanri2\model\	KobanSonekiDispControllerModel - コピー.php	2020/08/19 06:57:02	751	28		ArrayUtil::	            $data_list[] = ArrayUtil::mergeKeepKey($items, $empty);	
+マッチ	45	seiban_kanri2\model\	KobanSonekiDispControllerModel.php	2020/08/19 06:57:02	692	32		ArrayUtil::	                $data_list[] = ArrayUtil::mergeKeepKey($items, $data);	
+マッチ	46	seiban_kanri2\model\	KobanSonekiDispControllerModel.php	2020/08/19 06:57:02	699	32		ArrayUtil::	                $data_list[] = ArrayUtil::mergeKeepKey($items, $empty);	
+マッチ	47	seiban_kanri2\model\	KobanSonekiDispControllerModel.php	2020/08/19 06:57:02	703	32		ArrayUtil::	                $data_list[] = ArrayUtil::mergeKeepKey($items, $data);	
+マッチ	48	seiban_kanri2\model\	KobanSonekiDispControllerModel.php	2020/08/19 06:57:02	712	36		ArrayUtil::	                    $data_list[] = ArrayUtil::mergeKeepKey($items, $data);	
+マッチ	49	seiban_kanri2\model\	KobanSonekiDispControllerModel.php	2020/08/19 06:57:02	717	36		ArrayUtil::	                    $data_list[] = ArrayUtil::mergeKeepKey($items, $empty);	
+マッチ	50	seiban_kanri2\model\	KobanSonekiDispControllerModel.php	2020/08/19 06:57:02	721	36		ArrayUtil::	                    $data_list[] = ArrayUtil::mergeKeepKey($items, $empty);	
+マッチ	51	seiban_kanri2\model\	KobanSonekiDispControllerModel.php	2020/08/19 06:57:02	725	36		ArrayUtil::	                    $data_list[] = ArrayUtil::mergeKeepKey($items, $data);	
+マッチ	52	seiban_kanri2\model\	KobanSonekiDispControllerModel.php	2020/08/19 06:57:02	734	32		ArrayUtil::	                $data_list[] = ArrayUtil::mergeKeepKey($items, $empty);	
+マッチ	53	seiban_kanri2\model\	KobanSonekiDispControllerModel.php	2020/08/19 06:57:02	738	32		ArrayUtil::	                $data_list[] = ArrayUtil::mergeKeepKey($items, $data);	
+マッチ	54	seiban_kanri2\model\	KobanSonekiDispControllerModel.php	2020/08/19 06:57:02	751	28		ArrayUtil::	            $data_list[] = ArrayUtil::mergeKeepKey($items, $empty);	
+マッチ	55	seiban_kanri2\model\chart\	CyubanSonekiChart1.php	2020/08/14 09:03:57	124	28		ArrayUtil::	        $data['Values3'] = ArrayUtil::stepwise(	
+マッチ	56	seiban_kanri2\model\chart\	CyubanSonekiChart1.php	2020/08/14 09:03:57	131	28		ArrayUtil::	        $data['Values4'] = ArrayUtil::stepwise(	
+マッチ	57	seiban_kanri2\model\chart\	CyubanSonekiChart2.php	2020/08/14 09:03:40	124	28		ArrayUtil::	        $data['Values3'] = ArrayUtil::stepwise(	
+マッチ	58	seiban_kanri2\model\chart\	CyubanSonekiChart2.php	2020/08/14 09:03:40	131	28		ArrayUtil::	        $data['Values4'] = ArrayUtil::stepwise(	
+マッチ	59	seiban_kanri2\model\chart\	CyubanSonekiChart3.php	2020/08/14 09:03:19	112	27		ArrayUtil::	            $transverse = ArrayUtil::transverse($target);	
+マッチ	60	seiban_kanri2\model\chart\	CyubanSonekiChart4.php	2020/08/14 09:02:53	108	28		ArrayUtil::	        $data['Values3'] = ArrayUtil::stepwise(	
+マッチ	61	seiban_kanri2\model\chart\	CyubanSonekiChart4.php	2020/08/14 09:02:53	135	28		ArrayUtil::	        $data['Values4'] = ArrayUtil::stepwise(	
+マッチ	62	seiban_kanri2\model\chart\	KobanSonekiChart1.php	2020/08/14 09:02:08	149	21		ArrayUtil::	            $fill = ArrayUtil::toFillBlank(	
+マッチ	63	seiban_kanri2\model\chart\	KobanSonekiChart1.php	2020/08/14 09:02:08	155	22		ArrayUtil::	            $order = ArrayUtil::orderBy($fill, ['dt_kanjyo']);	
+マッチ	64	seiban_kanri2\model\chart\	KobanSonekiChart1.php	2020/08/14 09:02:08	168	26		ArrayUtil::	            $data_list = ArrayUtil::stepwise($monthly, function ($step, $val) {	
+マッチ	65	seiban_kanri2\model\chart\	KobanSonekiChart2.php	2020/08/14 09:00:19	67	21		ArrayUtil::	            $fill = ArrayUtil::toFillBlank(	
+マッチ	66	seiban_kanri2\model\chart\	KobanSonekiChart2.php	2020/08/14 09:00:19	73	22		ArrayUtil::	            $order = ArrayUtil::orderBy($fill, ['dt_kanjyo']);	
+マッチ	67	seiban_kanri2\model\chart\	KobanSonekiChart2.php	2020/08/14 09:00:19	87	21		ArrayUtil::	            $fill = ArrayUtil::toFillBlank(	
+マッチ	68	seiban_kanri2\model\chart\	KobanSonekiChart2.php	2020/08/14 09:00:19	93	22		ArrayUtil::	            $order = ArrayUtil::orderBy($fill, ['dt_kanjyo']);	
+マッチ	69	seiban_kanri2\model\chart\	KobanSonekiChart2.php	2020/08/14 09:00:19	118	27		ArrayUtil::	            $transverse = ArrayUtil::transverse($target);	
+マッチ	70	seiban_keikaku2\model\	CyokkaTantoDispControllerModel.php	2020/08/03 08:39:55	95	27		ArrayUtil::	        $tm_cyokka_list = ArrayUtil::transverse($tm_cyokka_list);	
+マッチ	71	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	116	21		ArrayUtil::	        $dt_start = ArrayUtil::first($dt_yyyymm);	
+マッチ	72	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	117	19		ArrayUtil::	        $dt_end = ArrayUtil::last($dt_yyyymm);	
+マッチ	73	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	131	21		ArrayUtil::	        $selected = ArrayUtil::selectBy(	
+マッチ	74	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	144	28		ArrayUtil::	            $toFillBlank = ArrayUtil::toFillBlank(	
+マッチ	75	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	156	24		ArrayUtil::	            $ordered = ArrayUtil::orderBy($toFillBlank, ['dt_yyyymm']);	
+マッチ	76	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	157	27		ArrayUtil::	            $transverse = ArrayUtil::transverse($ordered);	
+マッチ	77	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	184	21		ArrayUtil::	        $dt_start = ArrayUtil::first($dt_yyyymm);	
+マッチ	78	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	185	19		ArrayUtil::	        $dt_end = ArrayUtil::last($dt_yyyymm);	
+マッチ	79	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	193	21		ArrayUtil::	        $selected = ArrayUtil::selectBy($items, ['yyyymm', 'dt_kanjyo', 'tm_cyokka']);	
+マッチ	80	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	205	21		ArrayUtil::	        $selected = ArrayUtil::selectBy($selected, ['dt_kanjyo', 'tm_cyokka']);	
+マッチ	81	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	214	24		ArrayUtil::	        $toFillBlank = ArrayUtil::toFillBlank(	
+マッチ	82	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	222	20		ArrayUtil::	        $ordered = ArrayUtil::orderBy($toFillBlank, ['dt_kanjyo']);	
+マッチ	83	seiban_keikaku2\model\	CyokkaTantoDispModel.php	2020/08/03 08:39:56	223	23		ArrayUtil::	        $transverse = ArrayUtil::transverse($ordered);	
+マッチ	84	skill_inf\model\	SkillInfDispControllerModel.php	2020/08/03 08:40:02	171	27		ArrayUtil::	        return ['data' => ArrayUtil::transverse($columns)];	
+マッチ	85	skill_inf\model\	SkillInfDispModel.php	2020/08/03 08:40:03	76	22		ArrayUtil::	        $sort_list = ArrayUtil::orderBy($skill_list, ['disp_seq']);	
+マッチ	86	skill_inf\model\	SkillUserlistDispControllerModel.php	2020/08/03 08:40:07	183	40		ArrayUtil::	        return ['data' => array_values(ArrayUtil::transverse($columns))];	
+マッチ	87	skill_inf\model\	SkillUserlistDispModel.php	2020/08/03 08:40:07	80	22		ArrayUtil::	        $sort_list = ArrayUtil::orderBy(	
+マッチ	88	syukka_kanri\model\	SyukkaKanriExcelBuilder.php	2020/08/03 08:40:09	100	27		ArrayUtil::	            $selected[] = ArrayUtil::selectBy($all_items, $keys);	
+マッチ	89	tyotatu_inf\model\	TyotatuKomokuExcelReadModel.php	2020/08/03 08:40:15	78	22		ArrayUtil::	        $tanto_map = ArrayUtil::expansion($result, 'cd_tanto', 'cd_user');	
+マッチ	90	wf_new2\model\	WfNewDispControllerModel.php	2020/08/03 08:40:27	578	23		ArrayUtil::	        $order_list = ArrayUtil::orderBy($all_items, ['start']);	
+マッチ	91	_mvc\Concerto\	Validate.php	2020/07/30 13:39:52	486	17		ArrayUtil::	                ArrayUtil::without($symbols, $deny, false) : $symbols;	
+マッチ	92	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	39	38		ArrayUtil::	        $this->assertEquals(array(), ArrayUtil::compare($target, $src));	
+マッチ	93	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	48	38		ArrayUtil::	        $this->assertEquals($expect, ArrayUtil::compare($target, $src));	
+マッチ	94	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	59	19		ArrayUtil::	        $actual = ArrayUtil::initArray('z', array('X', 'Y'), array('A', 'B', 'C'), array(1, 2));	
+マッチ	95	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	92	19		ArrayUtil::	        $actual = ArrayUtil::initArray(null, array('A', 'B', 'C'), array(1, 2));	
+マッチ	96	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	138	19		ArrayUtil::	        $actual = ArrayUtil::pivot(	
+マッチ	97	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	159	19		ArrayUtil::	        $actual = ArrayUtil::pivot(	
+マッチ	98	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	180	33		ArrayUtil::	        $this->assertEquals(16, ArrayUtil::max($data));	
+マッチ	99	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	183	33		ArrayUtil::	        $this->assertEquals(16, ArrayUtil::max($data));	
+マッチ	100	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	186	35		ArrayUtil::	        $this->assertEquals(null, ArrayUtil::max($data));	
+マッチ	101	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	189	34		ArrayUtil::	        $this->assertEquals('C', ArrayUtil::max($data, SORT_NATURAL));	
+マッチ	102	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	192	35		ArrayUtil::	        $this->assertEquals(null, ArrayUtil::max([], SORT_NATURAL));	
+マッチ	103	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	204	32		ArrayUtil::	        $this->assertEquals(2, ArrayUtil::min($data));	
+マッチ	104	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	207	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::min($data));	
+マッチ	105	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	210	35		ArrayUtil::	        $this->assertEquals(null, ArrayUtil::min($data));	
+マッチ	106	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	213	34		ArrayUtil::	        $this->assertEquals('A', ArrayUtil::min($data, SORT_NATURAL));	
+マッチ	107	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	215	35		ArrayUtil::	        $this->assertEquals(null, ArrayUtil::min([], SORT_NATURAL));	
+マッチ	108	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	227	33		ArrayUtil::	        $this->assertEquals(11, ArrayUtil::first($data));	
+マッチ	109	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	230	35		ArrayUtil::	        $this->assertEquals(null, ArrayUtil::first($data));	
+マッチ	110	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	242	32		ArrayUtil::	        $this->assertEquals(4, ArrayUtil::last($data));	
+マッチ	111	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	245	35		ArrayUtil::	        $this->assertEquals(null, ArrayUtil::last($data));	
+マッチ	112	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	307	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::sameStruct($ar1, $ar2));	
+マッチ	113	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	311	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));	
+マッチ	114	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	317	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));	
+マッチ	115	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	322	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));	
+マッチ	116	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	327	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));	
+マッチ	117	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	331	16		ArrayUtil::	        $ar2 = ArrayUtil::rotate($ar2);	
+マッチ	118	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	332	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));	
+マッチ	119	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	347	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::sameKeys($ar1, $ar2));	
+マッチ	120	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	351	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::sameKeys($ar1, $ar2));	
+マッチ	121	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	357	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameKeys($ar1, $ar2));	
+マッチ	122	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	362	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameKeys($ar1, $ar2));	
+マッチ	123	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	367	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameKeys($ar1, $ar2));	
+マッチ	124	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	371	16		ArrayUtil::	        $ar2 = ArrayUtil::rotate($ar2);	
+マッチ	125	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	372	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::sameKeys($ar1, $ar2));	
+マッチ	126	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	385	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::isTable($target, true, true));	
+マッチ	127	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	386	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::isTable($target, true, false));	
+マッチ	128	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	387	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::isTable($target, false, false));	
+マッチ	129	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	392	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target));    //true, true	
+マッチ	130	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	393	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::isTable($target, true, false));	
+マッチ	131	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	394	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::isTable($target, false, false));	
+マッチ	132	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	400	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target));    //true, true	
+マッチ	133	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	401	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target, true, false));	
+マッチ	134	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	402	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::isTable($target, false, false));	
+マッチ	135	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	407	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target));    //true, true	
+マッチ	136	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	408	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target, true, false));	
+マッチ	137	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	409	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target, false, false));	
+マッチ	138	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	414	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target));    //true, true	
+マッチ	139	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	415	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target, true, false));	
+マッチ	140	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	416	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target, false, false));	
+マッチ	141	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	453	19		ArrayUtil::	        $actual = ArrayUtil::joinTable($ar1, $ar2, array(), 'LEFT', '_');	
+マッチ	142	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	480	19		ArrayUtil::	        $actual = ArrayUtil::joinTable($ar1, $ar2, array(), 'LEFT');	
+マッチ	143	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	506	19		ArrayUtil::	        $actual = ArrayUtil::joinTable($ar1, $ar2, array(), 'inner');	
+マッチ	144	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	510	19		ArrayUtil::	        $actual = ArrayUtil::joinTable($ar1, $ar2, array(array(2, 0)), 'left');	
+マッチ	145	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	521	19		ArrayUtil::	        $actual = ArrayUtil::joinTable($ar1, $ar2, array(array(2, 0)), 'inner');	
+マッチ	146	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	571	38		ArrayUtil::	        $this->assertEquals($expect, ArrayUtil::mergeKeepKey($x, $y));	
+マッチ	147	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	603	38		ArrayUtil::	        $this->assertEquals($expect, ArrayUtil::keyRemap($data, $serKey, $destKey));	
+マッチ	148	_mvc\Concerto\@\arrays\	ArrayUtilTest.php	2020/06/19 07:11:48	621	38		ArrayUtil::	        $this->assertEquals($expect, ArrayUtil::keyPartiallyRemap($data, $serKey, $destKey));	
+マッチ	149	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	42	19		ArrayUtil::	        $actual = ArrayUtil::alignKey(array($a, $b, $c, $d));	
+マッチ	150	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	51	19		ArrayUtil::	        $actual = ArrayUtil::alignKey(array($x, $y));	
+マッチ	151	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	60	35		ArrayUtil::	        $this->assertEquals([[]], ArrayUtil::alignKey([[]]));	
+マッチ	152	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	85	19		ArrayUtil::	        $actual = ArrayUtil::expansion($ar, 'name', 'id');	
+マッチ	153	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	89	19		ArrayUtil::	        $actual = ArrayUtil::expansion($br, 1, 0);	
+マッチ	154	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	93	19		ArrayUtil::	        $actual = ArrayUtil::expansion($ar, 'name', 'id', function ($keys, $vals) {	
+マッチ	155	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	107	23		ArrayUtil::	            $actual = ArrayUtil::expansion([[]], 'name', 'id');	
+マッチ	156	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	124	19		ArrayUtil::	        $actual = ArrayUtil::extractKey($a, $keys);	
+マッチ	157	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	128	19		ArrayUtil::	        $actual = ArrayUtil::extractKey($x, $keys);	
+マッチ	158	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	133	19		ArrayUtil::	        $actual = ArrayUtil::extractKey($a, $keys);	
+マッチ	159	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	137	19		ArrayUtil::	        $actual = ArrayUtil::extractKey([], $keys);	
+マッチ	160	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	140	19		ArrayUtil::	        $actual = ArrayUtil::extractKey($a, []);	
+マッチ	161	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	150	19		ArrayUtil::	        $actual = ArrayUtil::groupBy(	
+マッチ	162	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	168	19		ArrayUtil::	        $actual = ArrayUtil::groupBy(	
+マッチ	163	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	189	19		ArrayUtil::	        $actual = ArrayUtil::groupBy(	
+マッチ	164	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	209	23		ArrayUtil::	            $actual = ArrayUtil::groupBy(	
+マッチ	165	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	234	19		ArrayUtil::	        $actual = ArrayUtil::isDimension($a, 1);	
+マッチ	166	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	237	19		ArrayUtil::	        $actual = ArrayUtil::isDimension(array($a, $b));	
+マッチ	167	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	240	19		ArrayUtil::	        $actual = ArrayUtil::isDimension(array($a, $b), 3);	
+マッチ	168	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	243	19		ArrayUtil::	        $actual = ArrayUtil::isDimension(array($a, 'aaa', $b));	
+マッチ	169	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	247	19		ArrayUtil::	        $actual = ArrayUtil::isDimension(	
+マッチ	170	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	257	19		ArrayUtil::	        $actual = ArrayUtil::isDimension([], 1);	
+マッチ	171	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	270	19		ArrayUtil::	        $actual = ArrayUtil::mergeKey($d, $b, $a, $c);	
+マッチ	172	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	275	19		ArrayUtil::	        $actual = ArrayUtil::mergeKey($a, $b);	
+マッチ	173	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	280	19		ArrayUtil::	        $actual = ArrayUtil::mergeKey($x, $y);	
+マッチ	174	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	286	19		ArrayUtil::	        $actual = ArrayUtil::mergeKey($x, []);	
+マッチ	175	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	290	19		ArrayUtil::	        $actual = ArrayUtil::mergeKey([], $x);	
+マッチ	176	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	305	19		ArrayUtil::	        $actual = ArrayUtil::mergeKey(array(), 'AA');	
+マッチ	177	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	317	19		ArrayUtil::	        $actual = ArrayUtil::mergeKeyArray(array($d, $b, $a, $c));	
+マッチ	178	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	322	19		ArrayUtil::	        $actual = ArrayUtil::mergeKeyArray(array($a, $b));	
+マッチ	179	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	327	19		ArrayUtil::	        $actual = ArrayUtil::mergeKeyArray(array($x, $y));	
+マッチ	180	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	333	19		ArrayUtil::	        $actual = ArrayUtil::mergeKeyArray([$x, []]);	
+マッチ	181	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	337	19		ArrayUtil::	        $actual = ArrayUtil::mergeKeyArray([[], $x]);	
+マッチ	182	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	352	19		ArrayUtil::	        $actual = ArrayUtil::mergeKeyArray(array(1, 2, 3));	
+マッチ	183	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	361	19		ArrayUtil::	        $actual = ArrayUtil::orderBy($ar, array('age', 'name'), array(SORT_DESC , SORT_ASC ), null);	
+マッチ	184	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	371	19		ArrayUtil::	        $actual = ArrayUtil::orderBy($br, array(0), array(SORT_DESC), null);	
+マッチ	185	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	380	19		ArrayUtil::	        $actual = ArrayUtil::orderBy([[]], array('age', 'name'), array(SORT_DESC , SORT_ASC ), null);	
+マッチ	186	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	393	19		ArrayUtil::	        $actual = ArrayUtil::positionKey($a, 'age');	
+マッチ	187	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	396	19		ArrayUtil::	        $actual = ArrayUtil::positionKey($x, 2);	
+マッチ	188	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	399	19		ArrayUtil::	        $actual = ArrayUtil::positionKey($x, 5);	
+マッチ	189	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	403	19		ArrayUtil::	        $actual = ArrayUtil::positionKey($a, 'DUMMY');	
+マッチ	190	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	414	19		ArrayUtil::	        $actual = ArrayUtil::rotate($x, 1);	
+マッチ	191	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	417	19		ArrayUtil::	        $actual = ArrayUtil::rotate($x, 2);	
+マッチ	192	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	420	19		ArrayUtil::	        $actual = ArrayUtil::rotate($x, -1);	
+マッチ	193	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	423	19		ArrayUtil::	        $actual = ArrayUtil::rotate($a, -1);	
+マッチ	194	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	427	19		ArrayUtil::	        $actual = ArrayUtil::rotate([], 1);	
+マッチ	195	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	438	19		ArrayUtil::	        $actual = ArrayUtil::stepwise($x, function ($val1, $val2) {	
+マッチ	196	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	443	19		ArrayUtil::	        $actual = ArrayUtil::stepwise($y, function ($val1, $val2) {	
+マッチ	197	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	448	19		ArrayUtil::	        $actual = ArrayUtil::stepwise($x, function ($val1, $val2) {	
+マッチ	198	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	454	19		ArrayUtil::	        $actual = ArrayUtil::stepwise([], function ($val1, $val2) {	
+マッチ	199	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	466	19		ArrayUtil::	        $actual = ArrayUtil::selectBy($ar, array('id', 'name'));	
+マッチ	200	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	477	19		ArrayUtil::	        $actual = ArrayUtil::selectBy($br, array(2, 0));	
+マッチ	201	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	486	19		ArrayUtil::	        $actual = ArrayUtil::selectBy($ar, []);	
+マッチ	202	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	489	19		ArrayUtil::	        $actual = ArrayUtil::selectBy([[]], array('id', 'name'));	
+マッチ	203	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	499	19		ArrayUtil::	        $actual = ArrayUtil::selectBy($ar, array('id', 'DMY', 'name'));	
+マッチ	204	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	509	19		ArrayUtil::	        $actual = ArrayUtil::selectBy($ar, array('id', 'name', 'DMY'), ['DMY' => 'INIT', 'id' => 'X']);	
+マッチ	205	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	525	19		ArrayUtil::	        $actual = ArrayUtil::toFillBlank(	
+マッチ	206	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	531	19		ArrayUtil::	        $actual = ArrayUtil::orderBy($actual, array('id'));	
+マッチ	207	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	546	21		ArrayUtil::	        $expected = ArrayUtil::orderBy($expected, array('id'));	
+マッチ	208	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	551	19		ArrayUtil::	        $actual = ArrayUtil::toFillBlank(	
+マッチ	209	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	556	19		ArrayUtil::	        $actual = ArrayUtil::orderBy($actual, array(1));	
+マッチ	210	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	575	21		ArrayUtil::	        $expected = ArrayUtil::orderBy($expected, array(1));	
+マッチ	211	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	581	19		ArrayUtil::	        $actual = ArrayUtil::toFillBlank(	
+マッチ	212	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	590	23		ArrayUtil::	            $actual = ArrayUtil::toFillBlank(	
+マッチ	213	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	619	19		ArrayUtil::	        $actual = ArrayUtil::transverse($ar);	
+マッチ	214	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	625	13		ArrayUtil::	            ArrayUtil::transverse([[]])	
+マッチ	215	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	639	19		ArrayUtil::	        $actual = ArrayUtil::unextractKey($a, $keys);	
+マッチ	216	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	643	19		ArrayUtil::	        $actual = ArrayUtil::unextractKey($x, $keys);	
+マッチ	217	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	648	19		ArrayUtil::	        $actual = ArrayUtil::unextractKey($a, $keys);	
+マッチ	218	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	651	19		ArrayUtil::	        $actual = ArrayUtil::unextractKey($a, []);	
+マッチ	219	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	661	19		ArrayUtil::	        $actual = ArrayUtil::unselectBy($ar, array('id', 'name'));	
+マッチ	220	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	672	19		ArrayUtil::	        $actual = ArrayUtil::unselectBy($br, array(2, 0));	
+マッチ	221	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	681	19		ArrayUtil::	        $actual = ArrayUtil::unselectBy($ar, []);	
+マッチ	222	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	684	19		ArrayUtil::	        $actual = ArrayUtil::unselectBy([[]], array('id', 'name'));	
+マッチ	223	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	699	38		ArrayUtil::	        $this->assertEquals($expect, ArrayUtil::without($data, array(0,3), false));	
+マッチ	224	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	703	38		ArrayUtil::	        $this->assertEquals($expect, ArrayUtil::without($data, array(0,3), false));	
+マッチ	225	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	706	38		ArrayUtil::	        $this->assertEquals($expect, ArrayUtil::without($data, array(0,3), true));	
+マッチ	226	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	709	36		ArrayUtil::	        $this->assertEquals($data, ArrayUtil::without($data, [], true));	
+マッチ	227	_mvc\Concerto\test\arrays\	ArrayUtil1Test.php	2020/06/19 07:12:51	711	33		ArrayUtil::	        $this->assertEquals([], ArrayUtil::without([], array(0,3), false));	
+マッチ	228	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	20	19		ArrayUtil::	        $actual = ArrayUtil::initArray('z', array('X', 'Y'), array('A', 'B', 'C'), array(1, 2));	
+マッチ	229	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	53	19		ArrayUtil::	        $actual = ArrayUtil::initArray(null, array('A', 'B', 'C'), array(1, 2));	
+マッチ	230	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	99	19		ArrayUtil::	        $actual = ArrayUtil::pivot(	
+マッチ	231	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	120	19		ArrayUtil::	        $actual = ArrayUtil::pivot(	
+マッチ	232	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	141	33		ArrayUtil::	        $this->assertEquals(16, ArrayUtil::max($data));	
+マッチ	233	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	144	33		ArrayUtil::	        $this->assertEquals(16, ArrayUtil::max($data));	
+マッチ	234	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	147	35		ArrayUtil::	        $this->assertEquals(null, ArrayUtil::max($data));	
+マッチ	235	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	150	34		ArrayUtil::	        $this->assertEquals('C', ArrayUtil::max($data, SORT_NATURAL));	
+マッチ	236	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	153	35		ArrayUtil::	        $this->assertEquals(null, ArrayUtil::max([], SORT_NATURAL));	
+マッチ	237	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	165	32		ArrayUtil::	        $this->assertEquals(2, ArrayUtil::min($data));	
+マッチ	238	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	168	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::min($data));	
+マッチ	239	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	171	35		ArrayUtil::	        $this->assertEquals(null, ArrayUtil::min($data));	
+マッチ	240	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	174	34		ArrayUtil::	        $this->assertEquals('A', ArrayUtil::min($data, SORT_NATURAL));	
+マッチ	241	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	176	35		ArrayUtil::	        $this->assertEquals(null, ArrayUtil::min([], SORT_NATURAL));	
+マッチ	242	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	188	33		ArrayUtil::	        $this->assertEquals(11, ArrayUtil::first($data));	
+マッチ	243	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	191	35		ArrayUtil::	        $this->assertEquals(null, ArrayUtil::first($data));	
+マッチ	244	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	203	32		ArrayUtil::	        $this->assertEquals(4, ArrayUtil::last($data));	
+マッチ	245	_mvc\Concerto\test\arrays\	ArrayUtil2Test.php	2020/06/19 07:12:51	206	35		ArrayUtil::	        $this->assertEquals(null, ArrayUtil::last($data));	
+マッチ	246	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	41	38		ArrayUtil::	        $this->assertEquals(array(), ArrayUtil::compare($target, $src));	
+マッチ	247	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	50	38		ArrayUtil::	        $this->assertEquals($expect, ArrayUtil::compare($target, $src));	
+マッチ	248	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	111	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::sameStruct($ar1, $ar2));	
+マッチ	249	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	115	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));	
+マッチ	250	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	121	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));	
+マッチ	251	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	126	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));	
+マッチ	252	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	131	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));	
+マッチ	253	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	135	16		ArrayUtil::	        $ar2 = ArrayUtil::rotate($ar2);	
+マッチ	254	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	136	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));	
+マッチ	255	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	150	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::sameKeys($ar1, $ar2));	
+マッチ	256	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	154	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::sameKeys($ar1, $ar2));	
+マッチ	257	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	160	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameKeys($ar1, $ar2));	
+マッチ	258	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	165	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameKeys($ar1, $ar2));	
+マッチ	259	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	170	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::sameKeys($ar1, $ar2));	
+マッチ	260	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	174	16		ArrayUtil::	        $ar2 = ArrayUtil::rotate($ar2);	
+マッチ	261	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	175	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::sameKeys($ar1, $ar2));	
+マッチ	262	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	187	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::isTable($target, true, true));	
+マッチ	263	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	188	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::isTable($target, true, false));	
+マッチ	264	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	189	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::isTable($target, false, false));	
+マッチ	265	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	194	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target));    //true, true	
+マッチ	266	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	195	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::isTable($target, true, false));	
+マッチ	267	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	196	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::isTable($target, false, false));	
+マッチ	268	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	202	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target));    //true, true	
+マッチ	269	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	203	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target, true, false));	
+マッチ	270	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	204	35		ArrayUtil::	        $this->assertEquals(true, ArrayUtil::isTable($target, false, false));	
+マッチ	271	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	209	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target));    //true, true	
+マッチ	272	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	210	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target, true, false));	
+マッチ	273	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	211	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target, false, false));	
+マッチ	274	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	216	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target));    //true, true	
+マッチ	275	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	217	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target, true, false));	
+マッチ	276	_mvc\Concerto\test\arrays\	ArrayUtil3Test.php	2020/06/19 07:12:51	218	36		ArrayUtil::	        $this->assertEquals(false, ArrayUtil::isTable($target, false, false));	
+マッチ	277	_mvc\Concerto\test\arrays\	ArrayUtil4Test.php	2020/06/19 07:12:52	46	19		ArrayUtil::	        $actual = ArrayUtil::joinTable($ar1, $ar2, array(), 'LEFT', '_');	
+マッチ	278	_mvc\Concerto\test\arrays\	ArrayUtil4Test.php	2020/06/19 07:12:52	73	19		ArrayUtil::	        $actual = ArrayUtil::joinTable($ar1, $ar2, array(), 'LEFT');	
+マッチ	279	_mvc\Concerto\test\arrays\	ArrayUtil4Test.php	2020/06/19 07:12:52	99	19		ArrayUtil::	        $actual = ArrayUtil::joinTable($ar1, $ar2, array(), 'inner');	
+マッチ	280	_mvc\Concerto\test\arrays\	ArrayUtil4Test.php	2020/06/19 07:12:52	103	19		ArrayUtil::	        $actual = ArrayUtil::joinTable($ar1, $ar2, array(array(2, 0)), 'left');	
+マッチ	281	_mvc\Concerto\test\arrays\	ArrayUtil4Test.php	2020/06/19 07:12:52	114	19		ArrayUtil::	        $actual = ArrayUtil::joinTable($ar1, $ar2, array(array(2, 0)), 'inner');	
+マッチ	282	_mvc\Concerto\test\arrays\	ArrayUtil4Test.php	2020/06/19 07:12:52	164	38		ArrayUtil::	        $this->assertEquals($expect, ArrayUtil::mergeKeepKey($x, $y));	
+マッチ	283	_mvc\Concerto\test\arrays\	ArrayUtil5Test.php	2020/06/19 07:12:52	41	38		ArrayUtil::	        $this->assertEquals($expect, ArrayUtil::keyRemap($data, $serKey, $destKey));	
+マッチ	284	_mvc\Concerto\test\arrays\	ArrayUtil5Test.php	2020/06/19 07:12:52	59	38		ArrayUtil::	        $this->assertEquals($expect, ArrayUtil::keyPartiallyRemap($data, $serKey, $destKey));	
+マッチ	285	_mvc\Concerto\test\conf\conf\	ConfigReaderArrayTest.php	2020/06/19 07:12:58	62	33		ArrayUtil::	        $this->assertEquals([], ArrayUtil::compare($expect, $actual));	
+マッチ	286	_mvc\Concerto\test\conf\conf\	ConfigReaderIniTest.php	2020/06/19 07:12:58	155	33		ArrayUtil::	        $this->assertEquals([], ArrayUtil::compare($expect, $actual));	
+マッチ	287	_mvc\Concerto\test\conf\conf\	ConfigTest.php	2019/12/16 09:01:26	61	33		ArrayUtil::	        $this->assertEquals([], ArrayUtil::compare($initData, $allData));	
+マッチ	288	_mvc\Concerto\test\standard\	_ModeDbTest.php	2020/06/19 07:13:08	139	20		ArrayUtil::	        $dataset = ArrayUtil::orderBy($yaml[$this->tablename], array('i_data'));	
+マッチ	289	_mvc\Concerto\test\standard\	_ModeDbTest.php	2020/06/19 07:13:08	293	13		ArrayUtil::	            ArrayUtil::mergeKey($insert->toArray(), $insert->getInfo()),	
+マッチ	290	_mvc\Concerto\test\standard\	_ModeDbTest.php	2020/06/19 07:13:08	328	17		ArrayUtil::	                ArrayUtil::mergeKey($obj->toArray(), $obj->getInfo()),	
+マッチ	291	_mvc\Concerto\test\standard\	_ModeDbTest.php	2020/06/19 07:13:08	367	17		ArrayUtil::	                ArrayUtil::mergeKey($obj->toArray(), $obj->getInfo()),	
+マッチ	292	_mvc\Concerto\test\standard\	_ModeDbTest.php	2020/06/19 07:13:08	465	20		ArrayUtil::	        $dataset = ArrayUtil::orderBy($yaml[$this->tablename], array('i_data'));	
+マッチ	293	_mvc\Concerto\test\standard\	_ModeDbTest.php	2020/06/19 07:13:08	564	20		ArrayUtil::	        $dataset = ArrayUtil::orderBy($yaml[$this->tablename], array('i_data'));	
+マッチ	294	_mvc\Concerto\test\standard\	_ModeDbTest.php	2020/06/19 07:13:08	589	20		ArrayUtil::	        $dataset = ArrayUtil::orderBy($yaml[$this->tablename], array('i_data'));	
+マッチ	295	_mvc\Concerto\test\standard\	_ModeDbTest.php	2020/06/19 07:13:08	618	20		ArrayUtil::	        $dataset = ArrayUtil::orderBy($yaml[$this->tablename], array('i_data'));	
+
+
