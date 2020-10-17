@@ -1,0 +1,149 @@
+ワークフロー全面改造
+
+
+イベントの登録という思想に変更する
+
+wf_newは、縦持ちデータとする
+
+WORK　というものを作る
+    work.work_id
+    work.work_code
+    work.work_seq
+    
+    work.description
+    work.cd_tanto    //管理者として必要
+    work.cd_bumon    //管理部門として必要
+
+    work_idでprimary
+    code+seqでunique
+
+現在のワークフローもworkに当てはめる
+    WfSweibanで保存時に、work.code=no_cyu work.seq=no_seq
+    work.description=nm_wf?(wfの説明col)
+    work.cd_tanto=cd_tanto work.cd_bumon=cd_bumon
+
+注番以外に、ユーザがアラーム管理したいものをworkで管理する
+    cost管理で言うプロスペクトっぽいもの
+
+workの子データclassにスケジュール実績日や備考・不具合件数などを持つ
+
+JOB としてデータを持つ
+    job.job_id
+    job.work_id
+    job.work_code
+    job.work_seq
+    job.job_seq
+    job.job_code ==> dt_draとか ==> マスタtableつくるか?
+    
+    job.job_description ==>　登録時の項目名 ==> 項目名が変わる可能性があるため
+    job.データ
+
+    job_idでprimary
+    work_code+work_seq+job_seq+job_codeでunique
+    work_idでFK
+
+    データ型でtableを分ける? ☓1recordにデータ型columnを作りnullとする?
+    job_schedule, job_int, job_float, job_number, job_text, job_flag
+    job_schedule, job_number, job_text　に集約?
+    job_dataとして columnにデータ型持つ?
+    taskでも同様の問題がある
+
+TASK　(alertも?)としてデータを持つ
+
+JOB 1つに、複数のイベント処理(NOP,画面表示,承認メール,メール通知,outlookカレンダー,outlookタスク?)
+    task.task_id
+    task.work_id ==>job_idのFKあれば不要?
+    task.job_id
+    task.work_code
+    task.work_seq
+    task.job_seq
+    task.job_code
+    task.task_seq
+    
+    task.データ
+    
+    task.判定条件 =>いくつかパターン準備？　あるいはphp側?
+        日付の場合、task.dataと一致/以前?
+        数値の場合、> >= < <= ?
+        フラグの場合、ON/OFF
+        文字の場合、無し
+    
+    task.action イベント処理タイプ 複数あるがどうやって保持する? カラムを分ける?
+    task.fg_worflow
+    task.fg_mail_alert
+    task.fg_icalendar
+    task.fg_outlook_task ==>icalみたいに設定できるのか?
+    
+    task.
+    task.
+
+    task_idでprimary
+    work_code+work_seq+job_seq+job_code+task_seqでunique
+    job_idでFK,work_idでFK?
+
+wf計画日もtaskに割当て、action=画面表示 ==>現画面にもアラーム色表示があるため
+    現アラーム管理画面も、action=画面表示　に該当
+
+task.action イベント処理タイプ別に、処理に必要なテーブが必要?　=>一部しか差がない?
+    宛先やCC、題目、本文など ==> icalendarベース?
+
+空さん依頼の、wfイベント機能を考慮する必要がある
+    全項目自由にアラーム割付
+    複数宛先　同時設定
+    題目、本文などのテンプレート ==>　挿入する可変データをどうする?
+    
+
+
+
+
+
+
+
+
+
+
+
+縦持ちテーブルとした場合のsql
+    wf_new 1データの取得は、JOINのみ
+    表示対象や順序はcd_system毎のconfigのため、php側で処理するため、縦データでoK
+
+    wf_new 一覧表では工夫が必要 ==> 実績がある場合、実績を表示するため
+    UNIONは結合順が保証されないので、array_merge的処理はできない
+
+    with 計画 as
+        select *
+        from plan
+    , 実績 as
+        select *
+        from plan
+    , 計画実績両方あり as
+        select *
+        from 計画
+        intersect
+        select *
+        from 実績
+    , 計画-計画実績両方あり as
+        select *
+        from 計画
+        join 計画実績両方あり
+
+    select *
+    from 実績
+    union
+    計画-計画実績両方あり
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
