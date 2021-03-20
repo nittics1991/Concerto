@@ -4,9 +4,20 @@
 
 ### 210320
 
+#### template
+
 - templateのreflecrionObjectは「$reflection」と定義する
 - methodの@throwsはReflectionMethodに無い
 - templateのthrowsTokenObjectは「$throws」と定義する
+
+
+#### TokenCollection
+
+- getClassesでphptokenを取得?
+
+- classからReflectionClassを作る
+ - 1ファイルに複数classを持つ場合がある
+
 
 
 

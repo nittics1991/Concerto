@@ -8,7 +8,7 @@
 
 namespace DocBlockGenerator;
 
-use ArrayIterator;
+use ArrayObject;
 use Iterator;
 
 class TokenCollection extends ArrayObject
@@ -16,9 +16,9 @@ class TokenCollection extends ArrayObject
     /**
     *   __construct
     *
-    *   @param xxxx
+    *   @param string $source_code
     */
-    public function __construct(string $source)
+    public function __construct(string $source_code)
     {
         parent::__construct(
             PhpToken::tokenize($source);
@@ -28,34 +28,39 @@ class TokenCollection extends ArrayObject
     /**
     *   getClasses
     *
-    *   @return array
+    *   @return Iterator PhpToken
     */
     public function getClasses():Iterator
     {
         
-        $filterIterator = new class() extends FilterIterator {
-           public function accept() {
-               $current = parent::current();
-               
-               return  $current === T_CLASS
-                || $current === T_INTERFACE
-                || $current === T_TRAIT;
+        
+        
+        
+        
+        $class = new CallbackFilterIterator(
+            $this,
+            function($current, $key, $iterator) {
+                return $current->is([T_CLASS, T_INTERFACE, T_TRAIT]);
             }
-        };
+        );
         
-        $this->setIteratorClass(ArrayIterator::class);
         
-        foreach(new $filterIterator(this) as $phptoken) {
-            yield new //phpTokenをwrapしたclass
-            
-            
-            
-            
-            
-            
-            
+        //抽出したtokenの下のclassNameを取得する
+        
+        
+        
+        
+        
+        foreach($filterIterator as $phptoken) {
+            yield $phptoken;
         }
     }
+    
+    
+    
+    
+    
+    
     
     
     
