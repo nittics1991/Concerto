@@ -11,11 +11,11 @@ class SigmagridSortInfoTest extends ConcertoTestCase
 {
     /**
     *   @test
-    **/
+    */
     public function construct1()
     {
 //      $this->markTestIncomplete();
-        
+
         $params = [
             'columnId' => 'cd_tanto',
             'fieldName' => 'tanto',
@@ -23,7 +23,7 @@ class SigmagridSortInfoTest extends ConcertoTestCase
             'getSortValue' => 'abc',
             'sortFn' => 'krsort',
         ];
-        
+
         $object = new SigmagridSortInfo($params);
         $this->assertEquals($params, $object->toArray());
         $this->assertEquals(true, $object->isValid());

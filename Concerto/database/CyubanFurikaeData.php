@@ -24,7 +24,7 @@ class CyubanFurikaeData extends ModelData
         "no_cyu" => parent::STRING
         , "no_mitumori" => parent::STRING
     ];
-    
+
     /**
     *   Column Alias
     *
@@ -32,12 +32,12 @@ class CyubanFurikaeData extends ModelData
     */
     protected static $alias = array(
     );
-    
+
     public function isValidNo_cyu($val)
     {
         return Validate::isCyuban($val);
     }
-    
+
     public function isValidNo_mitumori($val)
     {
         return Validate::isMitumoriNo($val);

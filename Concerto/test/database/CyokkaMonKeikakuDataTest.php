@@ -10,12 +10,12 @@ use Concerto\database\CyokkaMonKeikakuData;
 class CyokkaMonKeikakuDataTest extends ConcertoTestCase
 {
     private $class;
-    
+
     protected function setUp(): void
     {
         $this->class = new CyokkaMonKeikakuData();
     }
-    
+
     public static function successValidate()
     {
 //      $this->markTestIncomplete();
@@ -29,12 +29,12 @@ class CyokkaMonKeikakuDataTest extends ConcertoTestCase
             )
         );
     }
-    
+
     /**
     *
     * @dataProvider successValidate
     *
-    **/
+    */
     public function testSuccessValidate(
         $kb_nendo,
         $cd_bumon,
@@ -52,9 +52,9 @@ class CyokkaMonKeikakuDataTest extends ConcertoTestCase
         $yn_yosan,
         $yn_soneki
     ) {
-        
+
 //      $this->markTestIncomplete();
-        
+
         $this->class->kb_nendo          = $kb_nendo;
         $this->class->cd_bumon          = $cd_bumon;
         $this->class->dt_yyyymm             = $dt_yyyymm;
@@ -70,7 +70,7 @@ class CyokkaMonKeikakuDataTest extends ConcertoTestCase
         $this->class->tm_hoyu_cyokka    = $tm_hoyu_cyokka;
         $this->class->yn_yosan          = $yn_yosan;
         $this->class->yn_soneki             = $yn_soneki;
-        
+
         $this->assertTrue($this->class->isValidKb_nendo($kb_nendo));
         $this->assertTrue($this->class->isValidCd_bumon($cd_bumon));
         $this->assertTrue($this->class->isValidDt_yyyymm($dt_yyyymm));
@@ -86,10 +86,10 @@ class CyokkaMonKeikakuDataTest extends ConcertoTestCase
         $this->assertTrue($this->class->isValidTm_hoyu_cyokka($tm_hoyu_cyokka));
         $this->assertTrue($this->class->isValidYn_yosan($yn_yosan));
         $this->assertTrue($this->class->isValidYn_soneki($yn_soneki));
-        
+
         $this->assertTrue($this->class->isValid());
     }
-    
+
     public static function failureValidate()
     {
 //      $this->markTestIncomplete();
@@ -103,12 +103,12 @@ class CyokkaMonKeikakuDataTest extends ConcertoTestCase
             )
         );
     }
-    
+
     /**
     *
     * @dataProvider failureValidate
     *
-    **/
+    */
     public function testFailureValidate(
         $kb_nendo,
         $cd_bumon,
@@ -126,9 +126,9 @@ class CyokkaMonKeikakuDataTest extends ConcertoTestCase
         $yn_yosan,
         $yn_soneki
     ) {
-        
+
 //      $this->markTestIncomplete();
-        
+
         $this->class->kb_nendo          = $kb_nendo;
         $this->class->cd_bumon          = $cd_bumon;
         $this->class->dt_yyyymm             = $dt_yyyymm;
@@ -144,7 +144,7 @@ class CyokkaMonKeikakuDataTest extends ConcertoTestCase
         $this->class->tm_hoyu_cyokka    = $tm_hoyu_cyokka;
         $this->class->yn_yosan          = $yn_yosan;
         $this->class->yn_soneki             = $yn_soneki;
-        
+
         $this->assertFalse($this->class->isValidKb_nendo($kb_nendo));
         $this->assertFalse($this->class->isValidCd_bumon($cd_bumon));
         $this->assertFalse($this->class->isValidDt_yyyymm($dt_yyyymm));
@@ -160,7 +160,7 @@ class CyokkaMonKeikakuDataTest extends ConcertoTestCase
         $this->assertFalse($this->class->isValidTm_hoyu_cyokka($tm_hoyu_cyokka));
         $this->assertFalse($this->class->isValidYn_yosan($yn_yosan));
         $this->assertFalse($this->class->isValidYn_soneki($yn_soneki));
-        
+
         $this->assertFalse($this->class->isValid());
     }
 }

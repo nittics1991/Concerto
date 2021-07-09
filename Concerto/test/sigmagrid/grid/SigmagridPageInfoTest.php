@@ -11,11 +11,11 @@ class SigmagridPageInfoTest extends ConcertoTestCase
 {
     /**
     *   @test
-    **/
+    */
     public function construct1()
     {
 //      $this->markTestIncomplete();
-        
+
         $params = [
             'pageSize' => 11,
             'pageNum' => 3,
@@ -24,7 +24,7 @@ class SigmagridPageInfoTest extends ConcertoTestCase
             'startRowNum' => 11,
             'endRowNum' => 20,
         ];
-        
+
         $object = new SigmagridPageInfo($params);
         $this->assertEquals($params, $object->toArray());
         $this->assertEquals(true, $object->isValid());

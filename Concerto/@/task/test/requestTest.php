@@ -1,4 +1,5 @@
 <?php
+
 use Concerto\task\curl\Request;
 use Concerto\task\curl\Response;
 use Concerto\task\curl\MultiRequest;
@@ -14,9 +15,9 @@ $params = [
     , CURLOPT_FAILONERROR => 1
     , CURLOPT_FOLLOWLOCATION => 1
     , CURLOPT_MAXREDIRS => 10
-    
+
     , CURLOPT_HEADER => true
-    
+
 ];
 
 $req = new Request('TEST1', $params);

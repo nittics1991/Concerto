@@ -4,7 +4,7 @@
 *   RespectRuleConverter
 *
 *   @ver 180620
-**/
+*/
 
 declare(strict_types=1);
 
@@ -17,7 +17,7 @@ class IntValue implements RuleConverterInterface
     /**
     *   {inherit}
     *
-    **/
+    */
     public function convert()
     {
         return 'IntVal';

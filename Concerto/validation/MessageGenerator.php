@@ -7,7 +7,7 @@
 *   @example message=
 *           'attr={{attribute}} value={{value}} constraint={{constraint}}
 *           params={{parameters0}},{{parameters2}},{{parameters3}} ..'
-**/
+*/
 
 declare(strict_types=1);
 
@@ -23,34 +23,34 @@ class MessageGenerator implements MessageGeneratorInterface
     *   messageGenerator
     *
     *   @var CurlyBracketMessageGenerator
-    **/
+    */
     protected $messageGenerator;
-    
+
     /**
     *   __construct
     *
     *   @param CurlyBracketMessageGenerator
-    **/
+    */
     public function __construct(
         CurlyBracketMessageGenerator $messageGenerator
     ) {
         $this->messageGenerator = $messageGenerator;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function create($message)
     {
         $generator = $this->messageGenerator->create($message);
         return new static($generator);
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function generate(ValidationInterface $validation)
     {
         $args = [
@@ -58,7 +58,7 @@ class MessageGenerator implements MessageGeneratorInterface
             'constraint' => $validation->constraint(),
             'value' => $validation->value(),
         ];
-        
+
         foreach ($validation->parameters() as $i => $val) {
             $args["parameters{$i}"] = $val;
         }

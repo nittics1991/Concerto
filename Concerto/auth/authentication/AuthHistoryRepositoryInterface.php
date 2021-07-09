@@ -18,7 +18,7 @@ interface AuthHistoryRepositoryInterface
     *   記録
     *
     *   @param AuthUserInterface $authUser
-    *   @param array $contents
-    **/
+    *   @param mixed[] $contents
+    */
     public function record(AuthUserInterface $authUser, array $contents = []);
 }

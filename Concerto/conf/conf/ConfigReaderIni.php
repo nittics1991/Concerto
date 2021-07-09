@@ -28,21 +28,21 @@ class ConfigReaderIni implements ConfigReaderInterface
     public const NORMAL = INI_SCANNER_NORMAL;
     public const RAW = INI_SCANNER_RAW;
     public const TYPED = INI_SCANNER_TYPED;
-    
+
     /**
      *   section
      *
      * @var bool
      */
     private $section;
-    
+
     /**
      *   mode
      *
      * @var int
      */
     private $mode;
-    
+
     /**
      *   __construct
      *
@@ -56,7 +56,7 @@ class ConfigReaderIni implements ConfigReaderInterface
         $this->mode($mode);
         $this->section = $useSection;
     }
-    
+
     /**
      *   {inherit}
      */
@@ -67,7 +67,7 @@ class ConfigReaderIni implements ConfigReaderInterface
             $this->section,
             $this->mode
         );
-        
+
         if (!is_array($data)) {
             throw new RuntimeException(
                 "config file read error"
@@ -75,7 +75,7 @@ class ConfigReaderIni implements ConfigReaderInterface
         }
         return new Config($data);
     }
-    
+
     /**
      *   セクションを使用
      *
@@ -86,11 +86,11 @@ class ConfigReaderIni implements ConfigReaderInterface
         $this->section = true;
         return $this;
     }
-    
+
     /**
      *   mode
      *
-     * @param  int $param
+     * @param int $param
      * @return $this
      */
     public function mode(int $param)

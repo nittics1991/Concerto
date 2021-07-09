@@ -15,22 +15,22 @@ class AuthSessionTest extends ConcertoTestCase
 {
     /**
     *   @test
-    **/
+    */
     public function basicSuccess()
     {
         // $this->markTestIncomplete();
-        
+
         $obj = new AuthSession('test');
-        
+
         //内部でnewしているSessionCacheのstab
         $cache = $this->prophesize()
             ->willImplement('Psr\SimpleCache\CacheInterface');
         $this->setPrivateProperty($obj, 'session', $cache->reveal());
-        
+
         //empty
         $this->assertEquals(false, $obj->logined());
         $this->assertEquals(null, $obj->get());
-        
+
         //save
         /*
         //error対策
@@ -39,16 +39,16 @@ class AuthSessionTest extends ConcertoTestCase
             ->willImplement('Concerto\auth\authentication\AuthUserInterface');
         $obj->save($authUser->reveal());
         */
-        
+
         $authUser = new AuthUser([
             'id' => 12345,
             'password' => 'password',
         ]);
-            
+
         $obj->save($authUser);
         //delete
         $obj->delete();
-        
+
         //spie
         $cache->set(Argument::any(), Argument::any())
             ->shouldHaveBeenCalledTimes(1);

@@ -21,39 +21,39 @@ class ExcelProcessCleaner
     *   interval
     *
     *   @var DateInterval
-    **/
+    */
     private $interval;
-    
+
     /**
     *   __invoke
     *
     *   @param ?DateInterval $interval
-    *   @return array 閉じたPID
-    **/
+    *   @return int[] 閉じたPID
+    */
     public function __invoke(DateInterval $interval = null): array
     {
         $this->interval = ($interval) ? $interval : new DateInterval('PT10M');
         return $this->execute();
     }
-    
+
     /**
     *   execute
     *
-    *   @return array
-    **/
+    *   @return int[]
+    */
     private function execute(): array
     {
         $processes =  (new Win32Process())
             ->findByName('EXCEL.EXE');
-        
+
         $closedProcess = [];
         $limitTime = (new DateTime())->sub($this->interval);
-        
+
         foreach ($processes as $process) {
             $createDate = DateTimeStringParser::parse(
                 $process->CreationDate
             );
-            
+
             if ($createDate < $limitTime) {
                 $process->terminate();
                 $closedProcess[] = $process->Handle;

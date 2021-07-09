@@ -4,7 +4,7 @@
 *   TranslatorInterface
 *
 *   @ver 180612
-**/
+*/
 
 declare(strict_types=1);
 
@@ -16,8 +16,8 @@ interface TranslatorInterface
     *   変換
     *
     *   @param string $id
-    *   @param array $params
+    *   @param mixed[] $params
     *   @return string
-    **/
+    */
     public function trans(string $id, array $params): string;
 }

@@ -25,7 +25,7 @@ class ConfigReaderJson implements ConfigReaderInterface
     public function build(string $path): ConfigInterface
     {
         $data = json_decode((string)file_get_contents($path), true);
-        
+
         if (!is_array($data)) {
             throw new RuntimeException(
                 "config file read error"

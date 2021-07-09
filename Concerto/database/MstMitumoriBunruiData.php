@@ -25,24 +25,24 @@ class MstMitumoriBunruiData extends ModelData
         ,'nm_bunrui' => parent::STRING
         ,'cd_system' => parent::STRING
     ];
-    
+
     /**
     *   Column Alias
     *
     *   @var array
     */
     protected static $alias = [];
-    
+
     public function isValidId_mitumori_bunrui($val)
     {
         return Validate::isInt($val, 0);
     }
-    
+
     public function isValidNm_bunrui($val)
     {
         return Validate::isText($val, 1);
     }
-    
+
     public function isValidCd_system($val)
     {
         return Validate::isCdSystem($val);

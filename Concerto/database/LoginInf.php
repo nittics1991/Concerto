@@ -23,7 +23,7 @@ class LoginInf extends ModelDb
     *   @var string
     */
     protected $schema = 'public.login_inf';
-    
+
     /**
     *   指定日数前データ削除
     *
@@ -38,13 +38,13 @@ class LoginInf extends ModelDb
         } elseif ($days < 0) {
             throw new RangeException("less than the lower limit {$days}");
         }
-        
+
         $date = date('Ymd His', strtotime("-{$days} day"));
-        
+
         $sql = "DELETE FROM {$this->schema} WHERE ins_date < :ins_date";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':ins_date', $date, PDO::PARAM_STR);
-        
+
         return $stmt->execute();
     }
 }

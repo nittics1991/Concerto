@@ -3,8 +3,8 @@
 /**
 *   ObjectStorage SplSubject
 *
-*   @version 151209
-**/
+*   @version 210614
+*/
 
 declare(strict_types=1);
 
@@ -22,7 +22,7 @@ class ObjectStorageSubject implements SplSubject
     *   @var SplObjectStorage
     */
     protected $storage;
-    
+
     /**
     *   __construct
     *
@@ -31,26 +31,26 @@ class ObjectStorageSubject implements SplSubject
     {
         $this->storage = new SplObjectStorage();
     }
-    
+
     /**
     *   一括出力
     *
-    *   @return array SplObserver
+    *   @return SplObserver[]
     */
     public function toArray()
     {
         $result = array();
-        
+
         foreach ($this->storage as $obj) {
             $result[] = $obj;
         }
         return $result;
     }
-    
+
     /**
     *   一括入力
     *
-    *   @param array $array SplObserver
+    *   @param SplObserver[] $array
     */
     public function fromArray(array $array)
     {
@@ -58,7 +58,7 @@ class ObjectStorageSubject implements SplSubject
             $this->attach($obj);
         }
     }
-    
+
     /**
     *   {inherit}
     *
@@ -67,7 +67,7 @@ class ObjectStorageSubject implements SplSubject
     {
         $this->storage->attach($observer);
     }
-    
+
     /**
     *   {inherit}
     *
@@ -76,7 +76,7 @@ class ObjectStorageSubject implements SplSubject
     {
         $this->storage->detach($observer);
     }
-    
+
     /**
     *   {inherit}
     *

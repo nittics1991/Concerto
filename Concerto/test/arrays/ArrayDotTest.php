@@ -22,19 +22,19 @@ class ArrayDotTest extends ConcertoTestCase
                 'bb' => 'BB'
             ]
         ];
-    
+
     public function setUp(): void
     {
     }
-    
+
     public function setProvider()
     {
         $base = $this->data;
-            
+
         return [
             [$base, 'x', 'value',
                 [
-                
+
             'a' => 'A',
             'b' => [
                 'ba' => [
@@ -46,13 +46,13 @@ class ArrayDotTest extends ConcertoTestCase
                 'bb' => 'BB'
             ],
             'x' => 'value'
-            
+
                 ]
             ],  //
-            
+
             [$base, 'b.x', 'value',
                 [
-                
+
             'a' => 'A',
             'b' => [
                 'ba' => [
@@ -64,13 +64,13 @@ class ArrayDotTest extends ConcertoTestCase
                 'bb' => 'BB',
                 'x' => 'value'
             ],
-            
+
                 ]
             ],  //
-            
+
             [$base, 'b.ba.cb.x', 'value',
                 [
-                
+
             'a' => 'A',
             'b' => [
                 'ba' => [
@@ -82,13 +82,13 @@ class ArrayDotTest extends ConcertoTestCase
                 ],
                 'bb' => 'BB'
             ],
-            
+
                 ]
             ],  //
-            
+
             [$base, 'b.ba.ca', 'value',
                 [
-                
+
             'a' => 'A',
             'b' => [
                 'ba' => [
@@ -99,13 +99,13 @@ class ArrayDotTest extends ConcertoTestCase
                 ],
                 'bb' => 'BB'
             ],
-            
+
                 ]
             ],  //
-            
+
             [$base, 'b.ba.cb', 'value',
                 [
-                
+
             'a' => 'A',
             'b' => [
                 'ba' => [
@@ -114,40 +114,40 @@ class ArrayDotTest extends ConcertoTestCase
                 ],
                 'bb' => 'BB'
             ],
-            
+
                 ]
             ],  //
-            
+
             [$base, 'b.ba', 'value',
                 [
-                
+
             'a' => 'A',
             'b' => [
                 'ba' => 'value',
                 'bb' => 'BB'
             ],
-            
+
                 ]
             ],  //
-            
+
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider setProvider
-    **/
+    */
     public function set1($data, $dot, $val, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($expect, ArrayDot::set($data, $dot, $val));
     }
-    
+
     public function getProvider()
     {
         $base = $this->data;
-        
+
         return [
             [$base, 'a', 'A'],
             [$base, 'b.bb', 'BB'],
@@ -155,22 +155,22 @@ class ArrayDotTest extends ConcertoTestCase
             [$base, 'b.bc', null],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider getProvider
-    **/
+    */
     public function get1($data, $dot, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($expect, ArrayDot::get($data, $dot));
     }
-    
+
     public function hasProvider()
     {
         $base = $this->data;
-        
+
         return [
           [$base, 'a', true],
           [$base, 'b.ba', true],
@@ -178,18 +178,18 @@ class ArrayDotTest extends ConcertoTestCase
           [$base, 'b.ba.cb.db', false],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider hasProvider
-    **/
+    */
     public function has1($data, $dot, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($expect, ArrayDot::has($data, $dot));
     }
-    
+
     public function removeProvider()
     {
         return [
@@ -275,15 +275,15 @@ class ArrayDotTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider removeProvider
-    **/
+    */
     public function remove1($data, $dot, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($expect, ArrayDot::remove($data, $dot));
     }
 }

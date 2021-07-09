@@ -1,6 +1,6 @@
 <?php
 
-use \DateTimeImmutable;
+use DateTimeImmutable;
 
 class DateTimeObject extends DateTimeImmutable
 {

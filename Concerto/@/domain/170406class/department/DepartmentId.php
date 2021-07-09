@@ -15,14 +15,14 @@ class DepartmentId extends EntityObject
     /**
     *   {inherit}
     *
-    **/
+    */
     protected static $properties = ['id', 'name'];
-    
+
     public function isValidId($val)
     {
         return Validate::isBumon($val);
     }
-    
+
     public function isValidName($val)
     {
         return Validate::isText($val, 0, 20);

@@ -11,12 +11,12 @@ use Concerto\Validate;
 class MailInfDataTest extends ConcertoTestCase
 {
     private $class;
-    
+
     protected function setUp(): void
     {
         $this->class = new MailInfData();
     }
-    
+
     public static function successDataSetProvider()
     {
         //14データ
@@ -33,12 +33,12 @@ class MailInfDataTest extends ConcertoTestCase
             )
         );
     }
-    
+
     /**
     *
     * @test
     * @dataProvider successDataSetProvider
-    **/
+    */
     public function SuccessDataSet(
         $ins_date,
         $from_tanto,
@@ -71,7 +71,7 @@ class MailInfDataTest extends ConcertoTestCase
         $this->class->to_adr = $to_adr;
         $this->class->cc_adr = $cc_adr;
         $this->class->no_page = $no_page;
-        
+
         $this->assertEquals($ins_date, $this->class->ins_date);
         $this->assertEquals($from_tanto, $this->class->from_tanto);
         $this->assertEquals($to_tanto, $this->class->to_tanto);
@@ -86,7 +86,7 @@ class MailInfDataTest extends ConcertoTestCase
         $this->assertEquals($to_adr, $this->class->to_adr);
         $this->assertEquals($cc_adr, $this->class->cc_adr);
         $this->assertEquals($no_page, $this->class->no_page);
-        
+
         $this->assertTrue(isset($this->class->ins_date));
         $this->assertTrue(isset($this->class->from_tanto));
         $this->assertTrue(isset($this->class->to_tanto));
@@ -101,7 +101,7 @@ class MailInfDataTest extends ConcertoTestCase
         $this->assertTrue(isset($this->class->to_adr));
         $this->assertTrue(isset($this->class->cc_adr));
         $this->assertTrue(isset($this->class->no_page));
-        
+
         $this->assertTrue($this->class->isValidIns_date($ins_date));
         $this->assertTrue($this->class->isValidFrom_tanto($from_tanto));
         $this->assertTrue($this->class->isValidTo_tanto($to_tanto));
@@ -116,10 +116,10 @@ class MailInfDataTest extends ConcertoTestCase
         $this->assertTrue($this->class->isValidTo_adr($to_adr));
         $this->assertTrue($this->class->isValidCc_adr($cc_adr));
         $this->assertTrue($this->class->isValidNo_page($no_page));
-        
+
         $this->assertTrue($this->class->isValid());
     }
-    
+
     public static function failureDataSetProvider()
     {
         //14データ
@@ -131,12 +131,12 @@ class MailInfDataTest extends ConcertoTestCase
             )
         );
     }
-    
+
     /**
     *
     * @test
     * @dataProvider failureDataSetProvider
-    **/
+    */
     public function FailureDataSet(
         $ins_date,
         $from_tanto,
@@ -169,7 +169,7 @@ class MailInfDataTest extends ConcertoTestCase
         $this->class->to_adr = $to_adr;
         $this->class->cc_adr = $cc_adr;
         $this->class->no_page = $no_page;
-        
+
         $this->assertFalse($this->class->isValidIns_date($ins_date));
         $this->assertFalse($this->class->isValidFrom_tanto($from_tanto));
         $this->assertFalse($this->class->isValidTo_tanto($to_tanto));
@@ -184,9 +184,9 @@ class MailInfDataTest extends ConcertoTestCase
         $this->assertFalse($this->class->isValidTo_adr($to_adr));
         $this->assertFalse($this->class->isValidCc_adr($cc_adr));
         $this->assertFalse($this->class->isValidNo_page($no_page));
-        
+
         $this->assertFalse($this->class->isValid());
-        
+
         $expect = array(
             'ins_date' => array(''),
             'from_tanto' => array(''),
@@ -203,27 +203,27 @@ class MailInfDataTest extends ConcertoTestCase
         );
         $this->assertEquals($expect, $this->class->getValidError());
     }
-    
+
     /**
     * @test
-    **/
+    */
     public function parseAddress()
     {
 //      $this->markTestIncomplete();
-        
+
         $expect = array(
             'zzz.ppp@gmail.co.jp',
             'test_mail.adr@parse.address',
             'mail@mail.inf.com'
         );
-        
+
         $actual = implode(';', $expect);
         $this->assertEquals($expect, $this->class->parseAddress($actual));
-        
+
         $data = array_merge(array(' '), $expect, array(' '));
         $actual = implode(';', $expect);
         $this->assertEquals($expect, $this->class->parseAddress($actual));
-        
+
         $data = $expect;
         array_splice($data, 1, 0, array(' '));
         $actual = implode(';', $expect);

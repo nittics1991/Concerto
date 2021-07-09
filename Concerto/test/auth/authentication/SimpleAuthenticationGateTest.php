@@ -11,16 +11,16 @@ class SimpleAuthenticationGateTest extends ConcertoTestCase
 {
     /**
     *   @test
-    **/
+    */
     public function basicSuccess()
     {
         // $this->markTestIncomplete();
-        
+
         $id = 'user1';
         $password = 'password1';
-        
+
         $obj = new SimpleAuthenticationGate($id, $password);
-        
+
         $this->assertEquals(true, $obj->login($id, $password));
         $this->assertEquals(false, $obj->login($id, 'DUMMY'));
         $this->assertEquals(false, $obj->login('DUMMY', $password));

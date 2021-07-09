@@ -3,9 +3,9 @@
 /**
 *   Service Container
 *
-*   @version 191216
+*   @version 210511
 *   @see https://github.com/ecfectus/container
-**/
+*/
 
 declare(strict_types=1);
 
@@ -26,45 +26,45 @@ class ServiceContainer implements
     /**
     *   definitions
     *
-    *   @var array
+    *   @var mixed[]
     */
     protected $definitions = [];
-    
+
     /**
     *   sharedDefinitions
     *
-    *   @var array
+    *   @var mixed[]
     */
     protected $sharedDefinitions = [];
-    
+
     /**
     *   sharedInstances
     *
-    *   @var array
+    *   @var mixed[]
     */
     protected $sharedInstances = [];
-    
+
     /**
     *   delegates
     *
-    *   @var array
+    *   @var ContainerInterface[]
     */
     protected $delegates = [];
-    
+
     /**
     *   extenders
     *
-    *   @var array
+    *   @var callable[]
     */
     protected $extenders = [];
-    
+
     /**
     *   raws
     *
-    *   @var array
+    *   @var mixed[]
     */
     protected $raws = [];
-    
+
     /**
     *   {inherit}
     *
@@ -74,11 +74,11 @@ class ServiceContainer implements
         if (array_key_exists($id, $this->raws)) {
             return $this->raws[$id];
         }
-        
+
         if (array_key_exists($id, $this->sharedInstances)) {
             return $this->sharedInstances[$id];
         }
-        
+
         if (array_key_exists($id, $this->sharedDefinitions)) {
             $instance = $this->makeFromDefinition(
                 $this->sharedDefinitions[$id]
@@ -87,13 +87,13 @@ class ServiceContainer implements
             $this->sharedInstances[$id] = $instance;
             return $instance;
         }
-        
+
         if (array_key_exists($id, $this->definitions)) {
             $instance = $this->makeFromDefinition($this->definitions[$id]);
             $instance = $this->applyExtenders($id, $instance);
             return $instance;
         }
-        
+
         if ($resolved = $this->getFromDelegate($id)) {
             $resolved = $this->applyExtenders($id, $resolved);
             return $resolved;
@@ -102,12 +102,12 @@ class ServiceContainer implements
             "{$id} is not being managed by the container"
         );
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
-    public function has($id)
+    */
+    public function has(string $id): bool
     {
         //notes:bind()のconcreteに配列で定義した時、引数にarrayが使えない
         //example:bind('name', [function($arg){
@@ -117,46 +117,46 @@ class ServiceContainer implements
             return false;
         }
         //ここまで
-        
+
         if (array_key_exists($id, $this->raws)) {
             return true;
         }
-        
+
         if (array_key_exists($id, $this->definitions)) {
             return true;
         }
-        
+
         if (array_key_exists($id, $this->sharedDefinitions)) {
             return true;
         }
-        
+
         if (array_key_exists($id, $this->sharedInstances)) {
             return true;
         }
         return $this->hasInDelegate($id);
     }
-    
+
     /**
     *   {inherit}
     *
     *   @param string $id
     *   @param mixed $concrete
     *   @param bool $shared
-    **/
+    */
     public function bind($id, $concrete = null, $shared = false)
     {
         if (null === $concrete) {
             $concrete = $id;
         }
         $id = $this->normalizeString($id);
-        
+
         if (is_object($concrete) && !$concrete instanceof \Closure) {
             $instance = $this->applyExtenders($id, $concrete);
             $this->sharedInstances[$id] = $instance;
             return;
         }
         $concrete = $this->normalizeString($concrete);
-        
+
         //定数arrayをbindする時、$container[0]が無いと言われる
         // if (is_callable($concrete)
         //    || (is_array($concrete) && is_callable($concrete[0]))
@@ -175,7 +175,7 @@ class ServiceContainer implements
             $this->sharedDefinitions[$id] = (array) $concrete;
             return;
         }
-        
+
         //定数arrayをbindする時、$container[0]が無いと言われる
         // if (is_string($concrete) && class_exists($concrete)
         //    || (is_array($concrete) && class_exists($concrete[0]))
@@ -197,24 +197,24 @@ class ServiceContainer implements
         }
         $this->sharedInstances[$id] = $concrete;
     }
-    
+
     /**
     *   {inherit}
     *
     *   @param string $id
     *   @param mixed $concrete
-    **/
+    */
     public function share($id, $concrete = null)
     {
         return $this->bind($id, $concrete, true);
     }
-    
+
     /**
     *   {inherit}
     *
     *   @param string $id
     *   @param callable $extender fn($instance, $this)
-    **/
+    */
     public function extend($id, callable $extender)
     {
         if (!$this->has($id)) {
@@ -224,13 +224,13 @@ class ServiceContainer implements
         }
         $this->extenders[$id][] = $extender;
     }
-    
+
     /**
     *   delegate
     *
     *   @param ContainerInterface $container
     *   @return $this
-    **/
+    */
     public function delegate(ContainerInterface $container)
     {
         $this->delegates[] = $container;
@@ -239,13 +239,13 @@ class ServiceContainer implements
         }
         return $this;
     }
-    
+
     /**
     *   hasInDelegate
     *
     *   @param string $id
     *   @return bool
-    **/
+    */
     private function hasInDelegate($id)
     {
         foreach ($this->delegates as $container) {
@@ -255,13 +255,13 @@ class ServiceContainer implements
         }
         return false;
     }
-    
+
     /**
     *   getFromDelegate
     *
     *   @param string $id
     *   @return bool
-    **/
+    */
     protected function getFromDelegate($id)
     {
         foreach ($this->delegates as $container) {
@@ -272,17 +272,17 @@ class ServiceContainer implements
         }
         return false;
     }
-    
+
     /**
     *   makeFromDefinition
     *
     *   @param mixed $definition
     *   @return bool|mixed|object
-    **/
+    */
     private function makeFromDefinition($definition)
     {
         $target = array_shift($definition);
-        
+
         //Closureは$thisが引数
         if (empty($definition)) {
             //引数無しfunctionが動かない
@@ -290,11 +290,11 @@ class ServiceContainer implements
                 return $target($this);
             }
             //ここまで
-            
+
             if (is_callable($target)) {
                 return $target();
             }
-                
+
             if (class_exists($target)) {
                 $instance = new $target();
                 return $instance;
@@ -304,18 +304,18 @@ class ServiceContainer implements
                 "definition stack is not callable"
             );
         }
-        
+
         foreach ($definition as $key => $value) {
-            if ($this->has($value)) {
+            if (is_string($value) && $this->has($value)) {
                 $definition[$key] = $this->get($value);
                 continue;
             }
         }
-        
+
         if (is_callable($target)) {
             return $target(...$definition);
         }
-        
+
         if (class_exists($target)) {
             return new $target(...$definition);
         }
@@ -324,26 +324,26 @@ class ServiceContainer implements
             "definition stack is not callable"
         );
     }
-    
+
     /**
     *   normalizeString
     *
     *   @param string $string
     *   @return string
-    **/
+    */
     private function normalizeString($string)
     {
         return (is_string($string) && strpos($string, '\\') === 0) ?
         substr($string, 1) : $string;
     }
-    
+
     /**
     *   applyExtenders
     *
     *   @param string $id
     *   @param mixed $instance
     *   @return mixed
-    **/
+    */
     private function applyExtenders($id, $instance)
     {
         if (isset($this->extenders[$id]) && !empty($this->extenders[$id])) {
@@ -353,13 +353,13 @@ class ServiceContainer implements
         }
         return $instance;
     }
-    
+
     /**
     *   __call
     *
     *   @param string $method
     *   @param array $arguments
-    **/
+    */
     public function __call($method, $arguments)
     {
         foreach ($this->delegates as $container) {
@@ -368,13 +368,13 @@ class ServiceContainer implements
             }
         }
     }
-    
+
     /**
     *   raw
     *
     *   @param string $id
     *   @param mixed $concrete
-    **/
+    */
     public function raw($id, $concrete)
     {
         if ($concrete instanceof \Closure) {

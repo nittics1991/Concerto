@@ -3,15 +3,23 @@
 /**
 *   ControllerModel
 *
-*   @version 190610
+*   @version 210614
 */
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
-use InvalidArgumentException;
-use Concerto\auth\authentication\AuthSession;
-use Concerto\standard\Session;
-use Concerto\standard\ArrayAccessObject;
+use Concerto\auth\authentication\{
+    AuthSession,
+    AuthUser
+};
+use Concerto\auth\Csrf;
+use Concerto\standard\{
+    ArrayAccessObject,
+    Server,
+    Session
+};
 
 class ControllerModel extends ArrayAccessObject
 {
@@ -21,42 +29,42 @@ class ControllerModel extends ArrayAccessObject
     *   @var string
     */
     protected $namespace = '';
-    
+
     /**
     *   factory
     *
     *   @var object
     */
     protected $factory;
-    
+
     /**
     *   authUser
     *
     *   @var  AuthUser
     */
     protected $authUser;
-    
+
     /**
     *   global session
     *
     *   @var Session
     */
     protected $globalSession;
-    
+
     /**
     *   local session
     *
     *   @var Session
     */
     protected $session;
-    
+
     /**
     *   valid結果
     *
-    *   @var array
+    *   @var mixed[]
     */
     protected $validError = [];
-    
+
     /**
     *   __construct
     *
@@ -68,28 +76,28 @@ class ControllerModel extends ArrayAccessObject
         $this->globalSession = new Session();
         $this->session = new Session($this->namespace);
         $this->authUser = (new AuthSession('auth'))->get();
-        
+
         //継承classでsession未使用時にcsrfが更新されない対策
         $x = $this->session->dummy;
-        
+
         $this->init();
     }
-    
+
     /**
     *   init
     *
     */
     private function init()
     {
-        $exploded = explode('/', $_SERVER['REQUEST_URI']);
-        $this->globalSession->cd_system = $exploded[1];
+        $exploded = explode('/', $_SERVER['REQUEST_URI'] ?? '');
+        $this->globalSession->cd_system = $exploded[1] ?? '';
     }
-    
+
     /**
     *   エラー情報
     *
-    *   @return array
-    **/
+    *   @return mixed[]
+    */
     public function getValidError()
     {
         $errors = [];
@@ -97,5 +105,22 @@ class ControllerModel extends ArrayAccessObject
             $errors[] = key($list);
         }
         return $errors;
+    }
+
+    /**
+    *   redirect
+    *
+    */
+    public function redirect()
+    {
+        if (method_exists($this->factory, 'getPost')) {
+            $post = $this->factory->getPost();
+
+            if (isset($post->token)) {
+                Csrf::remove($post->token);
+            }
+        }
+        header('Location:' . Server::getRequestSelfUrl(), true, 303);
+        die;
     }
 }

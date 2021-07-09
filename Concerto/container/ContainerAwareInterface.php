@@ -5,7 +5,7 @@
 *
 *   @ver 170210
 *   @see https://github.com/ecfectus/container
-**/
+*/
 
 declare(strict_types=1);
 
@@ -20,13 +20,13 @@ interface ContainerAwareInterface
     *
     * @param ContainerInterface $container
     * @return mixed
-    **/
+    */
     public function setContainer(ContainerInterface $container);
-    
+
     /**
     *   getContainer
     *
     *   @return mixed
-    **/
+    */
     public function getContainer();
 }

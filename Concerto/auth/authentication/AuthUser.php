@@ -16,38 +16,39 @@ use Concerto\auth\authentication\AuthUserInterface;
 class AuthUser implements AuthUserInterface
 {
     use ArrayExchangerTrait;
-    
+
     /**
     *   {necessary}
     *
-    **/
+    *   @var string[]
+    */
     protected $propertyDefinitions = [
         'id', 'password',
     ];
-    
+
     /**
     *   __construct
     *
-    *   @param array $dataset
-    **/
+    *   @param mixed[] $dataset
+    */
     public function __construct(array $dataset = [])
     {
         $this->fromArray($dataset);
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function getId(): ?string
     {
         return $this->id;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function getPassword(): ?string
     {
         return $this->password;

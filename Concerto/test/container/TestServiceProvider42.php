@@ -18,7 +18,7 @@ class TestServiceProvider42 extends AbstractServiceProvider implements
     public function register()
     {
     }
-    
+
     public function boot()
     {
         $this->extend(TestClassMixReflectionAndProvider::class, function () {

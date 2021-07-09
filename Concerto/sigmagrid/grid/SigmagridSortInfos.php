@@ -18,12 +18,12 @@ class SigmagridSortInfos extends SigmagridBaseCollection
     /**
     *   __construct
     *
-    *   @param array $params
-    **/
+    *   @param mixed[] $params
+    */
     public function __construct(array $params = [])
     {
         $dataset = [];
-        
+
         foreach ($params as $items) {
             $dataset[] = new SigmagridSortInfo($items);
         }

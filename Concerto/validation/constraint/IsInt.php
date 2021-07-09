@@ -4,7 +4,7 @@
 *   IsInt
 *
 *   @ver 180613
-**/
+*/
 
 declare(strict_types=1);
 
@@ -17,7 +17,7 @@ class IsInt extends AbstractConstraint
     /**
     *   {inherit}
     *
-    **/
+    */
     public function isValid($val)
     {
         return is_int($val);

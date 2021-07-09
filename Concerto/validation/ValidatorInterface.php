@@ -4,7 +4,7 @@
 *   ValidatorInterface
 *
 *   @ver 180612
-**/
+*/
 
 declare(strict_types=1);
 
@@ -16,13 +16,13 @@ interface ValidatorInterface
     *   isValid
     *
     *   @return bool
-    **/
+    */
     public function isValid();
-    
+
     /**
     *   errors
     *
     *   @return array
-    **/
+    */
     public function errors();
 }

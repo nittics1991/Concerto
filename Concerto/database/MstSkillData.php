@@ -3,8 +3,8 @@
 /**
 *   mst_skill
 *
-*   @version 160609
-**/
+*   @version 210118
+*/
 
 declare(strict_types=1);
 
@@ -20,17 +20,15 @@ class MstSkillData extends ModelData
     *
     *   @var array
     */
-    protected static $schema = array(
-        "update" => parent::STRING
-        , "editor" => parent::STRING
-        , "cd_skill" => parent::STRING
-        , "nm_skill" => parent::STRING
-        , "dt_yukou" => parent::INTEGER
-        , "cd_parent" => parent::STRING
-        , "path" => parent::STRING
-        , "depth" => parent::INTEGER
-    );
-    
+    protected static $schema = [
+        'cd_skill' => parent::STRING,
+        'nm_skill' => parent::STRING,
+        'dt_yukou' => parent::INTEGER,
+        'cd_parent' => parent::STRING,
+        'path' => parent::STRING,
+        'depth' => parent::INTEGER,
+    ];
+
     /**
     *   分類コードを分類毎に分解
     *
@@ -43,19 +41,19 @@ class MstSkillData extends ModelData
         $result[2] = mb_substr($this->cd_skill, 3, 3);
         $result[3] = mb_substr($this->cd_skill, 6, 2);
         $result[4] = mb_substr($this->cd_skill, 8, 2);
-        
+
         return $result;
     }
-    
+
     /**
     *   分類コードの所属(分類n?)
     *
-    *   @return integer 分類番号0-4
+    *   @return int 分類番号0-4
     */
     public function belongToBunrui()
     {
         $split = $this->splitBunrui();
-        
+
         for ($i = 4; $i >= 0; $i--) {
             if (intval($split[$i]) > 0) {
                 return $i;
@@ -63,7 +61,7 @@ class MstSkillData extends ModelData
         }
         return $i;
     }
-    
+
     /**
     *   分類コードインクリメント
     *
@@ -74,54 +72,46 @@ class MstSkillData extends ModelData
     {
         $split = $this->splitBunrui();
         $position = $this->belongToBunrui();
-        
+
         if ($isParent) {
             $position++;
         }
-        
+
         $length = mb_strlen($split[$position]);
-        
+
         $split[$position] = sprintf(
             "%0{$length}d",
             ++$split[$position]
         );
-        
-        return implode($split, '');
+
+        return implode('', $split);
     }
-    
-    public function isValidUpdate($val)
-    {
-        return Validate::isTextDate($val);
-    }
-    
-    public function isValidEditor($val)
-    {
-        return Validate::isTanto($val);
-    }
-    
+
     public function isValidCd_skill($val)
     {
-        return Validate::isText($val, 10, 10) && Validate::isTextInt($val, 1);
+        return Validate::isText($val, 10, 10)
+            && Validate::isTextInt($val, 1);
     }
-    
+
     public function isValidNm_skill($val)
     {
         return Validate::isText($val, 1);
     }
-    
+
     public function isValidDt_Yuyou($val)
     {
         return Validate::isTextInt($val, 0);
     }
-    
+
     public function isValidCd_parent($val)
     {
         if ($val == '') {
             return true;
         }
-        return Validate::isText($val, 10, 10) && Validate::isTextInt($val, 1);
+        return Validate::isText($val, 10, 10)
+            && Validate::isTextInt($val, 1);
     }
-    
+
     public function isValidPath($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -129,7 +119,7 @@ class MstSkillData extends ModelData
         }
         return Validate::isText($val, 1);
     }
-    
+
     public function isValidDepth($val)
     {
         if (is_null($val)) {

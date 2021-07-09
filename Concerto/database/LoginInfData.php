@@ -26,7 +26,7 @@ class LoginInfData extends ModelData
         , "nm_tanto" => parent::STRING
         , "remote_addr" => parent::STRING
     );
-    
+
     /**
     *   Validate ins_date
     *
@@ -37,7 +37,7 @@ class LoginInfData extends ModelData
     {
         return Validate::isTextDateTime($val);
     }
-    
+
     /**
     *   Validate cd_tanto
     *
@@ -48,7 +48,7 @@ class LoginInfData extends ModelData
     {
         return Validate::isTanto($val);
     }
-    
+
     /**
     *   Validate nm_tanto
     *
@@ -59,7 +59,7 @@ class LoginInfData extends ModelData
     {
         return Validate::isText($val, null, 10);
     }
-    
+
     /**
     *   Validate remote_addr
     *

@@ -3,7 +3,7 @@
 /**
 *   Sanitize
 *
-*   @version 191007
+*   @version 210608
 */
 
 declare(strict_types=1);
@@ -26,7 +26,7 @@ final class Sanitize
             array('flags' => FILTER_FLAG_ALLOW_FRACTION)
         );
     }
-    
+
     /**
     *   Outlook Mail文字列フィルタ
     *
@@ -35,23 +35,27 @@ final class Sanitize
     *   @example $val=" 東芝 tatou <tato. toshiba@toshiba.co.jp> ; hanako.toshiba@toshiba.jp"
     *       =>"tato.toshiba@toshiba.co.jp;hanako.toshiba@toshiba.jp";
     *       空白・不要文字削除
-    **/
+    */
     public static function outlookToEmail($val)
     {
         $result = '';
         $ar = mb_split(';', (string)mb_ereg_replace('[\s　]', '', $val));
-        if (count($ar) <= 0) {
+        if ($ar === false || count($ar) <= 0) {
             return '';
         }
-        
+
         $sanitized = array();
         foreach ((array)$ar as $adr) {
             if ($adr != '') {
                 if (!filter_var($adr, FILTER_VALIDATE_EMAIL)) {
                     mb_ereg('<.+>', $adr, $regs);
-                    
+
                     if (count($regs) == 1) {
-                        $after = (string)filter_var($regs[0], FILTER_SANITIZE_EMAIL);
+                        $after = (string)filter_var(
+                            $regs[0],
+                            FILTER_SANITIZE_EMAIL
+                        );
+
                         if (mb_strlen($after) > 0) {
                             $sanitized[] = $after;
                         }

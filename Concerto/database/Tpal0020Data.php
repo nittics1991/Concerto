@@ -3,7 +3,7 @@
 /**
 *   tpal0020
 *
-*   @version 180509
+*   @version 210528
 */
 
 declare(strict_types=1);
@@ -30,5 +30,6 @@ class Tpal0020Data extends ModelData
         , 'kanse_pday' => parent::STRING
         , 'kanse_day' => parent::STRING
         , 'kan_flg' => parent::STRING
+        , 'nonyu_pday' => parent::STRING
     ];
 }

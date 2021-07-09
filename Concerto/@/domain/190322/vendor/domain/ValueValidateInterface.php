@@ -2,5 +2,5 @@
 
 interface ValueValidateInterface
 {
-    public static function valid($target) :bool;
+    public static function valid($target): bool;
 }

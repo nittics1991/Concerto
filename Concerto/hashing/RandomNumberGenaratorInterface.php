@@ -4,7 +4,7 @@
 *   RandomNumberGenaratorInterface
 *
 *   @version 190520
-**/
+*/
 
 declare(strict_types=1);
 
@@ -16,6 +16,6 @@ interface RandomNumberGenaratorInterface
     *   generate
     *
     *   @return string
-    **/
+    */
     public function generate(): string;
 }

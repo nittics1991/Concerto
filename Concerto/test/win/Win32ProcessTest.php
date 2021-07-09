@@ -18,52 +18,52 @@ class Win32ProcessTest extends ConcertoTestCase
         ob_end_clean();
         return $result;
     }
-    
+
     /**
     * @test
     */
     public function findAll()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new Win32Process();
         $objectset = $obj->findAll();
         $this->assertEquals(true, count($objectset) > 0);
     }
-    
+
     /**
     * @test
     */
     public function findByName()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new Win32Process();
         $process = $obj->findByName('System Idle Process');
         $this->assertEquals(1, count($process));
         $process2 = $process[0];
         $this->assertEquals(true, $process2 instanceof Win32Process);
     }
-    
+
     /**
     * @test
     */
     public function findById()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new Win32Process();
         $process = $obj->findById(0);
         $this->assertEquals(true, $process instanceof Win32Process);
     }
-    
+
     /**
     * @test
     */
     public function getter()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new Win32Process();
         $process = $obj->findByName('System Idle Process');
         $this->assertEquals(1, count($process));
@@ -71,16 +71,16 @@ class Win32ProcessTest extends ConcertoTestCase
         $this->assertEquals('System Idle Process', $process2->name);
         $this->assertEquals(0, $process2->processid);
     }
-    
+
     /**
     * @test
     */
     public function terminate1()
     {
         $this->markTestIncomplete();
-        
+
         $obj = new Win32Process();
-        
+
         //実行ユーザ名取得
         $cliPid = getmypid();
         $process = $obj->findById($cliPid);
@@ -88,17 +88,17 @@ class Win32ProcessTest extends ConcertoTestCase
         $domain = new Variant();
         $process->getowner($user, $domain);
         $userName = $this->printToString($user);
-        
+
         //手動notepadを1つ起動しておき、確認する
         $notepads = $obj->findByName('notepad.exe');
         $this->assertEquals(1, count($notepads));
-        
+
         foreach ($notepads as $process) {
             $user = new Variant();
             $domain = new Variant();
             $process->getowner($user, $domain);
             $notepadOwner = @$this->printToString($user);
-            
+
             if ($notepadOwner == $userName) {
                 $process->terminate();
             }

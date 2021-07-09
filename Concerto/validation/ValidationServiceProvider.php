@@ -4,7 +4,7 @@
 *   ValidationServiceProvider
 *
 *   @version 180618
-**/
+*/
 
 declare(strict_types=1);
 
@@ -37,26 +37,26 @@ class ValidationServiceProvider extends AbstractServiceProvider
             $concrete->addServiceProvider(ConstraintServiceProvider::class);
             return $concrete;
         });
-        
+
         $this->bind('validation.RuleResolver', function ($container) {
             return new RuleResolver(
                 $container->get('validation.Container'),
                 $container->get('validation.Validation')
             );
         });
-        
+
         $this->bind('validation.Validation', function ($container) {
             return new Validation(
                 $container->get('validation.MessageGenerator')
             );
         });
-        
+
         $this->bind('validation.MessageGenerator', function ($container) {
             return new MessageGenerator(
                 new CurlyBracketMessageGenerator()
             );
         });
-        
+
         $this->bind(RuleResolverInterface::class, function ($container) {
             return $container->get('validation.RuleResolver');
         });

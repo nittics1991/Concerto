@@ -13,31 +13,31 @@ use PDO;
 class SqliteTest extends ConcertoTestCase
 {
     public $object;
-    
+
     public function setUp(): void
     {
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function createTable()
     {
 //      $this->markTestIncomplete();
-        
+
         $table_schema = 'test.table';
         $table_name = 'test_table';
-        
+
         $table = $this->createMock(ModelDb::class);
         $table->method('getSchema')
             ->willReturn($table_schema)
         ;
-        
+
         $columns = $this-> getMockBuilder(ModelData::class)
             ->setMethods(null)
             ->getMock();
         ;
-        
+
         $schema = [
             'prop_s' => 'string',
             'prop_b' => 'boolean',
@@ -46,20 +46,20 @@ class SqliteTest extends ConcertoTestCase
             'prop_f' => 'double',
             'prop_t' => 'datetime',
         ];
-        
+
         $this->setPrivateProperty($columns, 'schema', $schema);
-        
+
         $this->object = new Sqlite($table, $columns);
-        
+
         $expect = "CREATE TABLE {$table_name} ('prop_s' TEXT, 'prop_b' TEXT, 'prop_d' REAL, 'prop_i' INTEGER, 'prop_f' REAL, 'prop_t' TEXT)";
-        
+
         $this->assertEquals(
             $expect,
             $this->object->createTable()
         );
-        
+
         ///////////////////////////////////////////////////////////////////////
-        
+
         $dns = 'sqlite::memory:';
         $pdo = new PDO(
             $dns,
@@ -69,27 +69,27 @@ class SqliteTest extends ConcertoTestCase
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             ]
         );
-        
+
         $sql = $this->object->createTable();
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
-        
+
         //information_schema not support
         $sql = "
             SELECT * 
             FROM information_schema.columns 
             WHERE table_name = '{$table_name}' 
         ";
-        
+
         $sql = "
             PRAGMA table_info({$table_name})
         ";
-        
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $def = $stmt->fetchAll();
         $columns = array_column($def, 'name');
-        
+
         $this->assertEquals(array_keys($schema), $columns);
     }
 }

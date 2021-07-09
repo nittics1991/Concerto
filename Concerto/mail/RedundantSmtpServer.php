@@ -20,14 +20,14 @@ class RedundantSmtpServer implements MailTransferInterface
     /**
     *   サーバコンテナ
     *
-    *   @var array
+    *   @var MailTransferInterface[]
     */
     private $servers = [];
-    
+
     /**
     *   __construct
     *
-    *   @param array $servers
+    *   @param MailTransferInterface[] $servers
     */
     public function __construct(array $servers = [])
     {
@@ -35,17 +35,17 @@ class RedundantSmtpServer implements MailTransferInterface
             $this->add($server);
         }
     }
-    
+
     /**
     *   追加
     *
     *   @param MailTransferInterface $server
     */
-    public function add(MailTransferInterface $server)
+    public function add(MailTransferInterface $server): void
     {
         $this->servers[] = $server;
     }
-    
+
     /**
     *   送信
     *
@@ -57,11 +57,11 @@ class RedundantSmtpServer implements MailTransferInterface
         $current = 0;
         $result = null;
         $sent = false;
-        
+
         if (!$mail instanceof MailMessage) {
             throw new InvalidArgumentException("required MailMessage");
         }
-        
+
         while (count($this->servers) > $current) {
             try {
                 if (($sent = $this->servers[$current]->send($mail)) == true) {
@@ -72,7 +72,7 @@ class RedundantSmtpServer implements MailTransferInterface
             }
             $current++;
         }
-        
+
         if (!$sent) {
             $result = $mail;
         }

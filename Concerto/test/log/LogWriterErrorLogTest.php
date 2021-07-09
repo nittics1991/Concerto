@@ -10,7 +10,7 @@ use Concerto\log\LogWriterErrorLog;
 class LogWriterErrorLogTest extends ConcertoTestCase
 {
     private $class;
-    
+
     protected function setUp(): void
     {
         $config = array(
@@ -21,27 +21,27 @@ class LogWriterErrorLogTest extends ConcertoTestCase
                 )
             )   //END log
         );
-        
+
         $this->class = new LogWriterErrorLog($config);
     }
-    
+
     public function testSuccessDataSet()
     {
 //      $this->markTestIncomplete();
-        
+
         $this->class->write('エラーメッセージ' . PHP_EOL);
         $this->class->setFormat('%d,ERROR_NO=%d,%s');
         $this->class->write(array(date('Ymd His'), 9999, 'エラーメッセージ' . PHP_EOL));
-        
+
         $this->assertEquals(1, 1);
     }
-    
+
     /**
     */
     public function testMessageException()
     {
 //      $this->markTestIncomplete();
-        
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('write error');
         $this->class->write(array(date('Ymd His'), 9999, 'エラーメッセージ' . PHP_EOL));

@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-declare(strict_types=1);
 
 namespace Concerto\test\accessor;
 
@@ -17,11 +16,11 @@ use Concerto\accessor\impl\AttributeImplTrait;
 class TestGetterTrait1 implements GetterInterface
 {
     use GetterTrait;
-    
+
     protected $getterDefinitions = [
         'prop_b', 'prop_i', 'prop_f', 'prop_s', 'prop_a', 'prop_o',
     ];
-    
+
     public function __call($name, $args)
     {
         return $this->getter($name);
@@ -35,15 +34,15 @@ class TestGetterTrait2 implements
 {
     use AttributeImplTrait;
     use GetterTrait;
-    
+
     protected $propertyDefinitions = [
         'prop_b', 'prop_i', 'prop_f', 'prop_s', 'prop_a', 'prop_o',
     ];
-    
+
     protected $getterDefinitions = [
         'prop_b', 'prop_i', 'prop_f', 'prop_s', 'prop_a', 'prop_o',
     ];
-    
+
     public function __call($name, $args)
     {
         return $this->getter($name);
@@ -59,19 +58,19 @@ class TestGetterTrait3 implements
     use AttributeImplTrait;
     use GetterTrait;
     use SetterTrait;
-    
+
     protected $propertyDefinitions = [
         'prop_b', 'prop_i', 'prop_f', 'prop_s', 'prop_a', 'prop_o', 'both',
     ];
-    
+
     protected $getterDefinitions = [
         'prop_b', 'prop_i', 'prop_f', 'both',
     ];
-    
+
     protected $setterDefinitions = [
         'prop_s', 'prop_a', 'prop_o', 'both'
     ];
-    
+
     public function __call($name, $args)
     {
         if ($this->isSetterMethod($name)) {
@@ -108,114 +107,114 @@ class GetterTraitTest extends ConcertoTestCase
     public function StdClassHasGetterSuccess()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new TestGetterTrait1();
-        
+
         $this->assertEquals(true, $obj->hasGetter('prop_i'));
         $this->assertEquals(false, $obj->hasGetter('dummy'));
         $this->assertEquals(false, $obj->hasGetter('getProp_i'));
     }
-    
+
     /**
     *   @test
     */
     public function StdClassIsGetterMethodSuccess()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new TestGetterTrait1();
-        
+
         $this->assertEquals(true, $obj->isGetterMethod('getProp_i'));
         $this->assertEquals(false, $obj->isGetterMethod('getDummy'));
         $this->assertEquals(false, $obj->isGetterMethod('prop_i'));
     }
-    
+
     /**
     *   @test
     */
     public function StdClassGetterSuccess()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new TestGetterTrait1();
-        
+
         $obj->prop_i = 123;
         $obj->getProp_i(123);
         $this->assertEquals(123, $obj->prop_i);
-        
+
         $obj->prop_f = 999.9;
         $this->assertEquals(999.9, $obj->prop_f);
         $this->assertEquals(123, $obj->prop_i);
     }
-    
+
     /**
     *   @test
     */
     public function AttributeImpHasGetterSuccess()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new TestGetterTrait2();
-        
+
         $this->assertEquals(true, $obj->hasGetter('prop_i'));
         $this->assertEquals(false, $obj->hasGetter('dummy'));
         $this->assertEquals(false, $obj->hasGetter('getProp_i'));
     }
-    
+
     /**
     *   @test
     */
     public function AttributeImpIsGetterMethodSuccess()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new TestGetterTrait2();
-        
+
         $this->assertEquals(true, $obj->isGetterMethod('getProp_i'));
         $this->assertEquals(false, $obj->isGetterMethod('getDummy'));
         $this->assertEquals(false, $obj->isGetterMethod('prop_i'));
     }
-    
+
     /**
     *   @test
     */
     public function AttributeImplGetterSuccess()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new TestGetterTrait2();
-        
+
         $this->setPrivateProperty($obj, 'dataContainer', ['prop_i' => 123]);
         $this->assertEquals(123, $obj->prop_i);
-        
+
         $this->setPrivateProperty($obj, 'dataContainer', ['prop_i' => 123, 'prop_f' => 999.9]);
         $this->assertEquals(999.9, $obj->prop_f);
         $this->assertEquals(123, $obj->prop_i);
     }
-    
+
     /**
     *   @test
     */
     public function notDefinedProperyException()
     {
         // $this->markTestIncomplete();
-        
+
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('not defined method:DUMMY');
-        
+
         $obj = new TestGetterTrait2();
         $expect = $this->callPrivateMethod($obj, 'getter', ['DUMMY' , [123]]);
     }
-    
+
     /**
     *   @test
     */
     public function SetterGetterSuccess()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new TestGetterTrait3();
-        
+
         //getter has
         $this->assertEquals(true, $obj->hasGetter('prop_i'));
         $this->assertEquals(true, $obj->isGetterMethod('getProp_i'));
@@ -237,30 +236,30 @@ class GetterTraitTest extends ConcertoTestCase
         $obj->setBoth(555);
         $this->assertEquals(555, $obj->getBoth());
     }
-    
+
     /**
     *   @test
     */
     public function calledFromGetterSuccess()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new TestSetterTrait4();
-        
+
         $this->setPrivateProperty($obj, 'dataContainer', ['prop_i' => 123]);
         $this->assertEquals(123, $obj->getProp_i());
     }
-    
+
     /**
     *   @test
     */
     public function calledFromGetterException()
     {
         // $this->markTestIncomplete();
-        
+
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('must be use getter method');
-        
+
         $obj = new TestSetterTrait4();
         $expect = $obj->prop_i;
     }

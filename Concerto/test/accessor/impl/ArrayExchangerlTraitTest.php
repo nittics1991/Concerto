@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-declare(strict_types=1);
 
 namespace Concerto\test\accessor\impl;
 
@@ -13,7 +12,7 @@ class TestArrayExchangerlTrait1 implements
     ToArrayInterface
 {
     use ArrayExchangerTrait;
-    
+
     protected $propertyDefinitions = [
         'prop_b', 'prop_i', 'prop_f', 'prop_s', 'prop_a', 'prop_o',
     ];
@@ -27,9 +26,9 @@ class ArrayExchangerlTraitTest extends ConcertoTestCase
     public function basicSuccess()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new TestArrayExchangerlTrait1();
-        
+
         $data = [
                 'prop_i' => 123,
                 'prop_f' => 999.9,
@@ -44,7 +43,7 @@ class ArrayExchangerlTraitTest extends ConcertoTestCase
         ];
         $obj->fromArray($data);
         $this->assertEquals($actual, $obj->toArray());
-        
+
         $data = [
             'prop_i' => 456,
             'prop_s' => 'string',

@@ -16,26 +16,26 @@ class ConfigReaderIniTest extends ConcertoTestCase
     public function ExceptionConstruct()
     {
 //      $this->markTestIncomplete();
-        
+
         $file = __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'read.zzz';
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('file not found');
         $object = new ConfigReaderIni($file);
     }
-    
+
     /**
     * @test
     */
     public function SuccessFileRead()
     {
 //      $this->markTestIncomplete();
-        
+
         $fileName = 'read.ini';
         $file = __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . $fileName;
         $obj = new ConfigReaderIni($file);
         $expect = $obj->recursive()
             ->read();
-        
+
         $actual = [
             'database' => [
                 'default.adapter' => 'pgsql',

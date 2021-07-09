@@ -20,31 +20,31 @@ trait ExcelBuilderTrait
     *
     *   @param resource $sheet
     *   @return $this
-    **/
+    */
     protected function fitColumnWidth($sheet)
     {
         $sheet->UsedRange->EntireColumn->AutoFit();
         return $this;
     }
-    
+
     /**
     *   指定レンジの値を二次元配列に代入
     *
     *   @param resource $range Range レンジ
     *   @paran ?int $col 列数
     *   @return array
-    **/
+    */
     protected function rangeToMartix($range, ?int $col = null): array
     {
         $columnCount = $col ?? $range->Columns->Count;
-        
+
         $all_items = [];
         $items = [];
         $i = 1;
-        
+
         foreach ($range as $cell) {
             $items[] = $cell->Value;
-            
+
             if ($i == $columnCount) {
                 $all_items[] = $items;
                 $items = [];
@@ -53,13 +53,13 @@ trait ExcelBuilderTrait
                 $i++;
             }
         }
-        
+
         if ($i != 1) {
             throw new RuntimeException("column size mismatch");
         }
         return $all_items;
     }
-    
+
     /**
     *   レンジデータ書き込み
     *
@@ -72,18 +72,18 @@ trait ExcelBuilderTrait
     {
         $columnLength = isset($dataset[0]) && is_array($dataset[0]) ?
             count($dataset[0]) : 0;
-        
+
         $i = 0;
         foreach ($dataset as $list) {
             $v = new \VARIANT(
                 mb_convert_encoding($list, 'SJIS', 'utf-8')
             );
-            
+
             $sheet->Range(
                 $baseRange->Offset($i, 0),
                 $baseRange->Offset($i, $columnLength - 1)
             )->Value = $v;
-            
+
             $i++;
         }
         return $this;

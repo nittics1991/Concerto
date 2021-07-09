@@ -3,7 +3,7 @@
 /**
 *   mst_tanto
 *
-*   @version 200325
+*   @version 210511
 */
 
 declare(strict_types=1);
@@ -40,91 +40,91 @@ class MstTantoData extends ModelData
         'dt_delete' => parent::STRING,
         'kengen_login' => parent::STRING,
     ];
-    
+
     public function isValidCd_tanto($val)
     {
         return is_string($val)
             && mb_check_encoding($val)
             && mb_ereg_match('\A\d{5}ITC\z', $val);
     }
-    
+
     public function isValidDisp_seq($val)
     {
         return Validate::isText($val);
     }
-    
+
     public function isValidNm_tanto($val)
     {
         return Validate::isText($val);
     }
-    
+
     public function isValidMail_add($val)
     {
         return Validate::isEmail($val);
     }
-    
+
     public function isValidKengen($val)
     {
         return Validate::isTextBool($val);
     }
-    
+
     public function isValidKengen_db($val)
     {
         return Validate::isTextBool($val);
     }
-    
+
     public function isValidKengen_sm($val)
     {
         return Validate::isTextInt($val, 0, 3);
     }
-    
+
     public function isValidCd_bumon($val)
     {
-        return MstBumonData::isValidCd_Bumon($val);
+        return MstBumonData::validCd_Bumon($val);
     }
-    
+
     public function isValidPassword($val)
     {
         return Validate::isAscii($val, 5);
     }
-    
+
     public function isValidFg_mail($val)
     {
         return Validate::isTextBool($val);
     }
-    
+
     public function isValidRi_cyokka($val)
     {
         return Validate::isInt($val, 0, 100);
     }
-    
+
     public function isValidUsername($val)
     {
         return is_string($val)
             && mb_check_encoding($val)
             && mb_ereg_match('\A[a-z0-9]{8}\z', $val);
     }
-    
+
     public function isValidFg_cookie($val)
     {
         return Validate::isText($val);
     }
-    
+
     public function isValidCd_hash($val)
     {
         return Validate::isText($val);
     }
-    
+
     public function isValidDt_hash($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidDt_delete($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidKengen_login($val)
     {
         return Validate::isTextBool($val);

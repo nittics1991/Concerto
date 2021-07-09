@@ -16,7 +16,7 @@ class TestServiceProvider2 extends AbstractServiceProvider
     public function register()
     {
         $this->share('database.dns', 'sqlite::memory:');
-        
+
         $this->share(\PDO::class, function ($container) {
             return new \PDO(
                 $container->get('database.dns')

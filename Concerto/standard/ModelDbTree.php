@@ -3,10 +3,12 @@
 /**
 *   データベーステーブルTree構造
 *
-*   @version 190523
+*   @version 210615
 *
 *   @see root node data, parent column & virtual column depth, path
-**/
+*/
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
@@ -26,63 +28,59 @@ class ModelDbTree extends ModelDb
     *   @var mixed
     */
     protected $root = null;
-    
+
     /**
     *   primary key名(overwrite)
     *
     *   @var string
     */
     protected $primarykey = 'id';
-    
+
     /**
     *   親カラム名
     *
     *   @var string
     */
     protected $parent = 'parent';
-    
+
     /**
     *   深度カラム名
     *
     *   @var string
     */
     protected $depth = 'depth';
-    
+
     /**
     *   パス名
     *
     *   @var string
     */
     protected $path = 'path';
-    
+
     /**
     *   カラム確認
     *
     *   @param ModelData $obj
     *   @return bool
     */
-    public function checkColumnName(ModelData $obj)
+    public function checkColumnName(ModelData $obj): bool
     {
         $columns = (array)$obj->getInfo();
-        
-        if (
+
+        return
             array_key_exists($this->primarykey, $columns)
             && array_key_exists($this->parent, $columns)
             && array_key_exists($this->depth, $columns)
             && array_key_exists($this->path, $columns)
-        ) {
-            return true;
-        }
-        return false;
+        ;
     }
-    
+
     /**
     *   bind primarykey
     *
     *   @param ModelData $obj
     *   @param PDOStatement $stmt
     *   @return PDOStatement
-    *   @return bool
     */
     public function bindPrimarykey(
         ModelData $obj,
@@ -92,11 +90,11 @@ class ModelDbTree extends ModelDb
         $val = $obj->$primarykey;
         $model_type = $obj->getInfo($primarykey);
         $pdo_type = $this->convertPdoParam($model_type);
-        
+
         $stmt->bindParam(':id', $val, $pdo_type);
         return $stmt;
     }
-    
+
     /**
     *   SQL実行
     *
@@ -112,13 +110,13 @@ class ModelDbTree extends ModelDb
         if ($where->isNull($this->primarykey)) {
             throw new InvalidArgumentException("primary key is NULL");
         }
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt = $this->bindPrimarykey($where, $stmt);
         $stmt->execute();
         return $this->decorate($stmt, get_class($where));
     }
-    
+
     /**
     *   SQL実行(limit付)
     *
@@ -136,29 +134,29 @@ class ModelDbTree extends ModelDb
         if ($where->isNull($this->primarykey)) {
             throw new InvalidArgumentException("primary key is NULL");
         }
-        
+
         if (!(is_int($limit)) || ($limit < 0)) {
             throw new InvalidArgumentException(
                 "limit is integer of 0 or more"
             );
         }
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt = $this->bindPrimarykey($where, $stmt);
-            
+
         if ($limit > 0) {
             $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         }
-        
+
         $stmt->execute();
         return $this->decorate($stmt, get_class($where));
     }
-    
+
     /**
     *   詳細(深度・パス)取得
     *
     *   @param ModelData $where ID
-    *   @return ModelData
+    *   @return ModelData[]
     *   @throws RuntimeException
     */
     public function detail(ModelData $where)
@@ -184,7 +182,7 @@ class ModelDbTree extends ModelDb
             LEFT JOIN {$this->name} D 
                 ON D.{$this->primarykey} = :id
         ";
-        
+
         if (is_null($this->root)) {
             $sql .= "
                 WHERE C.{$this->parent} IS NULL
@@ -194,20 +192,20 @@ class ModelDbTree extends ModelDb
                 WHERE C.{$this->parent} = '{$this->root}' 
             ";
         }
-        
+
         try {
             $stmt = $this->doExec($where, $sql);
-            return $stmt->fetchAll();
+            return (array)$stmt->fetchAll();
         } catch (Exception $e) {
             throw new RuntimeException("PDO error:{$sql}", 0, $e);
         }
     }
-    
+
     /**
     *   親取得
     *
     *   @param ModelData $where ID
-    *   @return ModelData
+    *   @return ModelData[]
     *   @throws RuntimeException
     */
     public function parent(ModelData $where)
@@ -215,10 +213,10 @@ class ModelDbTree extends ModelDb
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var PDOStatement
         */
         static $stmt;
-        
+
         $sql = "
             SELECT * 
             FROM {$this->name} A 
@@ -229,21 +227,21 @@ class ModelDbTree extends ModelDb
                     AND B.{$this->parent} = A.{$this->primarykey}
                 )
         ";
-        
+
         try {
             $stmt = $this->doExec($where, $sql);
-            return $stmt->fetchAll();
+            return (array)$stmt->fetchAll();
         } catch (Exception $e) {
             throw new RuntimeException("PDO error:{$sql}", 0, $e);
         }
     }
-    
+
     /**
     *   子取得
     *
     *   @param ModelData $where ID
     *   @param ?string $order ORDER句
-    *   @return ModelData
+    *   @return ModelData[]
     *   @throws RuntimeException, InvalidArgumentException
     */
     public function children(ModelData $where, ?string $order = null)
@@ -256,13 +254,13 @@ class ModelDbTree extends ModelDb
                 "data type error:{$order}"
             );
         }
-        
+
         $sql = "
             SELECT * 
             FROM {$this->name} 
             WHERE {$this->parent} = :id 
         ";
-        
+
         if (empty($order)) {
             $sql .= "
                 ORDER BY {$this->primarykey} 
@@ -272,22 +270,22 @@ class ModelDbTree extends ModelDb
                 ORDER BY {$order} 
             ";
         }
-        
+
         try {
             $stmt = $this->doExec($where, $sql);
-            return $stmt->fetchAll();
+            return (array)$stmt->fetchAll();
         } catch (Exception $e) {
             throw new RuntimeException("PDO error:{$sql}", 0, $e);
         }
     }
-    
-    
+
+
     /**
     *   兄弟取得
     *
     *   @param ModelData $where ID
     *   @param ?string $order ORDER句
-    *   @return ModelData
+    *   @return ModelData[]
     *   @throws RuntimeException
     */
     public function sibling(ModelData $where, ?string $order = null)
@@ -300,7 +298,7 @@ class ModelDbTree extends ModelDb
                 "data type error:{$order}"
             );
         }
-        
+
         $sql = "
             SELECT * 
             FROM {$this->name} 
@@ -311,7 +309,7 @@ class ModelDbTree extends ModelDb
                 ) 
                 AND {$this->primarykey} != :id 
         ";
-        
+
         if (empty($order)) {
             $sql .= "
                 ORDER BY {$this->primarykey} 
@@ -321,22 +319,22 @@ class ModelDbTree extends ModelDb
                 ORDER BY {$order} 
             ";
         }
-        
+
         try {
             $stmt = $this->doExec($where, $sql);
-            return $stmt->fetchAll();
+            return (array)$stmt->fetchAll();
         } catch (Exception $e) {
             throw new RuntimeException("PDO error:{$sql}", 0, $e);
         }
     }
-    
+
     /**
     *   祖先取得
     *
     *   @param ModelData $where ID
     *   @param ?string $order ORDER句
     *   @param int $limit LIMIT(レベル制限 0:無し, 1～深さ制限)
-    *   @return ModelData
+    *   @return ModelData[]
     *   @throws RuntimeException, InvalidArgumentException
     */
     public function ancestor(
@@ -352,13 +350,13 @@ class ModelDbTree extends ModelDb
                 "data type error:{$order}"
             );
         }
-        
+
         if (!(is_int($limit)) || ($limit < 0)) {
             throw new InvalidArgumentException(
                 "limit is integer of 0 or more"
             );
         }
-        
+
         $sql = "
             WITH RECURSIVE
                 tmp  AS (
@@ -381,7 +379,7 @@ class ModelDbTree extends ModelDb
                         , 1 AS rank 
                     FROM tmp 
         ";
-        
+
         if (is_null($this->root)) {
             $sql .= "
                     WHERE cd_parent IS NULL 
@@ -391,7 +389,7 @@ class ModelDbTree extends ModelDb
                     WHERE cd_parent = '{$this->root}' 
             ";
         }
-        
+
         $sql .= "
                     UNION
                     SELECT D.*
@@ -411,13 +409,13 @@ class ModelDbTree extends ModelDb
                     ON Y.{$this->primarykey} = X.{$this->primarykey} 
                 WHERE X.{$this->primarykey} != :id 
         ";
-        
+
         if ($limit > 0) {
             $sql .= "
                 AND rank >= :limit 
             ";
         }
-        
+
         if (empty($order)) {
             $sql .= "
                 ORDER BY {$this->primarykey} 
@@ -427,22 +425,22 @@ class ModelDbTree extends ModelDb
                 ORDER BY {$order} 
             ";
         }
-        
+
         try {
             $stmt = $this->doExecWithLimit($where, $sql, $limit);
-            return $stmt->fetchAll();
+            return (array)$stmt->fetchAll();
         } catch (Exception $e) {
             throw new RuntimeException("PDO error:{$sql}", 0, $e);
         }
     }
-    
+
     /**
     *   子孫取得(部分木)
     *
     *   @param ModelData $where ID
     *   @param ?string $order ORDER句
     *   @param int $limit LIMIT(レベル制限 0:無し, 1～深さ制限)
-    *   @return ModelData
+    *   @return ModelData[]
     *   @throws RuntimeException
     */
     public function descendant(
@@ -458,13 +456,13 @@ class ModelDbTree extends ModelDb
                 "data type error:{$order}"
             );
         }
-        
+
         if (!(is_int($limit)) || ($limit < 0)) {
             throw new InvalidArgumentException(
                 "limit is integer of 0 or more"
             );
         }
-        
+
         $sql = "
             WITH RECURSIVE
                 tmp  AS (
@@ -488,13 +486,13 @@ class ModelDbTree extends ModelDb
                 ON D.{$this->primarykey} = C.{$this->primarykey} 
             WHERE C.{$this->primarykey} != :id 
         ";
-        
+
         if ($limit > 0) {
             $sql .= "
                 AND ARRAY_LENGTH(D.path, 1) - 1 <= :limit 
             ";
         }
-        
+
         if (empty($order)) {
             $sql .= "
                 ORDER BY {$this->primarykey} 
@@ -504,39 +502,39 @@ class ModelDbTree extends ModelDb
                 ORDER BY {$order} 
             ";
         }
-        
+
         try {
             $stmt = $this->doExecWithLimit($where, $sql, $limit);
-            return $stmt->fetchAll();
+            return (array)$stmt->fetchAll();
         } catch (Exception $e) {
             throw new RuntimeException("PDO error:{$sql}", 0, $e);
         }
     }
-    
+
     /**
     *   子の数取得
     *
     *   @param ModelData $where ID
-    *   @return integer
+    *   @return int
     */
-    public function numberOfChildren(ModelData $where)
+    public function numberOfChildren(ModelData $where): int
     {
         $result = $this->children($where);
         return (count($result));
     }
-    
+
     /**
     *   兄弟の数取得(自分を含む)
     *
     *   @param ModelData $where ID
-    *   @return integer
+    *   @return int
     */
-    public function numberOfSibling(ModelData $where)
+    public function numberOfSibling(ModelData $where): int
     {
         $result = $this->sibling($where);
         return (count($result) + 1);
     }
-    
+
     /**
     *   Leaf判定
     *
@@ -544,44 +542,44 @@ class ModelDbTree extends ModelDb
     *   @return bool
     *   @throws InvalidArgumentException
     */
-    public function isLeaf(ModelData $where)
+    public function isLeaf(ModelData $where): bool
     {
         if ($where->isNull($this->primarykey)) {
             throw new InvalidArgumentException("primary key is NULL");
         }
-        
+
         $obj = clone $where;
         $obj->unsetAll();
-        
+
         $id = $this->primarykey;
         $parent = $this->parent;
         $obj->$parent = $where->$id;
-        
+
         $result = $this->groupBy(
             "COUNT({$this->parent}) AS {$this->depth}",
             $obj
         );
-        
-        if (count($result) == 1) {
-            return ($result[0]['no_depth'] <= 1) ?       true : false;
+
+        if (isset($result[0]['no_depth'])) {
+            return $result[0]['no_depth'] <= 1;
         }
         return false;
     }
-    
+
     /**
     *   ルートノード取得
     *
-    *   @return ModelData
+    *   @return ModelData[]
     */
     public function root()
     {
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var PDOStatement
         */
         static $stmt;
-        
+
         $sql = "
             SELECT * 
             FROM {$this->name} 
@@ -595,29 +593,29 @@ class ModelDbTree extends ModelDb
                 WHERE {$this->parent} = '{$this->root}' 
             ";
         }
-        
+
         try {
             if (is_null($stmt)) {
                 $stmt = $this->pdo->prepare($sql);
             }
-            
+
             $stmt->execute();
-            
+
             $class_name = $this->entityName();
             $this->decorate($stmt, $class_name);
-            
-            return $stmt->fetchAll();
+
+            return (array)$stmt->fetchAll();
         } catch (Exception $e) {
             throw new RuntimeException("PDO error:{$sql}", 0, $e);
         }
     }
-    
-    
+
+
     /**
     *   Tree取得
     *
     *   @param ModelData $where ID
-    *   @return ModelData
+    *   @return ModelData[]
     *   @throws RuntimeException
     */
     public function treePath(ModelData $where)
@@ -644,7 +642,7 @@ class ModelDbTree extends ModelDb
                         , 1 AS rank 
                     FROM tmp 
         ";
-        
+
         if (is_null($this->root)) {
             $sql .= "
                     WHERE cd_parent IS NULL 
@@ -654,7 +652,7 @@ class ModelDbTree extends ModelDb
                     WHERE cd_parent = '{$this->root}' 
             ";
         }
-        
+
         $sql .= "
                     UNION
                     SELECT D.*
@@ -674,15 +672,15 @@ class ModelDbTree extends ModelDb
                     ON Y.{$this->primarykey} = X.{$this->primarykey} 
                 ORDER BY Y.rank 
         ";
-        
+
         try {
             $stmt = $this->doExec($where, $sql);
-            return $stmt->fetchAll();
+            return (array)$stmt->fetchAll();
         } catch (Exception $e) {
             throw new RuntimeException("PDO error:{$sql}", 0, $e);
         }
     }
-    
+
     /**
     *   ノード探索
     *
@@ -690,7 +688,7 @@ class ModelDbTree extends ModelDb
     *   @param string $sort_type 検索方向(depth:深さ優先 breadth:幅優先)
     *   @param ?string $order ORDER句
     *   @param int $limit LIMIT(レベル制限 0:無し, 1～深さ制限)
-    *   @return ModelData
+    *   @return ModelData[]
     *   @throws RuntimeException
     */
     public function searchTree(
@@ -706,7 +704,7 @@ class ModelDbTree extends ModelDb
                     "sort type is 'depth' or 'breadth'"
                 );
             }
-            
+
             if (
                 !is_null($order) &&
                 !$this->isValidOrderClause($where, $order)
@@ -715,17 +713,17 @@ class ModelDbTree extends ModelDb
                     "data type error:{$order}"
                 );
             }
-            
+
             if (!(is_int($limit)) || ($limit < 0)) {
                 throw new InvalidArgumentException(
                     "limit is integer of 0 or more"
                 );
             }
-            
+
             if (is_null($order)) {
                 $order = $this->primarykey;
             }
-            
+
             $sql = "
                 WITH RECURSIVE
                     rowsorted AS (
@@ -757,13 +755,13 @@ class ModelDbTree extends ModelDb
                 JOIN tmp D 
                     ON D.{$this->primarykey} = C.{$this->primarykey} 
             ";
-            
+
             if ($limit > 0) {
                 $sql .= "
                     WHERE depth <= :limit 
                 ";
             }
-            
+
             if ($sort_type == 'breadth') {
                 $sql .= "
                     ORDER BY {$this->depth}, sortarray 
@@ -773,21 +771,21 @@ class ModelDbTree extends ModelDb
                     ORDER BY sortarray 
                 ";
             }
-            
+
             $stmt = $this->doExecWithLimit($where, $sql, $limit);
-            return $stmt->fetchAll();
+            return (array)$stmt->fetchAll();
         } catch (Exception $e) {
             throw new RuntimeException("PDO error:{$sql}", 0, $e);
         }
     }
-    
+
     /**
     *   挿入(接ぎ木)
     *
     *   @param ModelData $data
     *   @throws RuntimeException
     */
-    public function graft(ModelData $data)
+    public function graft(ModelData $data): void
     {
         $sql_tmp = "
             WITH
@@ -802,7 +800,7 @@ class ModelDbTree extends ModelDb
             SET {$this->parent} = 
                 (SELECT {$this->primarykey} FROM tmp B 
         ";
-        
+
         if (is_null($this->root) && $data->isNull($this->parent)) {
             $sql_tmp .= "
                     WHERE B.{$this->parent} IS NULL 
@@ -817,23 +815,23 @@ class ModelDbTree extends ModelDb
                     (SELECT {$this->parent} FROM tmp) 
             ";
         }
-        
-        $columns = array();
-        $values = array();
-        
+
+        $columns = [];
+        $values = [];
+
         foreach ($data->toArray() as $key => $val) {
             if (!is_null($val)) {
                 $columns[] = $key;
                 $values[] = ":{$key}";
             }
         }
-        
+
         $sql = sprintf(
             $sql_tmp,
             implode(',', $columns),
             implode(',', $values)
         );
-        
+
         try {
             $stmt = $this->pdo->prepare($sql);
             $this->bind($stmt, $data);
@@ -842,7 +840,7 @@ class ModelDbTree extends ModelDb
             throw new RuntimeException("PDO error:{$sql}", 0, $e);
         }
     }
-    
+
     /**
     *   移動(付け替え)
     *
@@ -853,55 +851,55 @@ class ModelDbTree extends ModelDb
     public function move(
         ModelData $target,
         ModelData $where
-    ) {
+    ): void {
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var PDOStatement
         */
         static $stmt;
-        
+
         $sql = "
             UPDATE {$this->name} 
             SET {$this->parent} = :parent 
             WHERE {$this->primarykey} = :id 
         ";
-        
+
         try {
             if (is_null($stmt)) {
                 $stmt = $this->pdo->prepare($sql);
             }
-            
+
             $stmt = $this->bindPrimarykey($target, $stmt);
-            
+
             $primarykey = $this->primarykey;
             $val = $where->$primarykey;
             $model_type = $where->getInfo($primarykey);
             $pdo_type = $this->convertPdoParam($model_type);
-            
+
             $stmt->bindParam(':parent', $val, $pdo_type);
-            
+
             $stmt->execute();
         } catch (Exception $e) {
             throw new RuntimeException("PDO error:{$sql}", 0, $e);
         }
     }
-    
+
     /**
     *   枝刈り
     *
     *   @param ModelData $target 対象
     *   @throws RuntimeException
     */
-    public function prune(ModelData $target)
+    public function prune(ModelData $target): void
     {
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var PDOStatement
         */
         static $stmt;
-        
+
         $sql = "
             WITH RECURSIVE
                 tmp AS (
@@ -925,34 +923,34 @@ class ModelDbTree extends ModelDb
                 WHERE Y.{$this->primarykey} = X.{$this->primarykey} 
                 )
         ";
-        
+
         try {
             if (is_null($stmt)) {
                 $stmt = $this->pdo->prepare($sql);
             }
-            
+
             $stmt = $this->bindPrimarykey($target, $stmt);
             $stmt->execute();
         } catch (Exception $e) {
             throw new RuntimeException("PDO error:{$sql}", 0, $e);
         }
     }
-    
+
     /**
     *   枝刈り
     *
     *   @param ModelData $target 対象
     *   @throws RuntimeException
     */
-    public function pull(ModelData $target)
+    public function pull(ModelData $target): void
     {
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var PDOStatement
         */
         static $stmt;
-        
+
         $sql = "
             WITH
                 tmp AS ( 
@@ -967,12 +965,12 @@ class ModelDbTree extends ModelDb
             WHERE cd_parent IN 
                 (SELECT {$this->primarykey} FROM tmp) 
         ";
-        
+
         try {
             if (is_null($stmt)) {
                 $stmt = $this->pdo->prepare($sql);
             }
-            
+
             $stmt = $this->bindPrimarykey($target, $stmt);
             $stmt->execute();
         } catch (Exception $e) {

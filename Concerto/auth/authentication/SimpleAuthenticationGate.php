@@ -18,22 +18,22 @@ class SimpleAuthenticationGate implements AuthInterface
     *   userId
     *
     *   @var string
-    **/
+    */
     private $userId;
-    
+
     /**
     *   password
     *
     *   @var string
-    **/
+    */
     private $password;
-    
+
     /**
     *   __construct
     *
     *   @param string $userId
     *   @param string $password
-    **/
+    */
     public function __construct(
         string $userId,
         string $password
@@ -41,11 +41,11 @@ class SimpleAuthenticationGate implements AuthInterface
         $this->userId = $userId;
         $this->password = $password;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function login(string $user, string $password): bool
     {
         return $user === $this->userId && $password === $this->password;

@@ -3,7 +3,7 @@
 /**
 *   WorkDir
 *
-*   @version 170428
+*   @version 210614
 */
 
 declare(strict_types=1);
@@ -11,14 +11,15 @@ declare(strict_types=1);
 namespace Concerto\filesystem;
 
 use CallbackFilterIterator;
+use DateInterval;
+use DateTimeImmutable;
 use FilesystemIterator;
 use Iterator;
 use IteratorAggregate;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
-use DateTimeImmutable;
-use DateInterval;
+use Traversable;
 
 class WorkDir implements IteratorAggregate
 {
@@ -26,21 +27,21 @@ class WorkDir implements IteratorAggregate
     *   path
     *
     *   @var string
-    **/
+    */
     protected $path;
-    
+
     /**
     *   iterator
     *
     *   @var Iterator
-    **/
+    */
     protected $iterator;
-    
+
     /**
     *   __construct
     *
     *   @param ?string $path
-    **/
+    */
     public function __construct(?string $path = null)
     {
         if (!is_string($path)) {
@@ -49,7 +50,7 @@ class WorkDir implements IteratorAggregate
             $this->path = $path;
             $this->create();
         }
-        
+
         $this->iterator = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator(
                 $this->path,
@@ -58,63 +59,63 @@ class WorkDir implements IteratorAggregate
             RecursiveIteratorIterator::CHILD_FIRST
         );
     }
-    
+
     /**
     *   create
     *
     *   @return object $this
-    **/
+    */
     protected function create()
     {
         if (file_exists($this->path)) {
             return $this;
         }
-        
+
         if (mkdir($this->path, 0777, true) == false) {
             throw new RuntimeException("create falrure:{$this->path}");
         }
         return $this;
     }
-    
+
     /**
     *   get
     *
     *   @return string
-    **/
+    */
     public function get()
     {
         return $this->path;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
-    public function getIterator()
+    */
+    public function getIterator(): Traversable
     {
         return $this->iterator;
     }
-    
+
     /**
     *   clear
     *
-    *   @return array failure path
-    **/
+    *   @return string[] failure path
+    */
     public function clear()
     {
         return $this->doClear($this->iterator);
     }
-    
+
     /**
     *   doClear
     *
     *   @param iterable $iterator
-    *   @return array failure path
-    **/
+    *   @return string[] failure path
+    */
     public function doClear(iterable $iterator)
     {
         $failure = [];
-        
+
         foreach ($iterator as $fileInfo) {
             if ($fileInfo->isDir()) {
                 if (rmDir($fileInfo->getPathName()) == false) {
@@ -128,12 +129,12 @@ class WorkDir implements IteratorAggregate
         }
         return $failure;
     }
-    
+
     /**
     *   delete
     *
-    *   @return array failure path
-    **/
+    *   @return string[] failure path
+    */
     public function delete()
     {
         $failure = $this->clear();
@@ -142,20 +143,20 @@ class WorkDir implements IteratorAggregate
         }
         return $failure;
     }
-    
+
     /**
     *   指定日以前のタイムスタンプで削除
     *
     *   @param string $interval @see DateInterval
-    *   @return array failure path
-    **/
+    *   @return string[] failure path
+    */
     public function clearBeforeDate(string $interval)
     {
         $limit = (new DateTimeImmutable())
             ->sub(new DateInterval($interval))
             ->getTimestamp()
             ;
-        
+
         $iterator = new CallbackFilterIterator(
             $this->iterator,
             function ($fileinfo, $key, $iterator) use ($limit) {

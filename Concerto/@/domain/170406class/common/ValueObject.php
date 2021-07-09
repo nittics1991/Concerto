@@ -16,12 +16,12 @@ use Concerto\Validate;
 class ValueObject extends DataContainerValidatable implements ObjectImmutableInterface
 {
     use ObjectImmutableTrait;
-    
+
     /**
     *   construct
     *
     *   @param array
-    **/
+    */
     public function __construct($param)
     {
         $this->fromArray(array $param);

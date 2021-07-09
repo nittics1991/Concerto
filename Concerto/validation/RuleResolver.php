@@ -11,7 +11,7 @@
 *       'property3' => callbable,
 *       'property4' => 'ConstraintA,para1,para2|ConstraintB,para11,para12',
 *       ];
-**/
+*/
 
 declare(strict_types=1);
 
@@ -28,27 +28,27 @@ class RuleResolver implements RuleResolverInterface
     *   container
     *
     *   @var ContainerInterface
-    **/
+    */
     protected $container;
-    
+
     /**
     *   validation
     *
     *   @var ValidationInterface
-    **/
+    */
     protected $validation;
-    
+
     /**
     *   prefixId
     *
     *   @var string
-    **/
+    */
     protected $prefixId = 'validation';
-    
+
     /**
     *   __construct
     *
-    **/
+    */
     public function __construct(
         ContainerInterface $container,
         ValidationInterface $validation
@@ -56,17 +56,17 @@ class RuleResolver implements RuleResolverInterface
         $this->container = $container;
         $this->validation = $validation;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function resolve($attribute, array $values, $rule, $messages = [])
     {
         $constraints = $this->parseRule($attribute, $values, $rule);
         $value = $values[$attribute];
         $validation = $this->validation;
-        
+
         return array_map(
             function ($constraint) use (
                 $attribute,
@@ -85,7 +85,7 @@ class RuleResolver implements RuleResolverInterface
             $constraints
         );
     }
-    
+
     /**
     *   parseRule
     *
@@ -94,7 +94,7 @@ class RuleResolver implements RuleResolverInterface
     *   @param string|Closure|ConstraintInterface|callable
     *   @return array [ConstraintInterface, ...]
     *   @throws InvalidArgumentException
-    **/
+    */
     protected function parseRule($attribute, array $values, $rule)
     {
         if ($rule instanceof ConstraintInterface) {
@@ -109,25 +109,25 @@ class RuleResolver implements RuleResolverInterface
         if (is_string($rule)) {
             return $this->parseStringRule($attribute, $rule);
         }
-        
+
         throw new \InvalidArgumentException(
             "rule must be string|Closure|ConstraintInterface:{$attribute}"
         );
     }
-    
+
     /**
     *   parseObjectRule
     *
     *   @param string
     *   @param ConstraintInterface
     *   @return array [ConstraintInterface, ...]
-    **/
+    */
     protected function parseConstraintRule($attribute, $obj)
     {
         $obj = $obj->setAttribute($attribute);
         return [$obj];
     }
-    
+
     /**
     *   parseClosureRule
     *
@@ -135,7 +135,7 @@ class RuleResolver implements RuleResolverInterface
     *   @param Closure
     *   @param array
     *   @return array [ConstraintInterface, ...]
-    **/
+    */
     protected function parseClosureRule(
         $attribute,
         \Closure $closure,
@@ -148,31 +148,31 @@ class RuleResolver implements RuleResolverInterface
                 protected $attribute;
                 protected $closure;
                 protected $values;
-                
-                
+
+
                 public function __construct($attribute, $closure, $values)
                 {
                     $this->attribute = $attribute;
                     $this->closure = $closure;
                     $this->values = $values;
                 }
-                
+
                 public function isValid($val)
                 {
                     $this->value = $val;
-                    
+
                     return (bool)call_user_func(
                         $this->closure,
                         $val,
                         $this->values
                     );
                 }
-                
+
                 public function name()
                 {
                     return 'class@anonymous';
                 }
-                
+
                 public function message()
                 {
                     $message = mb_ereg_replace(
@@ -185,7 +185,7 @@ class RuleResolver implements RuleResolverInterface
             }
         ];
     }
-    
+
     /**
     *   parseCallableRule
     *
@@ -193,7 +193,7 @@ class RuleResolver implements RuleResolverInterface
     *   @param callable
     *   @param array
     *   @return array [ConstraintInterface, ...]
-    **/
+    */
     protected function parseCallableRule(
         $attribute,
         callable $callback,
@@ -206,30 +206,30 @@ class RuleResolver implements RuleResolverInterface
                 protected $attribute;
                 protected $callback;
                 protected $values;
-                
+
                 public function __construct($attribute, $callback, $values)
                 {
                     $this->attribute = $attribute;
                     $this->callback = $callback;
                     $this->values = $values;
                 }
-                
+
                 public function isValid($val)
                 {
                     $this->value = $val;
-                    
+
                     return (bool)call_user_func(
                         $this->callback,
                         $val,
                         $this->values
                     );
                 }
-                
+
                 public function name()
                 {
                     return 'class@anonymous';
                 }
-                 
+
                 public function message()
                 {
                     $message = mb_ereg_replace(
@@ -242,24 +242,24 @@ class RuleResolver implements RuleResolverInterface
             }
         ];
     }
-    
+
     /**
     *   parseStringRule
     *
     *   @param string
     *   @param string
     *   @return array [ConstraintInterface, ...]
-    **/
+    */
     protected function parseStringRule($attribute, $rules)
     {
         $constraints = [];
-        
+
         foreach (explode('|', $rules) as $rule) {
             $constraints[] = $this->buildRule($attribute, $rule);
         }
         return $constraints;
     }
-    
+
     /**
     *   buildRule
     *
@@ -267,20 +267,20 @@ class RuleResolver implements RuleResolverInterface
     *   @param string
     *   @return ConstraintInterface
     *   @throws InvalidArgumentException
-    **/
+    */
     protected function buildRule($attribute, $ruleset)
     {
         $params = explode(',', $ruleset);
         $id = !empty($this->prefixId) ?
             $this->prefixId . '.' . array_shift($params) :
             array_shift($params);
-        
+
         if (!$this->container->has($id)) {
             throw new \InvalidArgumentException(
                 "not defined constraint:{$id}"
             );
         }
-        
+
         return $this->container->get($id)
             ->setParameters($params)
             ->setAttribute($attribute);

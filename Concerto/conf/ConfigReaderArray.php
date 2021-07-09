@@ -3,7 +3,7 @@
 /**
  *   ConfigReaderArray
  *
- * @version 190626
+ * @version 210615
  */
 
 declare(strict_types=1);
@@ -21,19 +21,19 @@ class ConfigReaderArray extends AbstractConfigReader
     public function read(): array
     {
         $data = $this->doRead();
-        
+
         if (!is_array($data)) {
             throw new RuntimeException(
-                "config file read error"
+                "config file must be return array"
             );
         }
         return $data;
     }
-    
+
     /**
      *   doRead
      */
-    private function doRead()
+    private function doRead(): array
     {
         return include $this->file;
     }

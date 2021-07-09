@@ -21,7 +21,7 @@ class FullUrl implements Invokable
     *   @var RealUrl
     */
     protected $parser;
-    
+
     /**
     *   __construct
     *
@@ -31,7 +31,7 @@ class FullUrl implements Invokable
     {
         $this->parser = new RealUrl($baseUrl);
     }
-    
+
     /**
     *   {inherit}
     */

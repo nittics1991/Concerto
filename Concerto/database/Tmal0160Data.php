@@ -25,24 +25,24 @@ class Tmal0160Data extends ModelData
         , "kisyu_name" => parent::STRING
         , "up_day" => parent::STRING
     ];
-    
+
     /**
     *   Column Alias
     *
     *   @var array
     */
     protected static $alias = [];
-    
+
     public function isValidKisyu_cd($val)
     {
         return Validate::isText($val, 2, 2);
     }
-    
+
     public function isValidKisyu_name($val)
     {
         return Validate::isText($val, 1);
     }
-    
+
     public function isValidUp_day($val)
     {
         return Validate::isTextDateTime($val);

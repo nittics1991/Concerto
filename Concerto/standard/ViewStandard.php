@@ -3,8 +3,10 @@
 /**
 *   VIEW標準
 *
-*   @version 200322
+*   @version 210609
 */
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
@@ -29,25 +31,25 @@ class ViewStandard extends ArrayAccessObject
     *   @var int
     */
     public $httpStatus;
-    
+
     /**
     *   ヘルパー
     *
-    *   @var array
-    **/
+    *   @var mixed[]
+    */
     protected $helpers = [];
-    
+
     /**
     *   __construct
     *
-    *   @param array $data データ
+    *   @param mixed[] $data データ
     */
     public function __construct(array $data = [])
     {
         $this->fromArray($data);
         $this->csrf = Csrf::generate();
     }
-    
+
     /**
     *   全メンバHTML エンティティ変換
     *
@@ -62,7 +64,7 @@ class ViewStandard extends ArrayAccessObject
         });
         return $this;
     }
-    
+
     /**
     *   全メンバHTML SJIS変換
     *
@@ -77,13 +79,13 @@ class ViewStandard extends ArrayAccessObject
         });
         return $this;
     }
-    
+
     /**
     *   toHTMLされた変数のデコード
     *
     *   @param string $name
     *   @return $this
-    **/
+    */
     public function decodeHTML(string $name)
     {
         if (!isset($this->$name)) {
@@ -91,14 +93,14 @@ class ViewStandard extends ArrayAccessObject
                 "undefined property name:{$name}"
             );
         }
-        
+
         $this->$name  = htmlspecialchars_decode(
             $this->$name,
             ENT_QUOTES
         );
         return $this;
     }
-    
+
     /**
     *   描画実行
     *
@@ -111,7 +113,7 @@ class ViewStandard extends ArrayAccessObject
         $templateEngine->httpStatus = $this->httpStatus;
         return $templateEngine->render($this->data);
     }
-    
+
     /**
     *   描画
     *
@@ -121,7 +123,7 @@ class ViewStandard extends ArrayAccessObject
     {
         echo $this->doRrender($template);
     }
-    
+
     /**
     *   描画キャッシュ
     *
@@ -132,43 +134,43 @@ class ViewStandard extends ArrayAccessObject
     {
         return $this->doRrender($template);
     }
-    
+
     /**
     *   abort
     *
     *   @param int $status
     *   @param ?string $template
-    **/
+    */
     public function abort(int $status, ?string $template = null)
     {
         $this->httpStatus = $status;
         http_response_code($this->httpStatus);
-        
+
         if (isset($template)) {
             $this->render($template);
         }
     }
-    
+
     /**
     *   ヘルパー追加
     *
     *   @param string $name
     *   @param callable $callback
     *   @return $this
-    **/
+    */
     public function addHelper(string $name, callable $callback)
     {
         $this->helpers[$name] = $callback;
         return $this;
     }
-    
+
     /**
     *   {inherit}
-    **/
-    public function __call($name, array $args)
+    */
+    public function __call(string $name, array $arguments): mixed
     {
         if (isset($this->helpers[$name])) {
-            return call_user_func_array($this->helpers[$name], $args);
+            return call_user_func_array($this->helpers[$name], $arguments);
         }
         throw new BadMethodCallException("method not defined:{$name}");
     }

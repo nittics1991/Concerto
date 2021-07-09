@@ -16,11 +16,11 @@ class LdapQueryTest extends ConcertoTestCase
         $this->userId = 'w11308ic@toshiba.local';
         $this->password = '';
     }
-    
+
     protected function setUp(): void
     {
         $this->setUser();
-        
+
         $dns = 'ldap://tsb-sv203.toshiba.local';
         $this->obj = new LdapQuery(
             (new LdapConnection(
@@ -32,7 +32,7 @@ class LdapQueryTest extends ConcertoTestCase
             ))->bind($this->userId, $this->password)
         );
     }
-    
+
     public function basicSuccessProvider()
     {
         return [
@@ -42,7 +42,7 @@ class LdapQueryTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider basicSuccessProvider
@@ -56,8 +56,8 @@ class LdapQueryTest extends ConcertoTestCase
         int $timeLimit = 20,
         int $alias = LDAP_DEREF_NEVER
     ) {
-//      $this->markTestIncomplete();
-        
+        $this->markTestIncomplete();
+
         $stmt = $this->obj->search(
             $baseDn,
             $filter,
@@ -67,10 +67,10 @@ class LdapQueryTest extends ConcertoTestCase
             $timeLimit,
             $alias
         );
-        
+
         $this->assertEquals(true, $stmt instanceof LdapStmt);
     }
-    
+
     /**
     *   @test
     *   @dataProvider basicSuccessProvider
@@ -84,8 +84,8 @@ class LdapQueryTest extends ConcertoTestCase
         int $timeLimit = 20,
         int $alias = LDAP_DEREF_NEVER
     ) {
-//      $this->markTestIncomplete();
-        
+        $this->markTestIncomplete();
+
         $stmt = $this->obj->read(
             $baseDn,
             $filter,
@@ -95,10 +95,10 @@ class LdapQueryTest extends ConcertoTestCase
             $timeLimit,
             $alias
         );
-        
+
         $this->assertEquals(true, $stmt instanceof LdapStmt);
     }
-    
+
     /**
     *   @test
     *   @dataProvider basicSuccessProvider
@@ -112,8 +112,8 @@ class LdapQueryTest extends ConcertoTestCase
         int $timeLimit = 20,
         int $alias = LDAP_DEREF_NEVER
     ) {
-//      $this->markTestIncomplete();
-        
+        $this->markTestIncomplete();
+
         $stmt = $this->obj->list(
             $baseDn,
             $filter,
@@ -123,7 +123,7 @@ class LdapQueryTest extends ConcertoTestCase
             $timeLimit,
             $alias
         );
-        
+
         $this->assertEquals(true, $stmt instanceof LdapStmt);
     }
 }

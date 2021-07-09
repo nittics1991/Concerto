@@ -3,7 +3,7 @@
 /**
 *   wf_pmh
 *
-*   @version 170522
+*   @version 210115
 */
 
 declare(strict_types=1);
@@ -20,32 +20,30 @@ class WfPmhData extends ModelData
     *
     *   @var array
     */
-    protected static $schema = array(
-        "update" => parent::STRING
-        , "editor" => parent::STRING
-        , "cd_syukka" => parent::STRING
-    );
-    
-    /**
-    *   Column Alias
-    *
-    *   @var array
-    */
-    protected static $alias = array(
-    );
-    
-    public function isValidUpdate($val)
+    protected static $schema = [
+        'no_cyu' => parent::STRING,
+        'no_page' => parent::INTEGER,
+        'cd_tanto' => parent::STRING,
+        'dt_kakunin' => parent::STRING,
+    ];
+
+    public function isValidNo_cyu($val)
     {
-        return Validate::isTextDate($val);
+        return Validate::isCyuban($val);
     }
-    
-    public function isValidEditor($val)
+
+    public function isValidNo_page($val)
+    {
+        return Validate::isInt($val, 0);
+    }
+
+    public function isValidCd_tanto($val)
     {
         return Validate::isTanto($val);
     }
-    
-    public function isValidCd_syukka($val)
+
+    public function isValidDt_kakunin($val)
     {
-        return mb_ereg_match('\A[A-Z](K|S)[0-9]{3}\z', $val);
+        return Validate::isTextDate($val);
     }
 }

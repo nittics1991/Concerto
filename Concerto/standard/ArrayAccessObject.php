@@ -3,16 +3,19 @@
 /**
 *   ArrayAccessObject
 *
-*   @version 190524
+*   @version 210609
 */
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
 use ArrayAccess;
 use ArrayIterator;
-use IteratorAggregate;
 use Countable;
 use InvalidArgumentException;
+use IteratorAggregate;
+use Traversable;
 
 class ArrayAccessObject implements ArrayAccess, IteratorAggregate, Countable
 {
@@ -22,110 +25,111 @@ class ArrayAccessObject implements ArrayAccess, IteratorAggregate, Countable
     *   @var array
     */
     protected $data = [];
-    
+
     /**
     *   {inherit}
     *
     */
-    public function __get(string $key)
+    public function __get(string $name): mixed
     {
-        return $this->offsetGet($key);
+        return $this->offsetGet($name);
     }
-    
+
     /**
     *   {inherit}
     *
     */
-    public function __set(string $key, $val): void
+    public function __set(string $name, mixed $value): void
     {
-        $this->offsetSet($key, $val);
+        $this->offsetSet($name, $value);
     }
-    
+
     /**
     *   {inherit}
     *
     */
-    public function __isset(string $key): bool
+    public function __isset(string $name): bool
     {
-        return $this->offsetExists($key);
+        return $this->offsetExists($name);
     }
-    
+
     /**
     *   {inherit}
     *
     */
-    public function __unset(string $key): void
+    public function __unset(string $name): void
     {
-        $this->offsetUnset($key);
+        $this->offsetUnset($name);
     }
-    
+
     /**
     *   {inherit}
     *
     */
-    public function offsetGet($key)
+    public function offsetGet(mixed $offset): mixed
     {
-        return (isset($this->data[$key])) ?   $this->data[$key] : null;
+        return (isset($this->data[$offset])) ?
+            $this->data[$offset] : null;
     }
-    
+
     /**
     *   {inherit}
     *
     */
-    public function offsetSet($key, $val)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->data[$key] = $val;
+        $this->data[$offset] = $value;
     }
-    
+
     /**
     *   {inherit}
     *
     */
-    public function offsetExists($key)
+    public function offsetExists(mixed $offset): bool
     {
-        return isset($this->data[$key]);
+        return isset($this->data[$offset]);
     }
-    
+
     /**
     *   {inherit}
     *
     */
-    public function offsetUnset($key): void
+    public function offsetUnset(mixed $offset): void
     {
-        unset($this->data[$key]);
+        unset($this->data[$offset]);
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
-    public function getIterator()
+    */
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->data);
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
-    public function count()
+    */
+    public function count(): int
     {
         return count($this->data);
     }
-    
+
     /**
     *   データ初期化
     *
-    **/
+    */
     public function unsetAll()
     {
         $this->data = [];
     }
-    
+
     /**
     *   一括入力
     *
-    *   @param array $array [id => data]
+    *   @param mixed[] $array [id => data]
     *   @return object $this
     */
     public function fromArray(array $array)
@@ -133,35 +137,35 @@ class ArrayAccessObject implements ArrayAccess, IteratorAggregate, Countable
         if (!is_array($array)) {
             throw new InvalidArgumentException("only array");
         }
-        
+
         foreach ($array as $key => $val) {
             $this[$key] = $val;
         }
         return $this;
     }
-    
+
     /**
     *   一括出力
     *
-    *   @return array
+    *   @return mixed[]
     */
     public function toArray(): array
     {
         return $this->data;
     }
-    
+
     /**
     *   empty
     *
     *   @param ?string $key
     *   @return bool
-    **/
+    */
     public function isEmpty(string $key = null): bool
     {
         if (!is_null($key)) {
             return (isset($this->data[$key])) ?  empty($this->data[$key]) : true;
         }
-        
+
         foreach ((array)$this->data as $val) {
             if (!empty($val)) {
                 return false;
@@ -169,19 +173,19 @@ class ArrayAccessObject implements ArrayAccess, IteratorAggregate, Countable
         }
         return true;
     }
-    
+
     /**
     *   NULL
     *
     *   @param string $key
     *   @return bool
-    **/
+    */
     public function isNull(string $key = null): bool
     {
         if (!is_null($key)) {
             return !isset($this->data[$key]);
         }
-        
+
         foreach ((array)$this->data as $val) {
             if (!is_null($val)) {
                 return false;

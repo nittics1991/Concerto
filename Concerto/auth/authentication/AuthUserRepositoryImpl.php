@@ -18,59 +18,59 @@ class AuthUserRepositoryImpl implements AuthUserRepositoryInterface
     *   DataModelのユーザIDプロパティ名
     *
     *   @var string
-    **/
+    */
     protected $userIdPropertyName = 'id';
-    
+
     /**
     *   factory
     *
     *   @var mixed
-    **/
+    */
     protected $factory;
-    
+
     /**
     *   __construct
     *
     *   @param mixed $factory
-    **/
+    */
     public function __construct($factory)
     {
         $this->factory = $factory;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function findByUserId(string $userId): ?AuthUserInterface
     {
         $userIdPropertyName = $this->userIdPropertyName;
-        
+
         $dataModel = $this->factory->getDataModel();
         $dataModel->$userIdPropertyName = $userId;
         $dataMapper = $this->factory->getDataMapper();
-        
+
         $result = $dataMapper->select($dataModel);
         if (count($result) !== 1) {
             return null;
         }
         return $this->factory->createAuthUser($result[0]);
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function exists(string $user): bool
     {
         $data = $this->findByUserId($user);
         return isset($data);
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function validatePassword(
         AuthUserInterface $user,
         string $password

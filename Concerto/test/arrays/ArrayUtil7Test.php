@@ -26,22 +26,22 @@ class ArrayUtil7Test extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider isEmptyTableProvider
-    **/
+    */
     public function isEmptyTable($array, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $actual = call_user_func_array(
             ['Concerto\standard\ArrayUtil', 'isEmptyTable'],
             [$array]
         );
         $this->assertEquals($expect, $actual);
     }
-    
+
     public function makeColumnFromRowProvider()
     {
         return [
@@ -67,15 +67,15 @@ class ArrayUtil7Test extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider makeColumnFromRowProvider
-    **/
+    */
     public function makeColumnFromRow($array, $callback, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $actual = call_user_func_array(
             ['Concerto\standard\ArrayUtil', 'makeColumnFromRow'],
             [$array, $callback]

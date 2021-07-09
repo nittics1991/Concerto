@@ -15,11 +15,11 @@ class MbEncodeFilterTest extends ConcertoTestCase
         $this->vfsRoot = vfsStream::setup();
         $this->vfsRootPath = vfsStream::url($this->vfsRoot->getName());
     }
-    
+
     public function testStreamFilterWasRegistered()
     {
 //      $this->markTestIncomplete();
-        
+
         MbEncodeFilter::register();
 
         $this->assertContains('MbEncodeFilter.*', stream_get_filters());
@@ -28,7 +28,7 @@ class MbEncodeFilterTest extends ConcertoTestCase
     public function testValidConversionParams()
     {
 //      $this->markTestIncomplete();
-        
+
         $stream  = fopen('data://text/plain;base64,', 'r');
         $filtername = 'MbEncodeFilter.US-ASCII/UTF-8';
 
@@ -43,7 +43,7 @@ class MbEncodeFilterTest extends ConcertoTestCase
     public function testInvalidConversionParams()
     {
 //      $this->markTestIncomplete();
-        
+
         $stream  = fopen('data://text/plain;base64,', 'r');
         $filtername = 'MbEncodeFilter.FAKE/UTF-8';
 
@@ -58,7 +58,7 @@ class MbEncodeFilterTest extends ConcertoTestCase
     public function testDefaultConversionParam()
     {
 //      $this->markTestIncomplete();
-        
+
         $stream  = fopen('data://text/plain;base64,', 'r');
         $filtername = 'MbEncodeFilter.UTF-8';
 
@@ -73,7 +73,7 @@ class MbEncodeFilterTest extends ConcertoTestCase
     public function testDefaultReplacementCharacterParam()
     {
 //      $this->markTestIncomplete();
-        
+
         $stream  = fopen('data://text/plain;base64,Zvxy', 'r');
         $filtername = 'MbEncodeFilter.UTF-8/UTF-8';
 
@@ -92,7 +92,7 @@ class MbEncodeFilterTest extends ConcertoTestCase
     public function testReplacementCharacterParam()
     {
 //      $this->markTestIncomplete();
-        
+
         $stream  = fopen('data://text/plain;base64,VGVzdA==', 'r');
         $filtername = 'MbEncodeFilter.UTF-8/UTF-8';
 
@@ -111,7 +111,7 @@ class MbEncodeFilterTest extends ConcertoTestCase
     public function testMultibyteEdgeHandling()
     {
 //      $this->markTestIncomplete();
-        
+
         $output  = fopen('php://memory', 'w+');
         $filtername = 'MbEncodeFilter.UTF-8/UTF-8';
 
@@ -154,7 +154,7 @@ class MbEncodeFilterTest extends ConcertoTestCase
     public function testCloseInvalidData()
     {
 //      $this->markTestIncomplete();
-        
+
         $output  = fopen('php://output', 'w');
         $filtername = 'MbEncodeFilter.UTF-8/UTF-8';
 
@@ -239,31 +239,31 @@ class MbEncodeFilterTest extends ConcertoTestCase
 
         return array($unicode_string, $charset_filename, $charset_string);
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function sjis()
     {
         MbEncodeFilter::register();
-        
+
         $filename = $this->vfsRootPath . DIRECTORY_SEPARATOR . 'aaa.csv';
         $fp = fopen($filename, 'w');
         stream_filter_append($fp, 'MbEncodeFilter.SJIS/UTF-8');
-        
+
         $data = [
             "漢字を含む文字列\r\n",
             "5c文字列を含む「表示」は保存できるか?\r\n",
         ];
-        
+
         foreach ($data as $val) {
             fwrite($fp, current($data));
             next($data);
         }
         fclose($fp);
-        
+
         $contents = file_get_contents($filename);
-        
+
         reset($data);
         foreach (explode("\r\n", $contents) as $str) {
             if ($str == '') {
@@ -272,11 +272,11 @@ class MbEncodeFilterTest extends ConcertoTestCase
             $this->assertEquals(mb_convert_encoding(current($data), 'SJIS', 'UTF-8'), "{$str}\r\n");
             next($data);
         }
-        
+
         //read
         $fp = fopen($filename, 'r');
         stream_filter_append($fp, 'MbEncodeFilter.UTF-8/SJIS');
-        
+
         reset($data);
         while ($str = fgets($fp)) {
             $this->assertEquals(current($data), $str);

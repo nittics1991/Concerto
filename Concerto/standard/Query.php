@@ -3,8 +3,10 @@
 /**
 *   Query
 *
-*   @version 190523
+*   @version 210316
 */
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
@@ -20,34 +22,34 @@ class Query extends DataContainerValidatable
     {
         $this->data = $_GET;
     }
-    
+
     /**
     *   バリデート全変数共通処理
     *
     *   @param string $key 変数名
     *   @param mixed $val データ
     *   @return bool
-    **/
-    protected function validCom($key, $val)
+    */
+    protected function validCom($key, $val): bool
     {
         if (!is_array($val)) {
             return $this->doValidCom($key, (string)$val);
         }
         $result = true;
-        
+
         foreach ($val as $data) {
             $result = $result & $this->doValidCom($key, $data);
         }
         return (bool)$result;
     }
-    
+
     /**
     *   バリデート全変数共通処理実行
     *
     *   @param string $key 変数名
     *   @param string $val データ
     *   @return bool
-    **/
+    */
     protected function doValidCom(string $key, string $val)
     {
         $result = true;
@@ -55,20 +57,21 @@ class Query extends DataContainerValidatable
             $this->valid[$key][] = 'invalid encoding';
             $result = false;
         }
-        
-        if (!mb_ereg_match('\A[\x20-\x7e\x80-\xff]*\z', $val)) {
+
+            //mb_ereg_matchではエラーの場合がある(php8.0.3)
+        if (!preg_match('/\A[\x20-\x7e\x80-\xff]*\z/', $val)) {
             $this->valid[$key][] = 'invalid code';
             $result = false;
         }
         return $result;
     }
-    
+
     /**
     *   AJAX判定
     *
     *   @return bool
     */
-    protected function isAjax()
+    protected function isAjax(): bool
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
             strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])

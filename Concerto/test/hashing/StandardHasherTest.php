@@ -13,7 +13,7 @@ class StandardHasherTest extends ConcertoTestCase
     {
         parent::setUp();
     }
-    
+
     public function mainProvider()
     {
         return [
@@ -27,7 +27,7 @@ class StandardHasherTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider mainProvider
@@ -35,9 +35,9 @@ class StandardHasherTest extends ConcertoTestCase
     public function main($password, $options)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new StandardHasher($options);
-        
+
         $hash = $obj->hash($password);
         $this->assertEquals(true, $obj->check($hash));
         $this->assertEquals(true, $obj->verify($password, $hash));

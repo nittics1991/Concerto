@@ -5,7 +5,7 @@
 *
 *   @version 180613
 *   @caution 本ファイルはRespect\Validationに設置する
-**/
+*/
 
 declare(strict_types=1);
 
@@ -18,7 +18,7 @@ class RespectConstraintServiceProvider extends AbstractDirectoryServiceProvider
     /**
     *   {inherit}
     *
-    **/
+    */
     protected $subDirName = 'Rules';
     protected $prefixId = 'validation';
 }

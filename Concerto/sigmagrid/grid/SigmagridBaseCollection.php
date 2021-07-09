@@ -18,20 +18,20 @@ class SigmagridBaseCollection extends ArrayObject implements Validatable
     /**
     *   valid
     *
-    *   @var array
-    **/
+    *   @var mixed[]
+    */
     protected $valid = [];
-    
+
     /**
     *   {inherit}
-    **/
+    */
     public function isValid()
     {
         $this->valid = [];
         $cnt = 0;
-        
+
         $this->isValidCom();
-        
+
         foreach ($this as $obj) {
             $result = $obj->isValid();
             if ($result !== true) {
@@ -41,30 +41,30 @@ class SigmagridBaseCollection extends ArrayObject implements Validatable
         }
         return (count($this->valid) == 0);
     }
-    
+
     /*
     *   isValidCom(over write)
     *
-    **/
+    */
     public function isValidCom()
     {
     }
-    
+
     /**
     *   getValidError
     *
-    *   @return array
-    **/
+    *   @return mixed[]
+    */
     public function getValidError()
     {
         return $this->valid;
     }
-    
+
     /**
     *   toArray
     *
-    *   @return array
-    **/
+    *   @return mixed[]
+    */
     public function toArray()
     {
         $array = [];

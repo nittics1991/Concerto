@@ -3,7 +3,7 @@
 /**
 *   mondaiten_inf
 *
-*   @version 170921
+*   @version 210608
 */
 
 declare(strict_types=1);
@@ -21,15 +21,15 @@ class MondaitenInf extends ModelDb
     *   @var string
     */
     protected $schema = 'public.mondaiten_inf';
-    
+
     /**
     *   getMaxNo
     *
     *   @param string $no_cyu
     *   @param int $no_page
-    *   @return int
-    **/
-    public function getMaxNo($no_cyu, $no_page)
+    *   @return ?int
+    */
+    public function getMaxNo($no_cyu, $no_page): ?int
     {
         $sql = "
             SELECT MAX(no_seq) AS no_seq
@@ -37,26 +37,26 @@ class MondaitenInf extends ModelDb
             WHERE no_cyu = :cyuban
                 AND no_page = :page
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':cyuban', $no_cyu, PDO::PARAM_STR);
         $stmt->bindValue(':page', $no_page, PDO::PARAM_INT);
         $stmt->execute();
-        $result = $stmt->fetchAll();
-       
-        return (isset($result[0]['no_seq'])) ?
-            $result[0]['no_seq'] : 0;
+        $result = $stmt->fetchColumn(0);
+        return $result === false ? null : (int)$result;
     }
-    
+
     /**
     *   getByCyuban
     *
     *   @param string $no_cyu
     *   @param int|null $no_page
     *   @return array
-    **/
-    public function getByCyuban($no_cyu, $no_page = null)
-    {
+    */
+    public function getByCyuban(
+        $no_cyu,
+        $no_page = null
+    ) {
         $sql = "
             SELECT A.*
                 , B. cd_yoin AS cd_bunrui3, B. nm_yoin AS nm_bunrui3
@@ -78,7 +78,7 @@ class MondaitenInf extends ModelDb
                 ON D.no_bunrui = B.no_bunrui1
             ORDER BY A.no_seq
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':cyuban', $no_cyu, PDO::PARAM_STR);
         $stmt->bindValue(':page', $no_page, PDO::PARAM_INT);

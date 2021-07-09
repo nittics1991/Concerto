@@ -3,7 +3,7 @@
 /**
 *   cyokka_mon_keikaku
 *
-*   @version 200325
+*   @version 201222
 */
 
 declare(strict_types=1);
@@ -21,7 +21,7 @@ class CyokkaMonKeikaku extends ModelDb
     *   @var string
     */
     protected $schema = 'public.cyokka_mon_keikaku';
-    
+
     /**
     *   集計リスト
     *
@@ -34,10 +34,10 @@ class CyokkaMonKeikaku extends ModelDb
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var \PDOStatement
         */
         static $stmt;
-        
+
         if (is_null($stmt)) {
             $sql = "SELECT SUM(dt_kado) AS dt_kado 
                         , SUM(tm_zitudo) AS tm_zitudo 
@@ -56,16 +56,16 @@ class CyokkaMonKeikaku extends ModelDb
                         ) IS NOT FALSE 
                     GROUP BY kb_nendo, cd_bumon
             ";
-            
+
             $stmt = $this->pdo->prepare($sql);
         }
-        
+
         $stmt->bindParam(':kb_nendo', $kb_nendo, PDO::PARAM_STR);
         $stmt->bindParam(':cd_bumon', $cd_bumon, PDO::PARAM_STR);
         $stmt->execute();
         return (array)$stmt->fetchAll();
     }
-    
+
     /**
     *   指定期間データ
     *
@@ -84,7 +84,7 @@ class CyokkaMonKeikaku extends ModelDb
                 AND dt_yyyymm <= :end
             ORDER BY dt_yyyymm
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':bumon', $cd_bumon, PDO::PARAM_STR);
         $stmt->bindParam(':start', $start, PDO::PARAM_STR);
@@ -92,7 +92,7 @@ class CyokkaMonKeikaku extends ModelDb
         $stmt->execute();
         return (array)$stmt->fetchAll();
     }
-    
+
     /**
     *   buildMonthlyByPersonLSql
     *
@@ -112,7 +112,7 @@ class CyokkaMonKeikaku extends ModelDb
                 AND dt_yyyymm <= :end
         ";
     }
-    
+
     /**
     *   担当者別月別直課時間リスト
     *
@@ -128,7 +128,7 @@ class CyokkaMonKeikaku extends ModelDb
         if (!empty($order)) {
             $sql .= " ORDER BY {$order}";
         }
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':bumon', $cd_bumon, PDO::PARAM_STR);
         $stmt->bindParam(':start', $start, PDO::PARAM_STR);
@@ -136,7 +136,7 @@ class CyokkaMonKeikaku extends ModelDb
         $stmt->execute();
         return (array)$stmt->fetchAll();
     }
-    
+
     /**
     *   担当者別月別直課時間リスト
     *
@@ -159,7 +159,7 @@ class CyokkaMonKeikaku extends ModelDb
             GROUP BY dt_yyyymm
             ORDER BY dt_yyyymm
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':bumon', $cd_bumon, PDO::PARAM_STR);
         $stmt->bindParam(':start', $start, PDO::PARAM_STR);

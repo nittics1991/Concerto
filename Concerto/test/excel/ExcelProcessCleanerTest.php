@@ -17,10 +17,10 @@ class ExcelProcessCleanerTest extends ConcertoTestCase
     public function execute1()
     {
 //      $this->markTestIncomplete();
-        
+
         $processes = (new Win32Process())
             ->findByName('EXCEL.EXE');
-        
+
         $obj = new ExcelProcessCleaner(
             new \DateInterval('PT1S')
         );

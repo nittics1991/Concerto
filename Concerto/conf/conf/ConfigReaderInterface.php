@@ -15,7 +15,7 @@ interface ConfigReaderInterface
     /**
      *   build
      *
-     * @param  string $path
+     * @param string $path
      * @return ConfigInterface
      */
     public function build(string $path): ConfigInterface;

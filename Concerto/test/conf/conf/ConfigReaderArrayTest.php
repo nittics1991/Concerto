@@ -44,20 +44,20 @@ class ConfigReaderArrayTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider buildProvider
-    **/
+    */
     public function build1($path, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $reader = new ConfigReaderArray();
         $config = $reader->build($path);
-        
+
         $this->assertEquals(true, $config instanceof ConfigInterface);
-        
+
         $actual = $config->toArray();
         $this->assertEquals([], ArrayUtil::compare($expect, $actual));
     }

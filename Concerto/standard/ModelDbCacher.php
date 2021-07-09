@@ -3,16 +3,19 @@
 /**
 *   ModelDbCacher
 *
-*   @version 190523
+*   @version 210615
 */
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
-use Exception;
 use PDO;
 use RuntimeException;
-use Concerto\standard\DataModelInterface;
-use Concerto\standard\DataMapperInterface;
+use Concerto\standard\{
+    DataMapperInterface,
+    DataModelInterface,
+};
 
 class ModelDbCacher
 {
@@ -22,35 +25,35 @@ class ModelDbCacher
     *   @var PDO
     */
     protected $pdo;
-    
+
     /**
     *   modelDb
     *
     *   @var ?DataMapperInterface
     */
     protected $modelDb;
-    
+
     /**
     *   inserts
     *
-    *   @var array
+    *   @var DataModelInterface[]
     */
     protected $inserts = [];
-    
+
     /**
     *   updates
     *
-    *   @var array
+    *   @var array[] [[DataModelInterface,DataModelInterface],...]
     */
     protected $updates = [];
-    
+
     /**
     *   deletes
     *
-    *   @var array
+    *   @var DataModelInterface[]
     */
     protected $deletes = [];
-    
+
     /**
     *   __construct
     *
@@ -64,37 +67,37 @@ class ModelDbCacher
         $this->pdo = $pdo;
         $this->modelDb = $modelDb;
     }
-    
+
     /**
     *   createCacher
     *
     *   @param DataMapperInterface $modelDb
     *   @return ModelDbCacher
-    **/
+    */
     public function createCacher(DataMapperInterface $modelDb)
     {
         return new $this($this->pdo, $modelDb);
     }
-    
+
     /**
     *   addInsertData
     *
     *   @param DataModelInterface $data
     *   @return $this
-    **/
+    */
     public function addInsertData(DataModelInterface $data)
     {
         $this->inserts[] = $data;
         return $this;
     }
-    
+
     /**
     *   addUpdateData
     *
     *   @param DataModelInterface $data
     *   @param DataModelInterface $where
     *   @return $this
-    **/
+    */
     public function addUpdateData(
         DataModelInterface $data,
         DataModelInterface $where
@@ -102,25 +105,25 @@ class ModelDbCacher
         $this->updates[] = [$data, $where];
         return $this;
     }
-    
+
     /**
     *   addDeleteData
     *
     *   @param DataModelInterface $where
     *   @return $this
-    **/
+    */
     public function addDeleteData(DataModelInterface $where)
     {
         $this->deletes[] = $where;
         return $this;
     }
-    
+
     /**
     *   save
     *
     *   @return $this
     *   @throws RuntimeException
-    **/
+    */
     public function save()
     {
         if (!isset($this->modelDb)) {
@@ -128,26 +131,68 @@ class ModelDbCacher
                 "DataMapperInterface is unregistered"
             );
         }
-        
-        try {
-            $this->pdo->beginTransaction();
-            
-            if (!empty($this->deletes)) {
-                $this->modelDb->delete($this->deletes);
-            }
-            
-            if (!empty($this->updates)) {
-                $this->modelDb->update($this->updates);
-            }
-            
-            if (!empty($this->inserts)) {
-                $this->modelDb->insert($this->inserts);
-            }
-        } catch (Exception $e) {
-            $this->pdo->rollBack();
-            throw $e;
+
+        if (!empty($this->deletes)) {
+            $this->modelDb->delete($this->deletes);
         }
-        $this->pdo->commit();
+
+        if (!empty($this->updates)) {
+            $this->modelDb->update($this->updates);
+        }
+
+        if (!empty($this->inserts)) {
+            $this->modelDb->insert($this->inserts);
+        }
         return $this;
+    }
+
+    /**
+    *   getMapper
+    *
+    *   @return ?DataMapperInterface
+    */
+    public function getMapper(): ?DataMapperInterface
+    {
+        return $this->modelDb;
+    }
+
+    /**
+    *   createModel
+    *
+    *   @return ?DataModelInterface
+    */
+    public function createModel(): ?DataModelInterface
+    {
+        return $this->modelDb?->createModel();
+    }
+
+    /**
+    *   getInsertData
+    *
+    *   @return array
+    */
+    public function getInsertData(): array
+    {
+        return $this->inserts;
+    }
+
+    /**
+    *   getUpdateData
+    *
+    *   @return array
+    */
+    public function getUpdateData(): array
+    {
+        return $this->updates;
+    }
+
+    /**
+    *   getDeleteData
+    *
+    *   @return array
+    */
+    public function getDeleteData(): array
+    {
+        return $this->deletes;
     }
 }

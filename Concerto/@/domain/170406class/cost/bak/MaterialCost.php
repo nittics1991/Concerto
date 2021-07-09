@@ -15,30 +15,30 @@ class MaterialCost extends ValueObject
     /**
     *   {inherit}
     *
-    **/
+    */
     protected static $properties = ['procurementId'];
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     protected $delegates = ['manufacturingCost'];
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function __construct($param)
     {
         $this->boot();
         parent::__construct($param);
     }
-    
+
     protected function boot()
     {
         $this->delegates['manufacturingCost'] = new ManufacturingCost();
     }
-    
+
     public function isValidProcurementId()
     {
         return $this->procurementId->isValid();

@@ -3,7 +3,7 @@
 /**
 *   TableArrayUtil
 *
-*   @version 191007
+*   @version 210616
 */
 
 declare(strict_types=1);
@@ -18,12 +18,12 @@ use Concerto\arrays\OneDimensionArrayUtilTrait;
 trait TableArrayUtilTrait
 {
     use OneDimensionArrayUtilTrait;
-    
+
     /**
     *   転置行列
     *
-    *   @param array $array
-    *   @return array
+    *   @param mixed[] $array
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     */
     public static function transverse(array $array): array
@@ -31,7 +31,7 @@ trait TableArrayUtilTrait
         if (!static::isDimension($array, 2)) {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         foreach ($array as $name => $list) {
             foreach ($list as $key => $val) {
                 $values[$key][$name] = $val;
@@ -39,13 +39,13 @@ trait TableArrayUtilTrait
         }
         return (empty($values)) ? [[]] : $values;
     }
-    
+
     /**
     *   flatten
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param int $depth
-    *   @return array
+    *   @return mixed[]
     */
     public static function flatten(array $array, int $depth = 1): array
     {
@@ -66,17 +66,17 @@ trait TableArrayUtilTrait
             []
         );
     }
-    
+
     /**
     *   列＝＞行展開
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param string $key_column キーとする列
     *   @param string $val_column 値とする列
     *   @param callable $callback 重複処理 function($key_columns, $val_column){
     *                                   return $array(key1=>val1, ・・・);
     *                               }
-    *   @return array
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     *   @example expansion(['adr' => 'tokyo','month' => 1, 'data' => 23]
     *               , ['adr' => 'tokyo','month' => 2, 'data' => 11]]
@@ -97,7 +97,7 @@ trait TableArrayUtilTrait
         ) {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         $transverse = static::transverse($array);
         return call_user_func(
             $callback,
@@ -105,12 +105,12 @@ trait TableArrayUtilTrait
             $transverse[$val_column]
         );
     }
-    
+
     /**
     *   キー揃え
     *
-    *   @param array $array
-    *   @return array
+    *   @param mixed[] $array
+    *   @return mixed[]
     *   @example alignKey([['A'=>1,'B'=>2], ['B'=>12,'C'=>13], ...])
     *       ==> [['A'=>1,'B'=>2,'C'=>null], ['A'=>null,'B'=>12,'C'=>13]]
     */
@@ -119,26 +119,26 @@ trait TableArrayUtilTrait
         if ($array == [[]]) {
             return [[]];
         }
-        
+
         if (($base = static::mergeKeyArray($array)) == false) {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         $items = [];
-        
+
         foreach ($array as $list) {
             array_push($items, array_merge($base, $list));
         }
         return $items;
     }
-    
+
     /**
     *   階段積み上げ演算
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param callable $callback 演算 ==>function($val, $previous)
     *   @param mixed $initial 初期値
-    *   @return array
+    *   @return mixed[]
     *   @example stepwise([1,2,3], 'SUM') ==> [1,3,6]
     *               stepwise([1,2,3], 'SUM', 1) ==> [2,4,7]
     */
@@ -149,7 +149,7 @@ trait TableArrayUtilTrait
     ): array {
         $items = [];
         $previous = $initial;
-        
+
         foreach ($array as $val) {
             array_push(
                 $items,
@@ -158,15 +158,15 @@ trait TableArrayUtilTrait
         }
         return $items;
     }
-    
+
     /**
     *   空白行を埋める
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param string $subscript 対象カラム
-    *   @param array $keys 検索キー
-    *   @param array $replace 置換行データ
-    *   @return array
+    *   @param mixed[] $keys 検索キー
+    *   @param mixed[] $replace 置換行データ
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     *   @example $array= array('A'=>1,'B'=>11), ,array('A'=>3,'B'=>33)];
     *               toFillBlank($array, 'A', [1,2,3,4], ['A'=>0,'B'=>0]);
@@ -182,13 +182,13 @@ trait TableArrayUtilTrait
         if (!static::isDimension($array)) {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         if (!array_key_exists($subscript, $array[key($array)])) {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         $transverse = static::transverse($array);
-        
+
         if (is_null($keys) || !is_array($keys)) {
             $max = intval(max($transverse[$subscript]));
             $min = intval(min($transverse[$subscript]));
@@ -196,7 +196,7 @@ trait TableArrayUtilTrait
         } else {
             $k = $keys;
         }
-        
+
         if (is_null($replace) || !is_array($replace)) {
             $r = array_map(
                 function ($val) {
@@ -207,9 +207,9 @@ trait TableArrayUtilTrait
         } else {
             $r = $replace;
         }
-        
+
         $result = $array;
-        
+
         foreach ($k as $val) {
             if (!in_array($val, $transverse[$subscript])) {
                 $ar = $r;
@@ -217,16 +217,16 @@ trait TableArrayUtilTrait
                 array_push($result, $ar);
             }
         }
-        
+
         return $result;
     }
-    
+
     /**
     *   テーブル行データから新しいカラムデータを作る
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param callable $callback
-    *   @return array
+    *   @return mixed[]
     *   @example $array= [
     *           ['A' => 10, 'B' => 400, 'C' => 1],
     *           ['A' => 20, 'B' => 300, 'C' => 2],
@@ -246,23 +246,25 @@ trait TableArrayUtilTrait
     *           ['AB' => 140, 'AC' => 44],
     *       ];
     */
-    public function makeColumnFromRow(array $array, callable $callback): array
-    {
+    public static function makeColumnFromRow(
+        array $array,
+        callable $callback
+    ): array {
         $columns = [];
         foreach ($array as $list) {
             $columns[] = $callback($list);
         }
         return $columns;
     }
-    
+
     /**
     *   指定列のみ持つテーブルに変換
     *
-    *   @param array $array
-    *   @param array $keys 抽出キー
-    *    @param array $default 存在しないキーの値 ['key' => val]
+    *   @param mixed[] $array
+    *   @param mixed[] $keys 抽出キー
+    *    @param mixed[] $default 存在しないキーの値 ['key' => val]
     *   @throws InvalidArgumentException
-    *   @return array
+    *   @return mixed[]
     */
     public static function selectBy(
         array $array,
@@ -272,11 +274,11 @@ trait TableArrayUtilTrait
         if (!static::isDimension($array)) {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         $length = count((array)current($array));
         $transverse = static::transverse($array);
         $result = [];
-        
+
         foreach ($keys as $key) {
             $result[$key] = (array_key_exists($key, $transverse)) ?
                 $transverse[$key]
@@ -288,34 +290,34 @@ trait TableArrayUtilTrait
         }
         return static::transverse($result);
     }
-    
+
     /**
     *   指定列を除いたテーブルに変換
     *
-    *   @param array $array
-    *   @param array $keys 抽出キー
+    *   @param mixed[] $array
+    *   @param mixed[] $keys 抽出キー
     *   @throws InvalidArgumentException
-    *   @return array
+    *   @return mixed[]
     */
     public static function unselectBy(array $array, array $keys): array
     {
         if (!static::isDimension($array)) {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         return static::transverse(
             static::unextractKey(static::transverse($array), $keys)
         );
     }
-    
+
     /**
     *   並び替え
     *
-    *   @param array $array
-    *   @param array $columns グループカラム
-    *   @param array $orders 並べ替え方向(ex:array_multisort order)
-    *   @param array $sorts 並べ替え方法(ex:array_multisort flags)
-    *   @return array
+    *   @param mixed[] $array
+    *   @param mixed[] $columns グループカラム
+    *   @param mixed[] $orders 並べ替え方向(ex:array_multisort order)
+    *   @param mixed[] $sorts 並べ替え方法(ex:array_multisort flags)
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     *   @example orderBy([['A' =>1, 'B' =>2], ['A' =>11, 'B' =>12]]
     *           , ['B'], [SORT_ASC], [SORT_NUMERIC ]);
@@ -329,7 +331,7 @@ trait TableArrayUtilTrait
         if (!static::isDimension($array)) {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         if (is_array($columns)) {
             $col = $columns;
         } elseif (is_null($columns)) {
@@ -337,7 +339,7 @@ trait TableArrayUtilTrait
         } else {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         if (is_array($orders) && (count($orders) == count($col))) {
             $odr = $orders;
         } elseif (is_null($orders)) {
@@ -345,7 +347,7 @@ trait TableArrayUtilTrait
         } else {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         if (is_array($sorts) && (count($sorts) == count($col))) {
             $srt = $sorts;
         } elseif (is_null($sorts)) {
@@ -353,18 +355,22 @@ trait TableArrayUtilTrait
         } else {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         $transverse = static::transverse($array);
-        
-        if (is_null($array[key($array)])) {
+
+        if (!isset($array[key($array)])) {
             throw new InvalidArgumentException("key not exists");
         }
-        
+
         $keys = array_keys($array[key($array)]);
         $result = $array;
-        
+
         $eval = 'array_multisort(';
-        for ($i = 0; $i < count($col); $i++) {
+        for (
+            $i = 0, $length = count($col);
+            $i < $length;
+            $i++
+        ) {
             if (in_array($col[$i], $keys)) {
                 $eval .= '$transverse[\'' . $col[$i] . '\'], ';
                 $eval .= (int)$odr[$i] . ', ';
@@ -372,19 +378,19 @@ trait TableArrayUtilTrait
             }
         }
         $eval .= '$result);';
-        
+
         eval($eval);
         return $result;
     }
-    
+
     /**
     *   集約
     *
-    *   @param array $array
-    *   @param array $columns グループカラム
-    *   @param array $callback 集約演算の対象カラムと関数
+    *   @param mixed[] $array
+    *   @param mixed[] $columns グループカラム
+    *   @param mixed[] $callback 集約演算の対象カラムと関数
     *           ['column1' => function(){}, 'column2' => 'array_sum']
-    *   @return array
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     *   @example groupBy([['A' =>1, 'B' =>2], ['A' =>11, 'B' =>12]]
     *       , ['B'], ['A' => function($array){return array_sum($array);}]);
@@ -399,14 +405,14 @@ trait TableArrayUtilTrait
                 "data type is different:array"
             );
         }
-        
+
         $keys = array_keys($array[key($array)]);
         if (!is_array($columns)) {
             throw new InvalidArgumentException(
                 "data type is different:columns"
             );
         }
-        
+
         foreach ($columns as $key) {
             if (!in_array($key, $keys)) {
                 throw new InvalidArgumentException(
@@ -414,13 +420,13 @@ trait TableArrayUtilTrait
                 );
             }
         }
-        
+
         if (!is_array($callback)) {
             throw new InvalidArgumentException(
                 "data type is different:callback"
             );
         }
-        
+
         foreach ($callback as $key => $func) {
             if (!in_array($key, $keys) || !is_callable($func)) {
                 throw new InvalidArgumentException(
@@ -428,54 +434,54 @@ trait TableArrayUtilTrait
                 );
             }
         }
-        
+
         $order = static::orderBy($array, $columns);
-        
+
         $aggregate = [];
         $group = [];
         $previous = [];
         $i = 0;
-        
+
         foreach ($order as $list) {
             $select = static::extractKey($list, $columns);
-            
+
             if ($select != $previous) {
                 $i++;
                 $group[$i] = $select;
             }
-            
+
             foreach ($callback as $key => $func) {
                 if (isset($list[$key])) {
                     $aggregate[$i][$key][] = $list[$key];
                 }
             }
-            
+
             $previous = $select;
         }
-        
+
         $result = [];
-        
+
         foreach ($aggregate as $no => $row) {
             $items = [];
-            
+
             foreach ($row as $key => $list) {
                 $items[$key] = call_user_func($callback[$key], $list);
             }
-            
+
             array_push($result, array_merge($group[$no], $items));
         }
         return $result;
     }
-    
+
     /**
     *   クロス集計
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param string $row_key 行とする列
     *   @param string $column_key 列とする列
-    *   @param array $callback 各列集約の関数 array(col1 => callbacl1,
+    *   @param mixed[] $callback 各列集約の関数 array(col1 => callbacl1,
     *                   col3 => callback3, ・・・)
-    *   @return array
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     *   @example $array ==>
     *       a b   c  d
@@ -516,7 +522,7 @@ trait TableArrayUtilTrait
                 "data type is different:callback"
             );
         }
-        
+
         foreach ($callback as $key => $func) {
             if (!in_array($key, $keys) || !is_callable($func)) {
                 throw new InvalidArgumentException(
@@ -524,25 +530,25 @@ trait TableArrayUtilTrait
                 );
             }
         }
-        
+
         $groupBy = static::groupBy(
             $array,
             [$row_key, $column_key],
             $callback
         );
-        
+
         if (count($groupBy) == 0) {
             return [];
         }
-        
+
         $transverse = static::transverse($groupBy);
         $rows = array_unique($transverse[$row_key]);
         $columns = array_unique($transverse[$column_key]);
         $tables = array_keys($callback);
-            
+
         natsort($rows);
         natsort($columns);
-        
+
         $dataset = static::orderBy(
             $groupBy,
             array_merge(
@@ -550,25 +556,25 @@ trait TableArrayUtilTrait
                 $tables
             )
         );
-        
+
         $title_columns = array_merge([$row_key], $columns);
         $result = [array_combine($title_columns, $title_columns)];
         $result[0][$row_key] = $column_key;
-        
+
         $c = current($dataset);
-        
+
         foreach ($tables as $table) {
             $result[$table] = [];
             $initial[$table] = call_user_func($callback[$table], []);
         }
-        
+
         $items = [];
-        
+
         foreach ($rows as $row) {
             foreach ($tables as $table) {
                 $items[$table] = [$row_key => $row];
             }
-            
+
             foreach ($columns as $col) {
                 if ($c === false) {
                     foreach ($tables as $table) {
@@ -594,16 +600,16 @@ trait TableArrayUtilTrait
         }
         return $result;
     }
-    
+
     /**
     *   TABLE JOIN
     *
-    *   @param array $table1
-    *   @param array $table2
-    *   @param array $where 結合条件 array(array('column1-m', 'column2-n'), ・・・)
+    *   @param mixed[] $table1
+    *   @param mixed[] $table2
+    *   @param mixed[] $where 結合条件 array(array('column1-m', 'column2-n'), ・・・)
     *   @param string $type 結合タイプ('left', 'inner')
     *   @param string $suffix
-    *   @return array
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     */
     public static function joinTable(
@@ -620,16 +626,16 @@ trait TableArrayUtilTrait
         ) {
             throw new InvalidArgumentException("args type is different");
         }
-        
+
         $result = [];
         $col2_keys = [];
-        
+
         foreach ($table1 as $row1) {
             $count = 0;
-            
+
             foreach ($table2 as $row2) {
                 $join = true;
-                
+
                 if (empty($col2_keys)) {
                     $col2_keys = array_map(
                         function ($val) use ($suffix) {
@@ -638,7 +644,7 @@ trait TableArrayUtilTrait
                         array_keys($row2)
                     );
                 }
-                
+
                 foreach ($where as $keys) {
                     if (count($keys) != 2) {
                         throw new InvalidArgumentException(
@@ -649,7 +655,7 @@ trait TableArrayUtilTrait
                         $join = false;
                     }
                 }
-                
+
                 if ($join) {
                     array_push(
                         $result,
@@ -661,7 +667,7 @@ trait TableArrayUtilTrait
                     $count++;
                 }
             }
-            
+
             if ((strtolower($type) == 'left') && ($count == 0)) {
                 array_push(
                     $result,
@@ -674,11 +680,11 @@ trait TableArrayUtilTrait
         }
         return $result;
     }
-    
+
     /**
     *   TABLE判定
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param bool $is_key true:添字比較実行
     *   @param bool $is_type true:データ型比較実行
     *   @return bool
@@ -710,19 +716,19 @@ trait TableArrayUtilTrait
         }
         return true;
     }
-    
+
     /**
     *   isEmptyTable
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @return bool
     */
-    public function isEmptyTable(array $array): bool
+    public static function isEmptyTable(array $array): bool
     {
         $iterator = new RecursiveIteratorIterator(
             new RecursiveArrayIterator($array)
         );
-        
+
         foreach ($iterator as $val) {
             if (!empty($val)) {
                 return false;

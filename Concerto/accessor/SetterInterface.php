@@ -4,7 +4,7 @@
 *   SetterInterface
 *
 *   @version 190516
-**/
+*/
 
 declare(strict_types=1);
 
@@ -17,14 +17,14 @@ interface SetterInterface
     *
     *   @param string $propertyName
     *   @return bool
-    **/
+    */
     public function hasSetter(string $propertyName): bool;
-    
+
     /**
     *   method名がsetterである
     *
     *   @param string $methodName
     *   @return bool
-    **/
+    */
     public function isSetterMethod($methodName): bool;
 }

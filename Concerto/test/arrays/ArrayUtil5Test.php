@@ -24,41 +24,41 @@ class ArrayUtil5Test extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider keyRemapProvider
-    **/
+    */
     public function keyRemap($data, $serKey, $destKey)
     {
 //      $this->markTestIncomplete();
-        
+
         $expect = [
             'cd_tanto' => '12345',
             'cd_bumon' => 2
         ];
-        
+
         $this->assertEquals($expect, ArrayUtil::keyRemap($data, $serKey, $destKey));
     }
-    
+
     /**
     *   @test
     *   @dataProvider keyRemapProvider
-    **/
+    */
     public function keyPertiallyRemap($data, $serKey, $destKey)
     {
 //      $this->markTestIncomplete();
-        
+
         $expect = [
             'cd_tanto' => '12345',
             'tanto_name' => 'ABC',
             'cd_bumon' => 2,
             'bumon_name' => 'XXX'
         ];
-        
+
         $this->assertEquals($expect, ArrayUtil::keyPartiallyRemap($data, $serKey, $destKey));
     }
-    
+
     public function replaceWithoutProvider()
     {
         return [
@@ -81,15 +81,15 @@ class ArrayUtil5Test extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider replaceWithoutProvider
-    **/
+    */
     public function replaceWithout($exclude, $dataset, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         array_unshift($dataset, $exclude);
         $actual = forward_static_call_array(
             ['Concerto\standard\ArrayUtil', 'replaceWithout'],
@@ -97,7 +97,7 @@ class ArrayUtil5Test extends ConcertoTestCase
         );
         $this->assertEquals($expect, $actual);
     }
-    
+
     public function replaceInitParamProvider()
     {
         return [
@@ -111,15 +111,15 @@ class ArrayUtil5Test extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider replaceInitParamProvider
-    **/
+    */
     public function replaceInitParam($dataset, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $actual = call_user_func_array(
             ['Concerto\standard\ArrayUtil', 'replaceInitParam'],
             $dataset

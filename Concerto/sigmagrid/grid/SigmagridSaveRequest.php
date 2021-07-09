@@ -26,39 +26,39 @@ class SigmagridSaveRequest extends DataContainerValidatable
     *   jsonId
     *
     *   @var string
-    **/
+    */
     protected $jsonId;
-    
+
     /**
     *   dataClass
     *
     *   @var object
-    **/
+    */
     protected $dataClass;
-    
+
     /**
     *   rawData
     *
-    *   @var array
-    **/
+    *   @var mixed[]
+    */
     protected $rawData;
-    
+
     /**
     *   Columns
     *
-    *   @var array
+    *   @var string[]
     */
     protected static $schema = array('recordType', 'parameters', 'action',
         'fieldsName', 'insertedRecords', 'updatedRecords', 'deletedRecords'
     );
-    
+
     /**
     *   __construct
     *
     *   @param DataContainerValidatable $dataClass
     *   @param DataContainerValidatable $parameters
     *   @param string $jsonId
-    **/
+    */
     public function __construct(
         DataContainerValidatable $dataClass,
         DataContainerValidatable $parameters = null,
@@ -67,23 +67,23 @@ class SigmagridSaveRequest extends DataContainerValidatable
         $this->jsonId = $jsonId;
         $this->dataClass = $dataClass;
         $this->parameters = (is_object($parameters)) ? $parameters : null;
-        
+
         if (!$this->isAjax()) {
             return;
         }
-        
+
         if (!isset($_POST[$this->jsonId])) {
             return;
         }
         $this->rawData = json_decode($_POST[$this->jsonId], true);
         $this->init();
     }
-    
+
     /**
     *   isAjax
     *
     *   @return bool
-    **/
+    */
     protected function isAjax()
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH'])
@@ -91,27 +91,27 @@ class SigmagridSaveRequest extends DataContainerValidatable
                 == 'xmlhttprequest'
             );
     }
-    
+
     /**
     *   init
     *
-    **/
+    */
     protected function init()
     {
         $this->action = $this->rawData['action'];
         $this->recordType = $this->rawData['recordType'];
         $this->fieldsName = $this->rawData['fieldsName'];
-        
+
         $this->setInsertedRecords();
         $this->setUpdatedRecords();
         $this->setDeletedRecords();
         $this->setParameters();
     }
-    
+
     /**
     *   setParameters
     *
-    **/
+    */
     protected function setParameters()
     {
         if (isset($this->parameters)) {
@@ -120,11 +120,11 @@ class SigmagridSaveRequest extends DataContainerValidatable
             );
         }
     }
-    
+
     /**
     *   setInsertedRecords
     *
-    **/
+    */
     protected function setInsertedRecords()
     {
         $this->insertedRecords = new SigmagridRecordCollection(
@@ -134,11 +134,11 @@ class SigmagridSaveRequest extends DataContainerValidatable
             $this->recordType
         );
     }
-    
+
     /**
     *   setUpdatedRecords
     *
-    **/
+    */
     protected function setUpdatedRecords()
     {
         $this->updatedRecords = new SigmagridRecordCollection(
@@ -148,11 +148,11 @@ class SigmagridSaveRequest extends DataContainerValidatable
             $this->recordType
         );
     }
-    
+
     /**
     *   setDeletedRecords
     *
-    **/
+    */
     protected function setDeletedRecords()
     {
         $this->deletedRecords = new SigmagridRecordCollection(
@@ -162,7 +162,7 @@ class SigmagridSaveRequest extends DataContainerValidatable
             $this->recordType
         );
     }
-    
+
     public function isValidRecordType($val)
     {
         return ($val == 'array') || ($val == 'object');
@@ -172,30 +172,30 @@ class SigmagridSaveRequest extends DataContainerValidatable
     {
         return ($val == 'save');
     }
-    
+
     public function isValidFieldsName($val)
     {
         return is_array($val);
     }
-    
+
     public function isValidInsertedRecords($val)
     {
         return (isset($this->insertedRecords)) ?
             $this->insertedRecords->isValid() : false;
     }
-    
+
     public function isValidUpdatedRecords($val)
     {
         return (isset($this->updatedRecords)) ?
             $this->updatedRecords->isValid() : false;
     }
-    
+
     public function isValidDeletedRecords($val)
     {
         return (isset($this->deletedRecords)) ?
             $this->deletedRecords->isValid() : false;
     }
-    
+
     public function isValidParameters($val)
     {
         return (isset($this->parameters)) ?

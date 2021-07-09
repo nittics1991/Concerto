@@ -18,32 +18,32 @@ class SigmagridSortInfo extends DataContainerValidatable
     /**
     *   Columns
     *
-    *   @var array
+    *   @var string[]
     */
     protected static $schema = array(
         'columnId', 'fieldName', 'sortOrder', 'getSortValue', 'sortFn'
     );
-    
+
     /**
     *   __construct
     *
-    *   @param array $params
-    **/
+    *   @param mixed[] $params
+    */
     public function __construct(array $params = [])
     {
         $this->fromArray($params);
     }
-    
+
     public function isValidColumnId($val)
     {
         return Validate::isAscii($val, 1);
     }
-    
+
     public function isValidFieldName($val)
     {
         return Validate::isAscii($val, 1);
     }
-    
+
     public function isValidSortOrder($val)
     {
         if (is_null($val) || ($val == 'asc') || ($val == 'desc')) {
@@ -51,12 +51,12 @@ class SigmagridSortInfo extends DataContainerValidatable
         }
         return false;
     }
-    
+
     public function isValidGetSortValue($val)
     {
         return Validate::isText($val, 0);
     }
-    
+
     public function isValidSortFn($val)
     {
         return Validate::isText($val, 0);

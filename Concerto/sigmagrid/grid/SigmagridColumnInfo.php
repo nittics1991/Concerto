@@ -18,28 +18,28 @@ class SigmagridColumnInfo extends DataContainerValidatable
     /**
     *   Columns
     *
-    *   @var array
+    *   @var string[]
     */
     protected static $schema = array(
         'id', 'header', 'fieldName', 'fieldIndex','sortOrder',
         'hidden', 'exportable', 'printable'
     );
-    
+
     /**
     *   __construct
     *
-    *   @param array $params
-    **/
+    *   @param mixed[] $params
+    */
     public function __construct(array $params = [])
     {
         $this->fromArray($params);
     }
-    
+
     public function isValidId($val)
     {
         return Validate::isAscii($val, 1);
     }
-    
+
     public function isValidHeader($val)
     {
         return Validate::isTextEscape($val, 0, 100, null, '\r\n\t')
@@ -47,18 +47,18 @@ class SigmagridColumnInfo extends DataContainerValidatable
             && !Validate::hasTextHtml($val)
             && !Validate::hasTextDatabase($val);
     }
-    
+
     public function isValidFieldName($val)
     {
         return Validate::isAscii($val, 1);
     }
-    
+
     public function isValidFieldIndex($val)
     {
         return Validate::isInt($val, 0) ||
             $this->isValidId($val) ;
     }
-    
+
     public function isValidSortOrder($val)
     {
         if (is_null($val) || ($val == 'asc') || ($val == 'desc')) {
@@ -66,17 +66,17 @@ class SigmagridColumnInfo extends DataContainerValidatable
         }
         return false;
     }
-    
+
     public function isValidHidden($val)
     {
         return is_bool($val);
     }
-    
+
     public function isValidExportable($val)
     {
         return is_bool($val);
     }
-    
+
     public function isValidPrintable($val)
     {
         return is_bool($val);

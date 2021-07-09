@@ -4,7 +4,7 @@
 *   Observer Subject interface
 *
 *   @version 151215
-**/
+*/
 
 declare(strict_types=1);
 
@@ -18,7 +18,7 @@ interface ObserverSubjectInterface
     *   @return mixed データ
     */
     public function toObserver();
-    
+
     /**
     *   observerからのデータ受取り
     *

@@ -13,21 +13,21 @@ use Concerto\conf\Config;
 class ConfigServiceProviderTest extends ConcertoTestCase
 {
     private $container;
-    
+
     public function setUp(): void
     {
         $this->container = new ServiceContainer();
         $this->container->delegate(new ServiceProviderContainer());
         $this->container->addServiceProvider(ConfigServiceProvider::class);
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function getObject()
     {
 //       $this->markTestIncomplete();
-        
+
         $this->assertInstanceOf(Config::class, $this->container->get('configSystem'));
     }
 }

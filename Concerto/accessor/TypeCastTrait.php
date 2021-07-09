@@ -4,7 +4,7 @@
 *   TypeCastTrait
 *
 *   @version 190516
-**/
+*/
 
 declare(strict_types=1);
 
@@ -26,38 +26,38 @@ trait TypeCastTrait
     *       'prop3' => 'dateformat:Y-m-d H:i:s'
     *       'prop4' => 'callable:setProp4'
     *       ]
-    **/
+    */
     // protected $setCastTypes = [];
     // protected $getCastTypes = [];
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function hasSetCastType(?string $name = null)
     {
         return isset($name) ?
             array_key_exists($name, $this->setCastTypes) :
             $this->setCastTypes;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function hasGetCastType(?string $name = null)
     {
         return isset($name) ?
             array_key_exists($name, $this->getCastTypes) :
             $this->getCastTypes;
     }
-    
+
     /**
     *   setCastTypesの定義取得
     *
     *   @param string $name
     *   @return string
-    **/
+    */
     protected function setCastType(string $name): string
     {
         if (!$this->hasSetCastType($name)) {
@@ -67,13 +67,13 @@ trait TypeCastTrait
         }
         return $this->setCastTypes[$name];
     }
-    
+
     /**
     *   getCastTypesの定義取得
     *
     *   @param string $name
     *   @return string
-    **/
+    */
     protected function getCastType(string $name): string
     {
         if (!$this->hasGetCastType($name)) {
@@ -83,14 +83,14 @@ trait TypeCastTrait
         }
         return $this->getCastTypes[$name];
     }
-    
+
     /**
     *   toCastDataType
     *
     *   @param string $type
     *   @param mixed $value
     *   @return mixed
-    **/
+    */
     protected function toCastDataType($type, $value)
     {
         switch ($type) {
@@ -122,7 +122,7 @@ trait TypeCastTrait
                 return (new DateTimeImmutable((string)$value))
                     ->modify('today');
         }
-        
+
         $splited = mb_split(':', $type, 2);
         switch ($splited[0]) {
             case 'dateformat':
@@ -133,7 +133,7 @@ trait TypeCastTrait
             case 'callable':
                 return call_user_func([$this, $splited[1]], $value);
         }
-        
+
         throw new LogicException(
             "not defined type:{$type}"
         );

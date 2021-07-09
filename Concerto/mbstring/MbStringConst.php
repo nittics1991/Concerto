@@ -5,7 +5,7 @@
 *
 *   @version 150715
 *
-**/
+*/
 
 declare(strict_types=1);
 
@@ -16,7 +16,7 @@ final class MbStringConst
     /**
     *   SJIS 5C文字
     *
-    *   @var array
+    *   @var string[]
     */
     public static $sjis5c = array(
         '―', 'ソ', 'Ы', 'Ⅸ', '噂', '浬', '欺', '圭',

@@ -3,8 +3,8 @@
 /**
  *   ConfigServiceProvider
  *
- * @version 190716
- **/
+ * @version 210615
+ */
 
 declare(strict_types=1);
 
@@ -21,13 +21,17 @@ class ConfigServiceProvider extends AbstractServiceProvider
         'configSystem',
     ];
 
-    public function register()
+    /**
+    *   register
+    *
+    */
+    public function register(): void
     {
         $this->share(
             'configSystemPath',
             realpath(__DIR__ . '/../../../_config/common/system.php')
         );
-        
+
         $this->share(
             'configSystem',
             function ($container) {

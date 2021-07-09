@@ -4,7 +4,7 @@
 *   Validator
 *
 *   @ver 180712
-**/
+*/
 
 declare(strict_types=1);
 
@@ -18,51 +18,51 @@ class Validator implements ValidatorInterface
     *   resolver
     *
     *   @var RuleResolverInterface
-    **/
+    */
     private $resolver;
-    
+
     /**
     *   values
     *
     *   @var array
-    **/
+    */
     private $values = [];
-    
+
     /**
     *   rules
     *
     *   @var array
-    **/
+    */
     private $rules = [];
-    
+
     /**
     *   messages
     *
     *   @var array
-    **/
+    */
     private $messages = [];
-    
+
     /**
     *   validations
     *
     *   @var array [ValidationInterface, ...]
-    **/
+    */
     private $validations = [];
-    
+
     /**
     *   errors
     *
     *   @var array [ValidationInterface, ...]
-    **/
+    */
     private $errors = [];
-    
+
     /**
     *   immediately
     *
     *   @var bool
-    **/
+    */
     private $immediately = false;
-    
+
     /**
     *   __construct
     *
@@ -70,7 +70,7 @@ class Validator implements ValidatorInterface
     *   @param array
     *   @param array
     *   @param array
-    **/
+    */
     public function __construct(
         RuleResolverInterface $resolver,
         array $values = [],
@@ -82,40 +82,40 @@ class Validator implements ValidatorInterface
         $this->rules = $rules;
         $this->messages = $messages;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function isValid()
     {
         $this->errors = [];
         $result = true;
         $this->resolveRule();
-        
+
         foreach ($this->validations as $validation) {
             $nearest = $validation->isValid();
             $result = $result && $nearest;
-            
+
             if (!$nearest) {
                 $this->errors[] = $validation;
             }
-            
+
             if ($this->immediately && !$nearest) {
                 return false;
             }
         }
         return $result;
     }
-    
+
     /**
     *   resolveRule
     *
-    **/
+    */
     private function resolveRule()
     {
         $this->validations = [];
-        
+
         foreach ($this->rules as $attribute => $rule) {
             $this->validations = array_merge(
                 $this->validations,
@@ -128,31 +128,31 @@ class Validator implements ValidatorInterface
             );
         }
     }
-    
+
     /**
     *   fails
     *
     *   @return bool
-    **/
+    */
     public function fails()
     {
         return !$this->isValid();
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function errors()
     {
         return $this->errors;
     }
-    
+
     /**
     *   messages
     *
     *   @return array
-    **/
+    */
     public function messages()
     {
         return array_map(
@@ -162,12 +162,12 @@ class Validator implements ValidatorInterface
             $this->errors
         );
     }
-    
+
     /**
     *   immediately
     *
     *   @return $this
-    **/
+    */
     public function immediately()
     {
         $this->immediately = true;

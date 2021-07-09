@@ -3,10 +3,10 @@
 /**
  *   ChartFactory
  *
- * @version 200311
+ * @version 210615
  *
  * @comment ver2.0のFactory.phpのコピーして改造
- **/
+ */
 
 declare(strict_types=1);
 
@@ -26,13 +26,21 @@ use InvalidArgumentException;
  */
 class ChartFactory
 {
+    /**
+    *   @var string
+    */
     private $namespace;
 
-    public function __construct($namespace = 'CpChart')
+    /**
+    *   __construct
+    *
+    *   @param ?string $namespace
+    */
+    public function __construct(?string $namespace = 'CpChart')
     {
-        $this->namespace = $namespace;
+        $this->namespace = $namespace ?? 'CpChart';
     }
-    
+
     /**
      * Loads a new chart class (scatter, pie etc.). Some classes require instances of
      * Image and Data classes passed into their constructor. These classes are:
@@ -43,9 +51,9 @@ class ChartFactory
      * 'Image' CLASS (ex. 'drawBarChart'), NOT THROUGH THIS METHOD! READ THE
      * DOCUMENTATION FOR MORE DETAILS.
      *
-     * @param  string $chartType   - type of the chart to be loaded (for example 'pie', not 'pPie')
-     * @param  Image  $chartObject
-     * @param  Data   $dataObject
+     * @param string $chartType   - type of the chart to be loaded (for example 'pie', not 'pPie')
+     * @param Image  $chartObject
+     * @param Data   $dataObject
      * @return \CpChart\Chart\{$chartType}
      * @throws NotSupportedChartException
      */
@@ -55,7 +63,7 @@ class ChartFactory
         Data $dataObject = null
     ) {
         $className = 'CpChart\\Chart\\' . ucfirst($chartType);
-        
+
         if (!class_exists($className)) {
             throw new InvalidArgumentException(
                 "not found chart class:{$chartType}"
@@ -67,8 +75,8 @@ class ChartFactory
     /**
      * Creates a new Data class with an option to pass the data to form a serie.
      *
-     * @param  array  $points    - points to be added to serie
-     * @param  string $serieName - name of the serie
+     * @param mixed[] $points    - points to be added to serie
+     * @param string $serieName - name of the serie
      * @return Data
      */
     public function newData(array $points = [], $serieName = "Serie1")
@@ -84,10 +92,10 @@ class ChartFactory
      * Create a new Image class. It requires the size of axes to be properly
      * constructed.
      *
-     * @param  integer $XSize                 - length of the X axis
-     * @param  integer $YSize                 - length of the Y axis
-     * @param  Data    $DataSet               - Data class populated with points
-     * @param  boolean $TransparentBackground
+     * @param int $XSize                 - length of the X axis
+     * @param int $YSize                 - length of the Y axis
+     * @param Data $DataSet               - Data class populated with points
+     * @param bool $TransparentBackground
      * @return Image
      */
     public function newImage(
@@ -109,9 +117,9 @@ class ChartFactory
      * the class name is contructed on the fly. Passing the constructor's parameters
      * is also available, but not mandatory.
      *
-     * @param  int     $number      - Barcode class number (39 or 128)
-     * @param  string  $BasePath    - optional path for the file containing the class data
-     * @param  boolean $EnableMOD43
+     * @param int $number      - Barcode class number (39 or 128)
+     * @param string  $BasePath    - optional path for the file containing the class data
+     * @param bool $EnableMOD43
      * @return Barcode39|Barcode128
      * @throws InvalidArgumentException
      */

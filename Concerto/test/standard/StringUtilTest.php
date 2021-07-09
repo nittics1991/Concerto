@@ -12,15 +12,15 @@ class StringUtilTest extends ConcertoTestCase
     public function setUp(): void
     {
     }
-    
+
     /**
     *   @test
     *
-    **/
+    */
     public function jsonFormating()
     {
 //      $this->markTestIncomplete();
-        
+
         $expect = <<< EEE
 {
     "aa": "AAA",
@@ -31,40 +31,40 @@ class StringUtilTest extends ConcertoTestCase
     ]
 }
 EEE;
-        
+
         $actual = array(
             'aa' => 'AAA',
             'bb' => array(1, 2, 3)
         );
-        
+
         $aaa = StringUtil::jsonFormating(json_encode($actual));
         $this->assertEquals($expect, StringUtil::jsonFormating(json_encode($actual)));
     }
-    
+
     /**
     *   @test
     *
-    **/
+    */
     public function strToArray()
     {
 //      $this->markTestIncomplete();
-        
+
         $data = 'aCd漢字12';
         $expect = array('a', 'C', 'd', '漢', '字', '1', '2');
         $this->assertEquals($expect, StringUtil::strToArray($data));
     }
-    
+
     /**
     *   @test
     *
-    **/
+    */
     public function escapeJavascript()
     {
 //      $this->markTestIncomplete($data);
-        
+
         // chr()では正しいUTF-8の128以上の文字を生成できないのでmb_decode_numericentity()を利用
         $convmap = array(0x0000, 0xffff, 0, 0xffff);
-        
+
         //0x00-0x2f
         $str = '';
         $expect = array();
@@ -72,7 +72,7 @@ EEE;
             $str .= mb_decode_numericentity("&#{$i};", $convmap, 'UTF8');
             $expect[] = $i;
         }
-        
+
         $result = StringUtil::escapeJavascript($str);
         $actual = explode('\x', $result);
         array_shift($actual);
@@ -81,17 +81,17 @@ EEE;
             $val = hexdec($str);
         });
         $this->assertEquals($expect, $actual);
-        
+
         //数値
         $str = '';
         for ($i = 0x30; $i <= 0x39; $i++) {
             $str .= mb_decode_numericentity("&#{$i};", $convmap, 'UTF8');
         }
-        
+
         $expect = implode('', range(0, 9));
         $actual = StringUtil::escapeJavascript($str);
         $this->assertEquals($expect, $actual);
-        
+
         //0x3a-0x40
         $str = '';
         $expect = array();
@@ -99,7 +99,7 @@ EEE;
             $str .= mb_decode_numericentity("&#{$i};", $convmap, 'UTF8');
             $expect[] = $i;
         }
-        
+
         $result = StringUtil::escapeJavascript($str);
         $actual = explode('\x', $result);
         array_shift($actual);
@@ -108,7 +108,7 @@ EEE;
             $val = hexdec($str);
         });
         $this->assertEquals($expect, $actual);
-        
+
         //大文字
         $str = '';
         $expect = '';
@@ -116,10 +116,10 @@ EEE;
             $str .= mb_decode_numericentity("&#{$i};", $convmap, 'UTF8');
             $expect .= chr($i);
         }
-        
+
         $actual = StringUtil::escapeJavascript($str);
         $this->assertEquals($expect, $actual);
-        
+
         //0x5b-0x60
         $str = '';
         $expect = array();
@@ -127,7 +127,7 @@ EEE;
             $str .= mb_decode_numericentity("&#{$i};", $convmap, 'UTF8');
             $expect[] = $i;
         }
-        
+
         $result = StringUtil::escapeJavascript($str);
         $actual = explode('\x', $result);
         array_shift($actual);
@@ -136,7 +136,7 @@ EEE;
             $val = hexdec($str);
         });
         $this->assertEquals($expect, $actual);
-        
+
         //小文字
         $str = '';
         $expect = '';
@@ -144,11 +144,11 @@ EEE;
             $str .= mb_decode_numericentity("&#{$i};", $convmap, 'UTF8');
             $expect .= chr($i);
         }
-        
+
         $actual = StringUtil::escapeJavascript($str);
         $this->assertEquals($expect, $actual);
-        
-        
+
+
         //0x7b-0xff
         $str = '';
         $expect = array();
@@ -156,7 +156,7 @@ EEE;
             $str .= mb_decode_numericentity("&#{$i};", $convmap, 'UTF8');
             $expect[] = $i;
         }
-        
+
         $result = StringUtil::escapeJavascript($str);
         $actual = explode('\x', $result);
         array_shift($actual);
@@ -165,39 +165,39 @@ EEE;
             $val = hexdec($str);
         });
         $this->assertEquals($expect, $actual);
-        
+
         //仮名漢字など
         $str = $expect = 'かなカタカナ漢字（”）';
         $actual = StringUtil::escapeJavascript($str);
         $this->assertEquals($expect, $actual);
     }
-    
+
     /**
     *   @test
     *
-    **/
+    */
     public function strToCode()
     {
 //      $this->markTestIncomplete($data);
-        
+
         $data = "文#字ｱ\ra1２";
         $expect = ['e69687', '23', 'e5ad97', 'efbdb1', '0d', '61', '31', 'efbc92'];
         $this->assertEquals($expect, StringUtil::strToCode($data));
     }
-    
+
     /**
     *   @test
     *
-    **/
+    */
     public function codeToStr()
     {
 //      $this->markTestIncomplete($data);
-        
+
         $data = ['e69687', '23', 'e5ad97', 'efbdb1', '0d', '61', '31', 'efbc92'];
         $expect = "文#字ｱ\ra1２";
         $this->assertEquals($expect, StringUtil::codeToStr($data));
     }
-    
+
     public function tokenProvider()
     {
         return [
@@ -209,16 +209,16 @@ mno　pqr",
             ["", []],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider tokenProvider
     *
-    **/
+    */
     public function token($data, $expect)
     {
 //      $this->markTestIncomplete($data);
-        
+
         $this->assertEquals($expect, StringUtil::token($data));
     }
 }

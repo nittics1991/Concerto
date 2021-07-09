@@ -3,10 +3,12 @@
 /**
 *   メッセージテンプレート({{xxx}}テンプレートタイプ)
 *
-*   @ver 180614
+*   @ver 201013
 *   @exapmle $template = 'string to be replaced by {{keyword}}'
 *           $values={'keyword' => $value}
-**/
+*/
+
+declare(strict_types=1);
 
 namespace Concerto\template;
 
@@ -17,16 +19,16 @@ class CurlyBracketMessageGenerator extends AbstractMessageGenerator
     /**
     *   {inherit}
     *
-    **/
+    */
     public function generate(array $parameters = []): string
     {
         $template = $this->template;
-        
+
         foreach ($parameters as $key => $val) {
             $template = (string)mb_ereg_replace(
                 '\{\{' . $key . '\}\}',
-                $val,
-                $template
+                (string)$val,
+                (string)$template
             );
         }
         return $template;

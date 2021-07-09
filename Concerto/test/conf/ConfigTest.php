@@ -13,20 +13,20 @@ class ConfigTest extends ConcertoTestCase
     /**
     *   @test
     *
-    **/
+    */
     public function accessor()
     {
 //      $this->markTestIncomplete();
-        
+
         $fileName = 'read.php';
         $file = __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . $fileName;
         $obj = new Config(new ConfigReaderArray($file));
-        
+
         //get
         $expect = 'pgsql';
         $actual = $obj['database']['default']['adapter'];
         $this->assertEquals($expect, $actual);
-        
+
         $expect = array(
             'default' => array(
                 'stream' => 'err.log',
@@ -35,7 +35,7 @@ class ConfigTest extends ConcertoTestCase
         );
         $actual = $obj->log;
         $this->assertEquals($expect, $actual);
-        
+
         //toArray
         $expect = array(
             'database' => array (
@@ -59,7 +59,7 @@ class ConfigTest extends ConcertoTestCase
         );
         $actual = $obj->getArrayCopy();
         $this->assertEquals($expect, $actual);
-        
+
         //set
         $obj->database =
             ['default' =>
@@ -69,20 +69,20 @@ class ConfigTest extends ConcertoTestCase
         $actual = $obj['database']['default']['adapter'];
         $this->assertEquals($expect, $actual);
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function replace()
     {
 //      $this->markTestIncomplete();
-        
+
         $baseFile = realpath(__DIR__ . '/data/read.php');
         $obj = new Config(new ConfigReaderArray($baseFile));
-        
+
         $replaceFile = realpath(__DIR__ . '/data/replace.php');
         $obj->replace(new ConfigReaderArray($replaceFile));
-        
+
         $expected = array(
             'database' => array (
                 'default' => array(
@@ -103,28 +103,28 @@ class ConfigTest extends ConcertoTestCase
                 )
             )
         );
-        
+
         $this->assertEquals($expected, $obj->getArrayCopy());
     }
-    
+
     /**
     *   @test
     */
     public function dotNotation()
     {
 //      $this->markTestIncomplete();
-        
+
         $file = realpath(__DIR__ . '/data/read.php');
         $obj = new Config(new ConfigReaderArray($file));
-        
+
         $this->assertEquals(true, $obj->has('database.default.params.host'));
         $this->assertEquals(false, $obj->has('database.default.params.DUMMY'));
         $this->assertEquals('localhost', $obj->get('database.default.params.host'));
-        
+
         $new_data = 'CHANGED';
         $obj2 = $obj->set('database.default.params.host', $new_data);
         $this->assertEquals($new_data, $obj->get('database.default.params.host'));
-        
+
         $obj2->remove('database.default.params.host');
         $this->assertEquals(false, $obj->has('database.default.params.host'));
     }

@@ -22,7 +22,7 @@ class LdapEntryTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider basicProvider
@@ -30,14 +30,14 @@ class LdapEntryTest extends ConcertoTestCase
     public function basic($dn, $attr)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new LdapEntry($dn, $attr);
-        
+
         $this->assertEquals($dn, $obj->getDn());
         $this->assertEquals($attr, $obj->getAttributes());
         $this->assertEquals(true, $obj->has('clock'));
         $this->assertEquals($attr['clock'], $obj->get('clock'));
-        
+
         $this->assertEquals(false, $obj->has('DUMMY'));
         $this->assertEquals(null, $obj->has('DUMMY'));
     }

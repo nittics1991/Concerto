@@ -10,8 +10,8 @@ use Concerto\win\FileSystemObject;
 class FileSystemObjectTest extends ConcertoTestCase
 {
     private $tmp;
-    
-    
+
+
     public static function setUpBeforeClass(): void
     {
         exec(__DIR__ . '\\_set.bat');
@@ -21,22 +21,22 @@ class FileSystemObjectTest extends ConcertoTestCase
     {
         // exec(__DIR__ . '\\_reset.bat');
     }
-    
+
     public function setUp(): void
     {
         $this->tmp = __DIR__ . DIRECTORY_SEPARATOR . 'tmp';
     }
-    
+
     /**
     * @test
     */
     public function dir()
     {
-//      $this->markTestIncomplete();
-        
+        $this->markTestIncomplete();
+
         chdir($this->tmp);
         $obj = new FileSystemObject();
-        
+
         $expect = array(
             //$this->tmp . DIRECTORY_SEPARATOR . '空' . DIRECTORY_SEPARATOR,
             $this->tmp . DIRECTORY_SEPARATOR . '表示器' . DIRECTORY_SEPARATOR,
@@ -45,27 +45,27 @@ class FileSystemObjectTest extends ConcertoTestCase
             $this->tmp . DIRECTORY_SEPARATOR . '漢字2.txt',
             $this->tmp . DIRECTORY_SEPARATOR . '表示2.txt',
         );
-        
+
         sort($expect);
         $actual = $obj->dir();
         sort($actual);
         $actual2 = $obj->dir($this->tmp);
         sort($actual2);
-        
+
         $this->assertEquals($expect, $actual);
         $this->assertEquals($expect, $actual2);
     }
-    
+
     /**
     * @test
     */
     public function recursiveDir()
     {
-//      $this->markTestIncomplete();
-        
+        $this->markTestIncomplete();
+
         chdir($this->tmp);
         $obj = new FileSystemObject();
-        
+
         $expect = array(
             //$this->tmp . DIRECTORY_SEPARATOR . '空' . DIRECTORY_SEPARATOR,
             //$this->tmp . DIRECTORY_SEPARATOR . '空' . DIRECTORY_SEPARATOR . '空' . DIRECTORY_SEPARATOR,
@@ -76,13 +76,13 @@ class FileSystemObjectTest extends ConcertoTestCase
             $this->tmp . DIRECTORY_SEPARATOR . '漢字2.txt',
             $this->tmp . DIRECTORY_SEPARATOR . '表示2.txt',
         );
-        
+
         sort($expect);
         $actual = $obj->recursiveDir();
         sort($actual);
         $actual2 = $obj->recursiveDir($this->tmp);
         sort($actual2);
-        
+
         $this->assertEquals($expect, $actual);
         $this->assertEquals($expect, $actual2);
     }

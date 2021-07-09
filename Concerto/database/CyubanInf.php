@@ -3,7 +3,7 @@
 /**
 *   cyuban_inf
 *
-*   @version 202006
+*   @version 210608
 */
 
 declare(strict_types=1);
@@ -21,13 +21,14 @@ class CyubanInf extends ModelDb
     *   @var string
     */
     protected $schema = 'public.cyuban_inf';
-    
+
     /**
     *   kb_keikaku更新
     *
     *   @param string $no_cyu
+    *   @return void
     */
-    public function updateKbKeikaku(string $no_cyu)
+    public function updateKbKeikaku(string $no_cyu): void
     {
         $selectSql = "
             SELECT COUNT(*) AS cnt
@@ -37,24 +38,24 @@ class CyubanInf extends ModelDb
             GROUP BY no_cyu
         ";
         $selectStmt = $this->pdo->prepare($selectSql);
-            
+
         $updateSql = "
             UPDATE {$this->name} SET
                 kb_keikaku = :kb_keikaku 
             WHERE no_cyu = :no_cyu
         ";
         $updateStmt = $this->pdo->prepare($updateSql);
-        
+
         $selectStmt->bindValue(':no_cyu', $no_cyu, PDO::PARAM_STR);
         $selectStmt->execute();
-            
+
         $kb_keikaku = $selectStmt->fetchColumn() > 0 ? '1' : '0';
-        
+
         $updateStmt->bindValue(':no_cyu', $no_cyu, PDO::PARAM_STR);
         $updateStmt->bindValue(':kb_keikaku', $kb_keikaku, PDO::PARAM_STR);
         $updateStmt->execute();
     }
-    
+
     /**
     *   年度リスト
     *
@@ -71,7 +72,7 @@ class CyubanInf extends ModelDb
         $stmt->execute();
         return (array)$stmt->fetchAll();
     }
-    
+
     /**
     *   注番データ
     *
@@ -93,7 +94,7 @@ class CyubanInf extends ModelDb
         $stmt->execute();
         return (array)$stmt->fetchAll();
     }
-    
+
     /**
     *   getNewCyuban
     *
@@ -109,28 +110,24 @@ class CyubanInf extends ModelDb
             WHERE no_cyu LIKE :cyuban
         ";
         $stmt = $this->pdo->prepare($sql);
-        
+
         $cyuban = mb_substr($cd_bumon, 0, 3) . mb_substr($kb_nendo, 2, 3);
         $stmt->bindValue(':cyuban', "{$cyuban}%", PDO::PARAM_STR);
         $stmt->execute();
-        $result = $stmt->fetchAll();
-        
-        if (count($result) == 0) {
+        $result = $stmt->fetchColumn(0);
+
+        if (empty($result)) {
             return "{$cyuban}01";
         }
-        
-        $no_cyu = $result[0]['no_cyu'];
-        
-        if (is_null($no_cyu)) {
-            $no_cyu = "{$cyuban}01";
-        }
-        
+
+        $no_cyu = (string)$result;
+
         return $this->seqNoToProspectNo(
             $cyuban,
             $this->prospectNoToSeqNo($no_cyu) + 1
         );
     }
-    
+
     /**
     *   prospectNoToSeqNo
     *
@@ -145,7 +142,7 @@ class CyubanInf extends ModelDb
             10
         );
     }
-    
+
     /**
     *   seqNoToProspectNo
     *
@@ -156,7 +153,7 @@ class CyubanInf extends ModelDb
     public function seqNoToProspectNo(string $no_cyu, int $no_seq): string
     {
         $no = '00' . mb_strtoupper(
-            base_convert($no_seq, 10, 36)
+            base_convert((string)$no_seq, 10, 36)
         );
         return mb_substr($no_cyu, 0, 6) . mb_substr($no, -2);
     }

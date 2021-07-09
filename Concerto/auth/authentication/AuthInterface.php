@@ -17,6 +17,6 @@ interface AuthInterface
     *
     *   @param string $user
     *   @param string $password
-    **/
+    */
     public function login(string $user, string $password): bool;
 }

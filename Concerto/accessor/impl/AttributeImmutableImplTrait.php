@@ -4,7 +4,7 @@
 *   AttributeImmutableImplTrait
 *
 *   @version 190517
-**/
+*/
 
 declare(strict_types=1);
 

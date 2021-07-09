@@ -19,41 +19,41 @@ class AuthSession
     *   keyName
     *
     *   @var string
-    **/
+    */
     protected $keyName = 'authUser';
-    
+
     /**
     *   session
     *
     *   @var SessionCache
-    **/
+    */
     protected $session;
-    
+
     /**
     *   __construct
     *
     *   @param string $namespace
-    **/
+    */
     public function __construct(string $namespace)
     {
         $this->session = new SessionCache($namespace);
     }
-    
+
     /**
     *   ログイン確認
     *
     *   @return bool
-    **/
+    */
     public function logined(): bool
     {
         return !empty($this->session->get($this->keyName));
     }
-    
+
     /**
     *   取得
     *
     *   @return ?AuthUserInterface
-    **/
+    */
     public function get(): ?AuthUserInterface
     {
         if (!$this->logined()) {
@@ -63,13 +63,13 @@ class AuthSession
             $this->session->get($this->keyName)
         );
     }
-    
+
     /**
     *   保存
     *
     *   @param AuthUserInterface $authUser
     *   @return $this
-    **/
+    */
     public function save(AuthUserInterface $authUser)
     {
         $this->session->set(
@@ -78,12 +78,12 @@ class AuthSession
         );
         return $this;
     }
-    
+
     /**
     *   削除
     *
     *   @return $this
-    **/
+    */
     public function delete()
     {
         $this->session->delete($this->keyName);

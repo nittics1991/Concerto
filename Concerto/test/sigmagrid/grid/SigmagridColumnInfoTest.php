@@ -11,11 +11,11 @@ class SigmagridColumnInfoTest extends ConcertoTestCase
 {
     /**
     *   @test
-    **/
+    */
     public function construct1()
     {
 //      $this->markTestIncomplete();
-        
+
         $params = [
             'id' => 'cd_tanto',
             'header' => '担当名',
@@ -26,7 +26,7 @@ class SigmagridColumnInfoTest extends ConcertoTestCase
             'exportable' => false,
             'printable' => true,
         ];
-        
+
         $object = new SigmagridColumnInfo($params);
         $this->assertEquals($params, $object->toArray());
         $this->assertEquals(true, $object->isValid());

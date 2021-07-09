@@ -12,7 +12,7 @@ class ArrayUtil3Test extends ConcertoTestCase
     /**
     *
     *   @test
-    **/
+    */
     public function compere()
     {
         $src = array(
@@ -35,25 +35,25 @@ class ArrayUtil3Test extends ConcertoTestCase
                 )
             )
         );
-        
+
         $target = $src;
-        
+
         $this->assertEquals(array(), ArrayUtil::compare($target, $src));
-        
-        
+
+
         $target['log']['default']['stream'] = 'CHANGE';
         $target['database']['default']['params']['user'] = 'AAAA';
-        
+
         $expect['log']['default']['stream'] = array('CHANGE', 'err.log');
         $expect['database']['default']['params']['user'] = array('AAAA', 'postgres');
-        
+
         $this->assertEquals($expect, ArrayUtil::compare($target, $src));
     }
-    
+
     /**
     *   テーブルテストデータ
     *
-    **/
+    */
     public function providerTable()
     {
         return array(
@@ -97,104 +97,104 @@ class ArrayUtil3Test extends ConcertoTestCase
         ))
         );
     }
-    
+
     /**
     *   @test
     *   @dataProvider providerTable
-    **/
+    */
     public function sameStruct($data)
     {
 //      $this->markTestIncomplete();
-        
+
         $ar1 = $data['山田'];
         $ar2 = $data['森'];
         $this->assertEquals(true, ArrayUtil::sameStruct($ar1, $ar2));
-        
+
         //データ型変更
         $ar2['ID'] = 111;
         $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));
-        
+
         //ID変更
         $ar2 = $data['森'];
         unset($ar2['ID']);
         $ar2['id'] = '111';
         $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));
-        
+
         //カラム多
         $ar2 = $data['森'];
         $ar2['変更'] = '111';
         $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));
-        
+
         //カラム少
         $ar2 = $data['森'];
         unset($ar2['性別']);
         $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));
-        
+
         //順序不同
         $ar2 = $data['森'];
         $ar2 = ArrayUtil::rotate($ar2);
         $this->assertEquals(false, ArrayUtil::sameStruct($ar1, $ar2));
     }
-    
-    
+
+
     /**
     *   @test
     *   @dataProvider providerTable
-    **/
+    */
     public function sameKeys($data)
     {
 //      $this->markTestIncomplete();
-        
+
         $ar1 = $data['山田'];
         $ar2 = $data['森'];
         $this->assertEquals(true, ArrayUtil::sameKeys($ar1, $ar2));
-        
+
         //データ型変更
         $ar2['ID'] = 111;
         $this->assertEquals(true, ArrayUtil::sameKeys($ar1, $ar2));
-        
+
         //ID変更
         $ar2 = $data['森'];
         unset($ar2['ID']);
         $ar2['id'] = '111';
         $this->assertEquals(false, ArrayUtil::sameKeys($ar1, $ar2));
-        
+
         //カラム多
         $ar2 = $data['森'];
         $ar2['変更'] = '111';
         $this->assertEquals(false, ArrayUtil::sameKeys($ar1, $ar2));
-        
+
         //カラム少
         $ar2 = $data['森'];
         unset($ar2['性別']);
         $this->assertEquals(false, ArrayUtil::sameKeys($ar1, $ar2));
-        
+
         //順序不同
         $ar2 = $data['森'];
         $ar2 = ArrayUtil::rotate($ar2);
         $this->assertEquals(true, ArrayUtil::sameKeys($ar1, $ar2));
     }
-    
+
     /**
     *   @test
     *   @dataProvider providerTable
-    **/
+    */
     public function isTable($data)
     {
 //      $this->markTestIncomplete();
-        
+
         $target = $data;
         $this->assertEquals(true, ArrayUtil::isTable($target, true, true));
         $this->assertEquals(true, ArrayUtil::isTable($target, true, false));
         $this->assertEquals(true, ArrayUtil::isTable($target, false, false));
-        
+
         //データ型変更
         $target = $data;
         $target['森']['ID'] = 111;
         $this->assertEquals(false, ArrayUtil::isTable($target));    //true, true
         $this->assertEquals(true, ArrayUtil::isTable($target, true, false));
         $this->assertEquals(true, ArrayUtil::isTable($target, false, false));
-        
+
         //ID変更
         $target = $data;
         unset($target['森']['性別']);
@@ -202,14 +202,14 @@ class ArrayUtil3Test extends ConcertoTestCase
         $this->assertEquals(false, ArrayUtil::isTable($target));    //true, true
         $this->assertEquals(false, ArrayUtil::isTable($target, true, false));
         $this->assertEquals(true, ArrayUtil::isTable($target, false, false));
-        
+
         //カラム多
         $target = $data;
         $target['森']['変更'] = '111';
         $this->assertEquals(false, ArrayUtil::isTable($target));    //true, true
         $this->assertEquals(false, ArrayUtil::isTable($target, true, false));
         $this->assertEquals(false, ArrayUtil::isTable($target, false, false));
-        
+
         //カラム少
         $target = $data;
         unset($target['森']['性別']);

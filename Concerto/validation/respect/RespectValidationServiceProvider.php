@@ -4,7 +4,7 @@
 *   RespectValidationServiceProvider
 *
 *   @version 191216
-**/
+*/
 
 declare(strict_types=1);
 
@@ -49,26 +49,26 @@ class RespectValidationServiceProvider extends AbstractServiceProvider
             );
             return $concrete;
         });
-        
+
         $this->bind('validation.RuleResolver', function ($container) {
             return new RespectRuleResolver(
                 $container->get('validation.Container'),
                 $container->get('validation.Validation')
             );
         });
-        
+
         $this->bind('validation.Validation', function ($container) {
              return new Validation(
                  $container->get('validation.MessageGenerator')
              );
         });
-        
+
         $this->bind('validation.MessageGenerator', function ($container) {
             return new MessageGenerator(
                 new CurlyBracketMessageGenerator()
             );
         });
-        
+
         $this->bind(RuleResolverInterface::class, function ($container) {
             return $container->get('validation.RuleResolver');
         });

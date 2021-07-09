@@ -11,7 +11,7 @@ class ProviderTarget3
         $this->params1 = $params1;
         $this->params2 = $params2;
     }
-    
+
     public function __invoke()
     {
         return $this->params1 . '_' . $this->params2;

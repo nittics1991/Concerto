@@ -18,11 +18,11 @@ class SigmagridRecordCollection extends SigmagridBaseCollection
     /**
     *   __construct
     *
-    *   @param array $fields
-    *   @param array $params
+    *   @param mixed[] $fields
+    *   @param mixed[] $params
     *   @param DataContainerValidatable $dataObject
     *   @param string $recordType
-    **/
+    */
     public function __construct(
         array $fields,
         array $params,
@@ -30,11 +30,11 @@ class SigmagridRecordCollection extends SigmagridBaseCollection
         $recordType
     ) {
         $dataset = [];
-        
+
         foreach ($params as $items) {
             $obj = clone $dataObject;
             $data = [];
-            
+
             foreach ($fields as $key => $field) {
                 if ($recordType == 'object') {
                     if (array_key_exists($field, $items)) {

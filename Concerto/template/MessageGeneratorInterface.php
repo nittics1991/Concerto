@@ -4,7 +4,9 @@
 *   メッセージテンプレート
 *
 *   @ver 180614
-**/
+*/
+
+declare(strict_types=1);
 
 namespace Concerto\template;
 
@@ -13,8 +15,8 @@ interface MessageGeneratorInterface
     /**
     *   生成
     *
-    *   @param array $parameters
+    *   @param mixed[] $parameters
     *   @return string
-    **/
+    */
     public function generate(array $parameters): string;
 }

@@ -12,11 +12,11 @@ class SigmagridColumnInfosTest extends ConcertoTestCase
 {
     /**
     *   @test
-    **/
+    */
     public function construct1()
     {
 //      $this->markTestIncomplete();
-        
+
         $params = [
             [
                 'id' => 'cd_tanto',
@@ -39,24 +39,24 @@ class SigmagridColumnInfosTest extends ConcertoTestCase
                 'printable' => false,
             ],
         ];
-        
+
         $object = new SigmagridColumnInfos($params);
         $this->assertEquals(true, $object->isValid());
-        
+
         $i = 0;
         foreach ($object as $obj) {
             $this->assertEquals($params[$i], $obj->toArray());
             $i++;
         }
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function valid1()
     {
 //      $this->markTestIncomplete();
-        
+
         $params = [
             [
                 'id' => 'cd_tanto',
@@ -79,14 +79,14 @@ class SigmagridColumnInfosTest extends ConcertoTestCase
                 'printable' => 12,
             ],
         ];
-        
+
         $expect = [
             1 => [
                 'sortOrder' => [''],
                 'printable' => [''],
             ]
         ];
-        
+
         $object = new SigmagridColumnInfos($params);
         $this->assertEquals(false, $object->isValid());
         $this->assertEquals($expect, $object->getValidError());

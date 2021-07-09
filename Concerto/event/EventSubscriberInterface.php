@@ -4,7 +4,7 @@
 *   EventSubscriberInterface
 *
 *   @version 170220
-**/
+*/
 
 declare(strict_types=1);
 
@@ -29,6 +29,6 @@ interface EventSubscriberInterface
     *   * ['eventName' => [['methodName1', $priority], ['methodName2']]]
     *
     *   @return array The event names to listen to
-    **/
+    */
     public static function getSubscribedEvents();
 }

@@ -15,7 +15,7 @@ interface ToArrayInterface
     /**
     *   配列へ変換
     *
-    *   @return array
-    **/
+    *   @return mixed[]
+    */
     public function toArray();
 }

@@ -26,55 +26,55 @@ class AuthUserRepositoryFactory
     *   pdo
     *
     *   @var PDO
-    **/
+    */
     protected $pdo;
-    
+
     /**
     *   __construct
     *
     *   @param PDO $pdo
-    **/
+    */
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
     }
-    
+
     /**
     *   createAuthUser
     *
-    *   @param array $dataset
+    *   @param mixed[] $dataset
     *   @return AuthUserInterface
-    **/
+    */
     public function createAuthUser(array $dataset): AuthUserInterface
     {
         return new AuthUser($dataset);
     }
-    
+
     /**
     *   getHasher
     *
     *   @return HasherInterface
-    **/
+    */
     public function getHasher(): HasherInterface
     {
         return new StandardHasher();
     }
-    
+
     /**
     *   getDataModel
     *
     *   @return DataModelInterface
-    **/
+    */
     public function getDataModel(): DataModelInterface
     {
         return new ModelData();
     }
-    
+
     /**
     *   getDataMapper
     *
     *   @return DataMapperInterface
-    **/
+    */
     public function getDataMapper(): DataMapperInterface
     {
         return new ModelDb($this->pdo);

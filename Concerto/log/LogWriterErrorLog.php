@@ -22,18 +22,18 @@ class LogWriterErrorLog implements LogWriterInterface
     *   @var string
     */
     private $stream = 'err.log';
-    
+
     /**
     *   フォーマット
     *
     *   @var string
     */
     private $format = "%s";
-    
+
     /**
     *   __construct
     *
-    *   @param array $config 設定値
+    *   @param mixed[] $config 設定値
     *   @param string $name
     */
     public function __construct($config, $name = 'default')
@@ -46,35 +46,35 @@ class LogWriterErrorLog implements LogWriterInterface
             }
         }
     }
-    
+
     /**
     *   フォーマット
     *
     *   @param string $format 書式(printfと同じ)
     */
-    public function setFormat($format)
+    public function setFormat($format): void
     {
         $this->format = $format;
     }
-    
+
     /**
     *   出力
     *
     *   @param mixed $messages メッセージ or メッセージ配列(vsprintf引数)
     */
-    public function write($messages)
+    public function write($messages): void
     {
         $args = (!is_array($messages)) ? [$messages] : $messages;
-        
+
         if ($this->getFormatElementCount() != count($args)) {
             throw new InvalidArgumentException("write error");
         }
-        
+
         if (!error_log(vsprintf($this->format, $args), 3, $this->stream)) {
             throw new RuntimeException("write error");
         }
     }
-    
+
     /**
     *   フォーマット要素数
     *

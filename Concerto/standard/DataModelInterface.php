@@ -6,6 +6,8 @@
 *   @ver 190523
 */
 
+declare(strict_types=1);
+
 namespace Concerto\standard;
 
 interface DataModelInterface
@@ -13,15 +15,15 @@ interface DataModelInterface
     /**
     *   toArray
     *
-    *   @return array
-    **/
+    *   @return mixed[]
+    */
     public function toArray();
-    
+
     /**
     *   getInfo
     *
     *   @param ?string $key
-    *   @return mixed
-    **/
+    *   @return mixed[]
+    */
     public function getInfo($key = null);
 }

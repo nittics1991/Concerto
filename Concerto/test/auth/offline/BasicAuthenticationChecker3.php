@@ -24,12 +24,12 @@ $obj->setResponse(function () {
         echo 'Login Failure';
         exit;
     }
-    
+
     $_SESSION['test.count'] = isset($_SESSION['test.count']) ?
         ++$_SESSION['test.count'] : 0;
-    
+
     session_write_close();
-    
+
     header('WWW-Authenticate: Basic');
     header('HTTP/1.0 401 Unauthorized');
     exit;

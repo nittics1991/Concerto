@@ -4,7 +4,7 @@
 *   ConstraintServiceProvider
 *
 *   @version 180613
-**/
+*/
 
 declare(strict_types=1);
 
@@ -17,7 +17,7 @@ class ConstraintServiceProvider extends AbstractDirectoryServiceProvider
     /**
     *   {inherit}
     *
-    **/
+    */
     protected $subDirName = 'constraint';
     protected $prefixId = 'validation';
 }

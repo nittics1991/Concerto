@@ -25,24 +25,24 @@ class MstMitumoriData extends ModelData
         'nm_code' => parent::STRING,
         'cd_bumon' => parent::STRING,
     ];
-    
+
     /**
     *   Column Alias
     *
     *   @var array
     */
     protected static $alias = [];
-    
+
     public function isValidCd_code($val)
     {
         return Validate::isText($val, 1, 3);
     }
-    
+
     public function isValidNm_code($val)
     {
         return Validate::isText($val);
     }
-    
+
     public function isValidCd_bumon($val)
     {
         return Validate::isBumon($val);

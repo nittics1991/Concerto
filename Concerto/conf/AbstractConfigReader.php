@@ -21,7 +21,7 @@ abstract class AbstractConfigReader implements ConfigReaderInterface
      * @var string
      */
     protected $file;
-    
+
     /**
      *   __construct
      *
@@ -34,7 +34,7 @@ abstract class AbstractConfigReader implements ConfigReaderInterface
         }
         $this->file = $file;
     }
-    
+
     /**
      *   {inherit}
      */

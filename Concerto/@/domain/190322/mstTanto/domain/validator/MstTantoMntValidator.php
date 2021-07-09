@@ -6,9 +6,9 @@ use ValidPeriod;
 
 class MstTantoMntValidatorService extends DomainAppValidator
 {
-    
-    
-    
+
+
+
     public static function fail(MstTantoMntInput $input)
     {
         return SyainNo::valid($input->cd_tanto) &&

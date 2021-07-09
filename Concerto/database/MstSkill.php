@@ -21,28 +21,28 @@ class MstSkill extends ModelDbTree
     *   @var string
     */
     protected $schema = 'public.mst_skill';
-    
+
     /**
     *   ルートノード親値
     *
     *   @var mixed
     */
     protected $root = '';
-    
+
     /**
     *   primary key名(overwrite)
     *
     *   @var string
     */
     protected $primarykey = 'cd_skill';
-    
+
     /**
     *   親カラム名
     *
     *   @var string
     */
     protected $parent = 'cd_parent';
-    
+
     /**
     *   cd_skill最大値取得
     *
@@ -55,9 +55,9 @@ class MstSkill extends ModelDbTree
         $obj = clone $mstSkillData;
         $obj->cd_skill = $cd_parent;
         $children = $this->children($obj, 'cd_skill DESC');
-        
+
         $obj2 = clone $mstSkillData;
-        
+
         if (empty($children)) {
             $obj2->cd_skill = $cd_parent;
             return $obj2->incrementBunrui(true);
@@ -66,7 +66,7 @@ class MstSkill extends ModelDbTree
             return $obj2->incrementBunrui();
         }
     }
-    
+
     /**
     *   マトリクス表
     *
@@ -78,10 +78,10 @@ class MstSkill extends ModelDbTree
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var \PDOStatement
         */
         static $stmt;
-        
+
         if (is_null($stmt)) {
             $sql = "
                 WITH RECURSIVE 
@@ -114,11 +114,11 @@ class MstSkill extends ModelDbTree
                 FROM tmp D 
                 ORDER BY cd_skill 
             ";
-            
+
             $stmt = $this->pdo->prepare($sql);
         }
-        
-        $stmt->bindParam(':id', $cd_parent, PDO::PARAM_STR);
+
+        $stmt->bindValue(':id', $cd_parent, PDO::PARAM_STR);
         $stmt->execute();
         return (array)$stmt->fetchAll();
     }

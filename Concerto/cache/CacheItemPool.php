@@ -3,7 +3,7 @@
 /**
  *   キャッシュプール
  *
- * @version 180119
+ * @version 210615
  */
 
 declare(strict_types=1);
@@ -22,53 +22,53 @@ abstract class CacheItemPool implements CacheItemPoolInterface
      *   名前空間
      *
      * @var string
-     **/
+     */
     protected $namespace;
-    
+
     /**
      *   遅延保存用キャッシュ
      *
-     * @var array
-     **/
+     * @var CacheItemInterface[]
+     */
     protected $deferred = [];
-    
+
     /**
      *   キャッシュ取得
      *
-     * @param   array $ids
-     * @return  array [[key => val], ...]
-     * @throws  InvalidArgumentException
+     * @param string[] $ids
+     * @return mixed[] [[key => val], ...]
+     * @throws InvalidArgumentException
      * @example key not found to be throw InvalidArgumentException
      */
     abstract protected function fetch(array $ids);
-    
+
     /**
      *   全キャッシュ削除
      *
      * @return bool
      */
     abstract protected function doClear();
-    
+
     /**
      *   キャッシュ削除
      *
-     * @param  array $ids
+     * @param string[] $ids
      * @return bool
      */
     abstract protected function doDelete(array $ids);
-    
+
     /**
      *   キャッシュ保存
      *
-     * @return array 保存したキー
+     * @return string[] 保存したキー
      */
     abstract protected function doSave();
-    
+
     /**
-     *   コンストラクタ
+     *   __construct
      *
      * @param string $namespace
-     **/
+     */
     public function __construct($namespace)
     {
         if (!is_string($namespace) || (strlen($namespace) > 20)) {
@@ -78,37 +78,51 @@ abstract class CacheItemPool implements CacheItemPoolInterface
         }
         $this->namespace = $namespace;
     }
-    
+
     /**
      *   デストラクタ
-     **/
+     */
     public function __destruct()
     {
         $this->commit();
     }
-    
+
     /**
      *   アイテム取得
      *
-     * @param  string $key
-     * @return CacheItemInterface or null
-     **/
-    public function getItem($key)
+     * @param string $key
+     * @return CacheItemInterface
+     * @throws InvalidArgumentException
+     */
+    public function getItem(string $key): CacheItemInterface
     {
         $vals = $this->getItems([$key]);
-        return array_shift($vals);
+
+        if (!is_array($vals)) {
+            $vals = iterator_to_array($vals);
+        }
+
+        $result = array_shift($vals);
+
+        if ($result === null) {
+            throw new InvalidArgumentException(
+                "can not get item:{$key}"
+            );
+        }
+
+        return $result;
     }
-    
+
     /**
      *   アイテム取得(一括)
      *
-     * @param  array $keys
-     * @return array CacheItemInterface or null
+     * @param string[] $keys
+     * @return iterable
      */
-    public function getItems(array $keys = [])
+    public function getItems(array $keys = []): iterable
     {
         $this->commit();
-        
+
         $ids = array_map(
             function ($val) {
                 return $this->makeId($val);
@@ -118,18 +132,18 @@ abstract class CacheItemPool implements CacheItemPoolInterface
         $vals = $this->fetch($ids);
         return $this->createItems($vals);
     }
-    
+
     /**
      *   アイテム有無
      *
-     * @param  string $key
+     * @param string $key
      * @return bool
      */
-    public function hasItem($key)
+    public function hasItem(string $key): bool
     {
         $this->commit();
         $id = $this->makeId($key);
-        
+
         try {
             $this->fetch([$id]);
         } catch (Exception $e) {
@@ -137,41 +151,41 @@ abstract class CacheItemPool implements CacheItemPoolInterface
         }
         return true;
     }
-    
+
     /**
      *   アイテム削除(一括)
      *
      * @return bool
      */
-    public function clear()
+    public function clear(): bool
     {
         $this->deferred = [];
         return $this->doClear();
     }
-    
+
     /**
      *   アイテム削除
      *
-     * @param  string $key
+     * @param string $key
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function deleteItem($key)
+    public function deleteItem(string $key): bool
     {
         return $this->deleteItems([$key]);
     }
-    
+
     /**
      *   複数アイテム削除
      *
-     * @param  array $keys
+     * @param string[] $keys
      * @return bool
      * @throws InvalidArgumentException
      */
-    public function deleteItems(array $keys)
+    public function deleteItems(array $keys): bool
     {
         $this->commit();
-        
+
         $ids = array_map(
             function ($val) {
                 return $this->makeId($val);
@@ -180,26 +194,26 @@ abstract class CacheItemPool implements CacheItemPoolInterface
         );
         return $this->doDelete($ids);
     }
-    
+
     /**
      *   保存
      *
-     * @param  CacheItemInterface $item
+     * @param CacheItemInterface $item
      * @return bool
      */
-    public function save(CacheItemInterface $item)
+    public function save(CacheItemInterface $item): bool
     {
         $this->deferred[$item->getKey()] = $item;
         return $this->commit();
     }
-    
+
     /**
      *   遅延保存
      *
-     * @param  CacheItemInterface $item
+     * @param CacheItemInterface $item
      * @return bool
      */
-    public function saveDeferred(CacheItemInterface $item)
+    public function saveDeferred(CacheItemInterface $item): bool
     {
         $this->deferred[$item->getKey()] = $item;
         return true;
@@ -210,35 +224,35 @@ abstract class CacheItemPool implements CacheItemPoolInterface
      *
      * @return bool
      */
-    public function commit()
+    public function commit(): bool
     {
         if (empty($this->deferred)) {
             return true;
         }
-        
+
         $saved = $this->doSave();
-        
+
         if (count($this->deferred) == count((array)$saved)) {
             $this->deferred = [];
             return true;
         }
-        
+
         foreach ((array)$saved as $key) {
             unset($this->deferred[$key]);
         }
         return false;
     }
-    
+
     /**
      *   アイテムキー作成
      *
-     * @param  string $key
+     * @param string $key
      * @return string
-     **/
+     */
     protected function makeId($key)
     {
         $result =  "{$this->namespace}.{$key}";
-        
+
         if (strlen($result) > 64) {
             throw new InvalidArgumentException(
                 "key max_length is char(44):{$key}"
@@ -246,22 +260,22 @@ abstract class CacheItemPool implements CacheItemPoolInterface
         }
         return $result;
     }
-    
+
     /**
      *   データセットからCacheItem配列作成
      *
-     * @param  array $vals keys [key=>val, ...]
-     * @return array CacheItemInterface or null
+     * @param mixed[] $vals keys [key=>val, ...]
+     * @return CacheItemInterface[] CacheItemInterface
      */
     protected function createItems(array $vals)
     {
         $result = [];
-        
+
         foreach ($vals as $id => $val) {
             $split = explode('.', $id);
             array_shift($split);
             $key = implode('.', $split);
-            
+
             $result[$key] = new CacheItem($key, $val, 0, true);
         }
         return $result;

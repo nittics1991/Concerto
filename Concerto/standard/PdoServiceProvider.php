@@ -3,8 +3,10 @@
 /**
 *   PdoServiceProvider
 *
-*   @version 181012
-**/
+*   @version 200403
+*/
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
@@ -18,7 +20,7 @@ class PdoServiceProvider extends AbstractServiceProvider
         'symphonyPdo',
     ];
 
-    public function register()
+    public function register(): void
     {
         $this->share('concertoPdo', function ($container) {
             $config = $container->get('configSystem');
@@ -27,7 +29,7 @@ class PdoServiceProvider extends AbstractServiceProvider
                 $config['database']['default']['user'],
                 $config['database']['default']['password']
             );
-            
+
             $pdo->setAttribute(
                 PDO::ATTR_ERRMODE,
                 PDO::ERRMODE_EXCEPTION
@@ -38,7 +40,7 @@ class PdoServiceProvider extends AbstractServiceProvider
             );
             return $pdo;
         });
-        
+
         $this->share('symphonyPdo', function ($container) {
             $config = $container->get('configSystem');
             $pdo = new PDO(
@@ -46,7 +48,7 @@ class PdoServiceProvider extends AbstractServiceProvider
                 $config['database']['Symphony']['user'],
                 $config['database']['Symphony']['password']
             );
-            
+
             $pdo->setAttribute(
                 PDO::ATTR_ERRMODE,
                 PDO::ERRMODE_EXCEPTION

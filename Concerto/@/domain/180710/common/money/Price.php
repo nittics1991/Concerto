@@ -17,30 +17,30 @@ class Price
     *   単価
     *
     *   @var Money
-    **/
+    */
     protected $unitPrice;
-    
+
     /**
     *   数量
     *
     *   @var mixed
-    **/
+    */
     protected $quantity;
-    
+
     /**
     *   単位
     *
     *   @var UnitEnum
-    **/
+    */
     protected $unit;
-    
+
     /**
     *   価格
     *
     *   @var Money
-    **/
+    */
     protected $price;
-    
+
     /**
     *   __construct
     *
@@ -48,7 +48,7 @@ class Price
     *   @param mixed
     *   @param UnitEnum
     *   @param Money
-    **/
+    */
     public function __construct(
         Money $unitPrice,
         $quantity,

@@ -3,7 +3,7 @@
 /**
 *   mitumori_doc
 *
-*   @version 180605
+*   @version 210608
 */
 
 declare(strict_types=1);
@@ -21,7 +21,7 @@ class MitumoriDoc extends ModelDb
     *   @var string
     */
     protected $schema = 'public.mitumori_doc';
-    
+
     /**
     *   no_seq最大値取得
     *
@@ -35,11 +35,11 @@ class MitumoriDoc extends ModelDb
                 FROM {$this->schema} 
                 WHERE no_mitumori = :mitumori
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':mitumori', $no_mitumori, PDO::PARAM_STR);
         $stmt->execute();
-        $result = $stmt->fetch();
-        return (is_null($result['no_seq'])) ? 0 : (int)$result['no_seq'];
+        $result = $stmt->fetchColumn(0);
+        return $result === false ? 0 : (int)$result;
     }
 }

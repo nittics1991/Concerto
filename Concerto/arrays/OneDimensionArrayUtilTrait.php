@@ -3,7 +3,7 @@
 /**
 *   OneDimensionArrayUtil
 *
-*   @version 191007
+*   @version 210511
 */
 
 declare(strict_types=1);
@@ -18,9 +18,9 @@ trait OneDimensionArrayUtilTrait
     /**
     *   回転
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param int $count
-    *   @return array
+    *   @return mixed[]
     */
     public static function rotate(array $array, int $count = 1): array
     {
@@ -29,12 +29,12 @@ trait OneDimensionArrayUtilTrait
             array_slice($array, 0, $count)
         );
     }
-    
+
     /**
     *   キーマージ(可変長引数)
     *
-    *   @param array ...$args
-    *   @return array
+    *   @param mixed[] ...$args
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     *   @example mergeKey($array1, $array2, ...)
     *       $c = ['age' => 34, 'id' => 7;
@@ -48,7 +48,7 @@ trait OneDimensionArrayUtilTrait
                 throw new InvalidArgumentException("data type is different");
             }
         }
-        
+
         return array_map(
             function ($val) {
                 return $val = null;
@@ -63,12 +63,12 @@ trait OneDimensionArrayUtilTrait
             )
         );
     }
-    
+
     /**
     *   キーマージ(配列引数)
     *
-    *   @param array $array [[..], [..], ...]
-    *   @return array
+    *   @param mixed[] $array [[..], [..], ...]
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     */
     public static function mergeKeyArray(array $array = []): array
@@ -78,12 +78,12 @@ trait OneDimensionArrayUtilTrait
             $array
         );
     }
-    
+
     /**
     *   キー保持マージ
     *
-    *   @param array ...$args
-    *   @return array
+    *   @param mixed[] ...$args
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     *   @example mergeKeepKey($x, $y)
     *       $x = ['AA' => 'aa', 'BB' => 'bb', '012' => 012, 012 => '8進',
@@ -104,7 +104,7 @@ trait OneDimensionArrayUtilTrait
                 throw new InvalidArgumentException("array only:{$key}");
             }
         }
-        
+
         $result = [];
         foreach ($args as $list) {
             foreach ($list as $key => $val) {
@@ -113,12 +113,12 @@ trait OneDimensionArrayUtilTrait
         }
         return $result;
     }
-    
+
     /**
     *   置換対象値の構造を変えずにarray_replace
     *
-    *   @param array ...$args 置換対象値, 上書き値, ・・・
-    *   @return array
+    *   @param mixed[] ...$args 置換対象値, 上書き値, ・・・
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     *   @example
     *       $x = ['a' => 1, 'b' => 2, 'c' => 3]
@@ -132,7 +132,7 @@ trait OneDimensionArrayUtilTrait
             throw new InvalidArgumentException("required 2 or more");
         }
         $init = current($args);
-        
+
         $joined = array_reduce(
             $args,
             function ($carry, $item) {
@@ -140,18 +140,18 @@ trait OneDimensionArrayUtilTrait
             },
             []
         );
-        
+
         return self::extractKey(
             $joined,
             array_keys($init)
         );
     }
-    
+
     /**
     *   第1引数の除外値を除外して第2引数以降をarray_replace
     *
-    *   @param array ...$args 除外値,対象配列(2つ以上)
-    *   @return array
+    *   @param mixed[] ...$args 除外値,対象配列(2つ以上)
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     *   @example replaceWithout([0], [1,2,0,4,5], [11,0,13,14])
     *       =>[11,2,13,14,5]
@@ -161,19 +161,19 @@ trait OneDimensionArrayUtilTrait
         if (count($args) < 3) {
             throw new InvalidArgumentException("required 3 or more");
         }
-        
+
         foreach ($args as $key => $val) {
             if (!is_array($val)) {
                 throw new InvalidArgumentException("array only:{$key}");
             }
         }
-        
+
         $exclude = array_shift($args);
         $base = array_shift($args);
-        
+
         $func = function ($ex, $src, $dest) {
             $result = [];
-            
+
             foreach ($src as $key => $val) {
                 if (array_key_exists($key, $dest)) {
                     $result[$key] = (in_array($dest[$key], $ex)) ?
@@ -185,37 +185,41 @@ trait OneDimensionArrayUtilTrait
             }
             return array_merge($result, $dest);
         };
-        
+
         foreach ($args as $ar) {
             $base = $func($exclude, $base, $ar);
         }
         return $base;
     }
-    
+
     /**
     *   キー位置
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param mixed $needle 検索キー
     *   @return int|false
     */
     public static function positionKey(array $array, $needle)
     {
         $keys = array_keys($array);
-        for ($i = 0; $i < count($keys); $i++) {
+        for (
+            $i = 0, $length = count($keys);
+            $i < $length;
+            $i++
+        ) {
             if ($keys[$i] === $needle) {
                 return $i;
             }
         }
         return false;
     }
-    
+
     /**
     *   指定キーを持つ配列
     *
-    *   @param array $array
-    *   @param array $keys 抽出キー
-    *   @return array
+    *   @param mixed[] $array
+    *   @param mixed[] $keys 抽出キー
+    *   @return mixed[]
     */
     public static function extractKey(array $array, array $keys): array
     {
@@ -226,13 +230,13 @@ trait OneDimensionArrayUtilTrait
         }
         return $result;
     }
-    
+
     /**
     *   指定キーを除いた配列
     *
-    *   @param array $array
-    *   @param array $keys 除外キー
-    *   @return array
+    *   @param mixed[] $array
+    *   @param mixed[] $keys 除外キー
+    *   @return mixed[]
     */
     public static function unextractKey(array $array, array $keys): array
     {
@@ -244,14 +248,14 @@ trait OneDimensionArrayUtilTrait
         }
         return $result;
     }
-    
+
     /**
     *   キー変換
     *
-    *   @param array $array
-    *   @param array $srcKey 変換元キー名
-    *   @param array $destKey 変換後キー名
-    *   @return array
+    *   @param mixed[] $array
+    *   @param mixed[] $srcKey 変換元キー名
+    *   @param mixed[] $destKey 変換後キー名
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     *   @example keyRemap(['id' => 'a', 'name' => 'b', 'c'],
     *                                       ['id', 0], ['ID', 'index'])
@@ -265,24 +269,28 @@ trait OneDimensionArrayUtilTrait
         if (count($srcKey) != count($destKey)) {
             throw new InvalidArgumentException("unmatch key count");
         }
-        
+
         $result = [];
-        
-        for ($i = 0; $i < count($srcKey); $i++) {
+
+        for (
+            $i = 0, $length = count($srcKey);
+            $i < $length;
+            $i++
+        ) {
             $src = $srcKey[$i];
             $dest = $destKey[$i];
             $result[$dest] = (isset($array[$src])) ? $array[$src] : null;
         }
         return $result;
     }
-    
+
     /**
     *   キー変換(指定以外のキーはそのまま)
     *
-    *   @param array $array
-    *   @param array $srcKey 変換元キー名
-    *   @param array $destKey 変換後キー名
-    *   @return array
+    *   @param mixed[] $array
+    *   @param mixed[] $srcKey 変換元キー名
+    *   @param mixed[] $destKey 変換後キー名
+    *   @return mixed[]
     *   @throws InvalidArgumentException
     *   @example keyRemap(['id' => 'a', 'name' => 'b', 'c'],
     *                                       ['id', 0], ['ID', 'index'])
@@ -296,9 +304,9 @@ trait OneDimensionArrayUtilTrait
         if (count($srcKey) != count($destKey)) {
             throw new InvalidArgumentException("unmatch key count");
         }
-        
+
         $result = [];
-        
+
         foreach ($array as $key => $val) {
             if (($pos = array_search($key, $srcKey)) !== false) {
                 $result[$destKey[$pos]] = $val;
@@ -308,14 +316,14 @@ trait OneDimensionArrayUtilTrait
         }
         return $result;
     }
-    
+
     /**
     *   指定値を除いた配列
     *
-    *   @param array $array
-    *   @param array $keys 抽出値
+    *   @param mixed[] $array
+    *   @param mixed[] $keys 抽出値
     *   @param bool $keep true:キー保持 fase:キー削除
-    *   @return array
+    *   @return mixed[]
     */
     public static function without(
         array $array,
@@ -334,12 +342,12 @@ trait OneDimensionArrayUtilTrait
         }
         return $result;
     }
-    
+
     /**
     *   配列で指定した値をキーとした(多次元)配列を組み立てる(初期化)
     *
     *   @param mixed ...$args args[0]=>初期値, args[n]=>array
-    *   @return array
+    *   @return mixed[]
     *   @exapmle initArray('z', array('A', 'B', 'C'), array(1, 2))
     *       [A][1],[A][2],[B][1],[B][2],[C][1],[C][2] => ALL('z')
     */
@@ -348,7 +356,7 @@ trait OneDimensionArrayUtilTrait
         $args = func_get_args();
         $initial = array_shift($args);
         krsort($args);
-        
+
         return array_reduce(
             $args,
             function ($carry, $val) {
@@ -357,7 +365,7 @@ trait OneDimensionArrayUtilTrait
             $initial
         );
     }
-    
+
     /**
     *   次元判定
     *
@@ -375,9 +383,9 @@ trait OneDimensionArrayUtilTrait
         if ($dimension < 1 || $current < 1) {
             throw new InvalidArgumentException("setting value is different");
         }
-        
+
         $ans = (is_array($array)) ?  true : false;
-        
+
         if ($ans && ($current < $dimension)) {
             foreach ($array as $list) {
                 $ans = $ans
@@ -386,11 +394,11 @@ trait OneDimensionArrayUtilTrait
         }
         return $ans;
     }
-    
+
     /**
     *   some
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param callable $callback
     *   @return bool
     *   @example some([1, 'A', 3], function($key, $val) {return is_int($val);})
@@ -405,11 +413,11 @@ trait OneDimensionArrayUtilTrait
         }
         return false;
     }
-    
+
     /**
     *   every
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param callable $callback
     *   @return bool
     *   @example every([1, 'A', 3], function($key, $val){return is_int($val);})
@@ -424,11 +432,11 @@ trait OneDimensionArrayUtilTrait
         }
         return true;
     }
-    
+
     /**
     *   最大値(ソート指定)
     *
-    *   @param array $array データ
+    *   @param mixed[] $array データ
     *   @param mixed $order ソート方法(array_multisort)
     *   @return mixed
     *   @throws InvalidArgumentException
@@ -439,17 +447,17 @@ trait OneDimensionArrayUtilTrait
         if (!array_multisort($sorted, $order)) {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         if (count($sorted) > 0) {
             return $sorted[count($sorted) - 1];
         }
         return null;
     }
-    
+
     /**
     *   最小値(ソート指定)
     *
-    *   @param array $array データ
+    *   @param mixed[] $array データ
     *   @param mixed $order ソート方法(array_multisort)
     *   @return mixed
     *   @throws InvalidArgumentException
@@ -460,47 +468,47 @@ trait OneDimensionArrayUtilTrait
         if (!array_multisort($sorted, $order)) {
             throw new InvalidArgumentException("data type is different");
         }
-        
+
         if (count($sorted) > 0) {
             return $sorted[0];
         }
         return null;
     }
-    
+
     /**
     *   先頭値
     *
-    *   @param array $array データ
+    *   @param mixed[] $array データ
     *   @return mixed
     */
     public static function first(array $array)
     {
         if (count($array) > 0) {
-            return $array[0];
+            return reset($array);
         }
         return null;
     }
-    
+
     /**
     *   最後値
     *
-    *   @param array $array データ
+    *   @param mixed[] $array データ
     *   @return mixed
     */
     public static function last(array $array)
     {
         if (count($array) > 0) {
-            return $array[count($array) - 1];
+            return end($array);
         }
         return null;
     }
-    
+
     /**
     *   再帰比較
     *
     *   @param mixed $x 比較対象1
     *   @param mixed $y 比較対象2
-    *   @return array|false 結果 ['key' => [$x1, $y1]]
+    *   @return mixed[]|false 結果 ['key' => [$x1, $y1]]
     *   @example compare(
     *       ['a' => ['aa' => 1, 'ab' => 2]], 'b' => 3],
     *       ['a' => ['aa' => 1, 'ab' => 12]], 'b' => 3])
@@ -518,7 +526,7 @@ trait OneDimensionArrayUtilTrait
             }
             return $result;
         }
-        
+
         if ($x instanceof Traversable && $y instanceof Traversable) {
             $result = [];
             foreach ($x as $key => $val) {
@@ -529,7 +537,7 @@ trait OneDimensionArrayUtilTrait
             }
             return $result;
         }
-        
+
         if (
             !is_array($x)
             && !is_array($y)
@@ -543,12 +551,12 @@ trait OneDimensionArrayUtilTrait
         }
         return false;
     }
-    
+
     /**
     *   key構造が同じ(key順序・型が同一)
     *
-    *   @param array $array1
-    *   @param array $array2
+    *   @param mixed[] $array1
+    *   @param mixed[] $array2
     *   @return bool
     */
     public static function sameStruct(array $array1, array $array2): bool
@@ -559,7 +567,7 @@ trait OneDimensionArrayUtilTrait
             },
             $array1
         );
-        
+
         $typemap2 = array_map(
             function ($val) {
                 return gettype($val);
@@ -569,19 +577,19 @@ trait OneDimensionArrayUtilTrait
         return $typemap1 === $typemap2
             && array_keys($array1) == array_keys($array2);
     }
-    
+
     /**
     *   keyが同じ(key順序・型が同一)
     *
-    *   @param array $array1
-    *   @param array $array2
+    *   @param mixed[] $array1
+    *   @param mixed[] $array2
     *   @return bool
     */
     public static function sameKeys(array $array1, array $array2): bool
     {
         $keys1 = array_keys($array1);
         $keys2 = array_keys($array2);
-        
+
         $maege = array_merge(
             array_diff($keys1, $keys2),
             array_diff($keys2, $keys1)

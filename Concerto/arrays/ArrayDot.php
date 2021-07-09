@@ -15,16 +15,16 @@ final class ArrayDot
     /**
     *   set
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param string $dot
     *   @param mixed $val
-    *   @return array
-    **/
+    *   @return mixed[]
+    */
     public static function set(array $array, string $dot, $val): array
     {
         $splits = explode('.', $dot);
         $reversed = array_reverse($splits);
-        
+
         $dimension = array_reduce(
             $reversed,
             function ($carry, $item) {
@@ -34,15 +34,15 @@ final class ArrayDot
         );
         return (array)array_replace_recursive($array, $dimension);
     }
-    
+
     /**
     *   get
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param string $dot
     *   @param mixed $default
     *   @return mixed
-    **/
+    */
     public static function get(array $array, string $dot, $default = null)
     {
         return array_reduce(
@@ -53,38 +53,38 @@ final class ArrayDot
             $array
         );
     }
-    
+
     /**
     *   has
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param string $dot
     *   @return bool
-    **/
+    */
     public static function has(array $array, string $dot): bool
     {
         $get = self::get($array, $dot);
         return isset($get) ? true : false;
     }
-    
+
     /**
     *   remove
     *
-    *   @param array $array
+    *   @param mixed[] $array
     *   @param string $dot
-    *   @return array
-    **/
+    *   @return mixed[]
+    */
     public static function remove(array $array, string $dot): array
     {
         $exploded = explode('.', $dot);
-        
+
         if (empty($exploded[0])) {
             return $array;
         }
-        
+
         $target = &$array;
         $lastName = array_pop($exploded);
-        
+
         foreach ($exploded as $name) {
             if (!isset($target[$name])) {
                 return $array;

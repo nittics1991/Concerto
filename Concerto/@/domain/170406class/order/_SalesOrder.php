@@ -19,14 +19,14 @@ class SalesOrder
     SalesSchadule $salesSchadule;
     ModelCodeId $modelCodeId;   //関連が外部
     ApprovalUsers $approvalUsers    //関連が外部?
-    
+
     $provisionalResistration    //仮登録
     $oederDetailes = [];
-    
-    
-    
-    
-    
+
+
+
+
+
     public function getGrossMargin()
     {
         $total = 0;
@@ -34,13 +34,13 @@ class SalesOrder
         }
         return $total;
     }
-    
+
     public function getGrossMarginRate()
     {
         return round($this->SalesPlice->price / $this->getGrossMargin() * 100, 2);
     }
-    
-    
+
+
     public function isValidOederId($val)
     {
     }

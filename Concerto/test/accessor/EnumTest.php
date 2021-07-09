@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-declare(strict_types=1);
 
 namespace Concerto\test\accessor;
 
@@ -29,20 +28,20 @@ class EnumTest extends ConcertoTestCase
             [false],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider constructExceptionProvider
-    **/
+    */
     public function constructException($data)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('not defined');
         $obj = new StubEnum($data);
     }
-    
+
     public function constructCallProvider()
     {
         return [
@@ -52,27 +51,27 @@ class EnumTest extends ConcertoTestCase
             [StubEnum::FOURTH]
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider constructCallProvider
-    **/
+    */
     public function constructCall($data)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new StubEnum($data);
         $this->assertInstanceOf(StubEnum::class, $obj);
         $this->assertEquals($data, $obj->getValue());
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function methodCall()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new StubEnum(StubEnum::FOURTH);
         $this->assertEquals(4.0, $obj->getValue());
         $this->assertEquals('FOURTH', $obj->getKey());
@@ -96,15 +95,15 @@ class EnumTest extends ConcertoTestCase
             ],
             $obj->getValues()
         );
-        
+
         ob_start();
         echo $obj;
         $actual = ob_get_contents();
         ob_end_clean();
-        
+
         //not '4.0'
         $this->assertEquals('4', $actual);
-        
+
         $data = [
             'FIRST' => 'first',
             'SECOND' => true,
@@ -112,14 +111,14 @@ class EnumTest extends ConcertoTestCase
             'FOURTH' => 4.0,
             'FIFTH' => 5,
         ];
-        
+
         foreach ($obj as $key => $val) {
             $this->assertEquals(key($data), $key);
             $this->assertEquals(current($data), $val);
             next($data);
         }
     }
-    
+
     public function staticCallExceptionProvider()
     {
         return [
@@ -127,20 +126,20 @@ class EnumTest extends ConcertoTestCase
             ['3'],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider staticCallExceptionProvider
-    **/
+    */
     public function staticCallException($data)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('not defined');
         $obj = StubEnum::$data();
     }
-    
+
     public function staticCallProvider()
     {
         return [
@@ -148,15 +147,15 @@ class EnumTest extends ConcertoTestCase
             ['SECOND', true],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider staticCallProvider
-    **/
+    */
     public function staticCall($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals(new StubEnum($expect), StubEnum::$data());
     }
 }

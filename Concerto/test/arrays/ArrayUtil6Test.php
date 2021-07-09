@@ -28,22 +28,22 @@ class ArrayUtil6Test extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider someProvider
-    **/
+    */
     public function some($array, $collback, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $actual = call_user_func_array(
             ['Concerto\standard\ArrayUtil', 'some'],
             [$array, $collback]
         );
         $this->assertEquals($expect, $actual);
     }
-    
+
     public function everyProvider()
     {
         return [
@@ -63,22 +63,22 @@ class ArrayUtil6Test extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider everyProvider
-    **/
+    */
     public function every($array, $collback, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $actual = call_user_func_array(
             ['Concerto\standard\ArrayUtil', 'every'],
             [$array, $collback]
         );
         $this->assertEquals($expect, $actual);
     }
-    
+
     public function flattenProvider()
     {
         return [
@@ -121,15 +121,15 @@ class ArrayUtil6Test extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider flattenProvider
-    **/
+    */
     public function flatten($array, $depth, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $actual = call_user_func_array(
             ['Concerto\standard\ArrayUtil', 'flatten'],
             [$array, $depth]

@@ -20,24 +20,24 @@ class AuthenticationGate implements AuthInterface
     *   authUserRepository
     *
     *   @var AuthUserRepositoryInterface
-    **/
+    */
     protected $authUserRepository;
-    
+
     /**
     *   __construct
     *
     *   @param AuthUserRepositoryInterface $authUserRepository
-    **/
+    */
     public function __construct(
         AuthUserRepositoryInterface $authUserRepository
     ) {
         $this->authUserRepository = $authUserRepository;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function login(string $user, string $password): bool
     {
         $authUser = $this->authUserRepository->findByUserId($user);

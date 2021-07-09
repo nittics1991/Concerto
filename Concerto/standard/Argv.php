@@ -9,6 +9,8 @@
 *       値あり引数の場合、入力時に=でつなぐ事を推奨
 */
 
+declare(strict_types=1);
+
 namespace Concerto\standard;
 
 use RuntimeException;
@@ -19,27 +21,27 @@ class Argv extends DataContainerValidatable
     /**
     *   ショートオプション定義
     *
-    *   @var array
+    *   @var string[]
     *   @see getopt
     */
     protected static $definedShortOptions = [];
-    
+
     /**
     *   ロングオプション定義
     *
-    *   @var array
+    *   @var string[]
     *   @see getopt
     */
     protected static $definedLongOptions = [];
-    
+
     /**
     *   引数オプション定義
     *
-    *   @var array
+    *   @var string[]
     *   @see getopt
     */
     protected static $definedOptindOptions = [];
-    
+
     /**
     *   optind
     *
@@ -47,7 +49,7 @@ class Argv extends DataContainerValidatable
     *   @see getopt
     */
     protected $optind;
-    
+
     /**
     *   __construct
     *
@@ -59,12 +61,12 @@ class Argv extends DataContainerValidatable
         }
         $this->init();
     }
-    
+
     /**
     *   初期化
     *
     */
-    protected function init()
+    protected function init(): void
     {
         if (
             count(static::$definedShortOptions) == 0 &&
@@ -73,18 +75,18 @@ class Argv extends DataContainerValidatable
         ) {
             return;
         }
-        
+
         $parsed = $this->defineProperty()
             ->getOpt();
         $this->setDataFromArgv($parsed)
             ->setOptindDataFromArgv();
     }
-    
+
     /**
     *   property定義
     *
     *   @return $this
-    **/
+    */
     protected function defineProperty()
     {
         array_map(
@@ -105,12 +107,12 @@ class Argv extends DataContainerValidatable
         );
         return $this;
     }
-    
+
     /**
     *   getopt
     *
-    *   @return array
-    **/
+    *   @return string[]
+    */
     protected function getOpt()
     {
         $parsed = getopt(
@@ -118,19 +120,19 @@ class Argv extends DataContainerValidatable
             static::$definedLongOptions,
             $this->optind
         );
-        
+
         if ($parsed === false) {
             throw new RuntimeException("must be argv");
         }
         return $parsed;
     }
-    
+
     /**
     *   setDataFromArgv(short, long)
     *
-    *   @param array $parsed
+    *   @param string[] $parsed
     *   @return $this
-    **/
+    */
     protected function setDataFromArgv(array $parsed)
     {
         foreach ($parsed as $prop => $val) {
@@ -138,33 +140,33 @@ class Argv extends DataContainerValidatable
         }
         return $this;
     }
-    
+
     /**
     *   setOptindDataFromArgv
     *
     *   @return $this
-    **/
+    */
     protected function setOptindDataFromArgv()
     {
         global $argv;
-        
+
         if (
             count(static::$definedOptindOptions) == 0 ||
             !is_int($this->optind)
         ) {
             return $this;
         }
-        
+
         array_map(
             function ($def, $val) {
                 if (is_null($def)) {
                     throw new RuntimeException("to many optind:{$val}");
                 }
-                
+
                 if (is_null($val)) {
                     return;
                 }
-                
+
                 if ($def[-1] != ':') {
                     $this->$def = true;
                     return;

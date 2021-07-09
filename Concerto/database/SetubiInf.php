@@ -22,7 +22,7 @@ class SetubiInf extends ModelDb
     *   @var string
     */
     protected $schema = 'public.setubi_inf';
-    
+
     /**
     *   MaxID
     *
@@ -39,7 +39,7 @@ class SetubiInf extends ModelDb
         $result = $stmt->fetch();
         return (is_null($result['cd_setubi'])) ? 0 : $result['cd_setubi'];
     }
-    
+
     /**
     *   NewID
     *
@@ -50,7 +50,7 @@ class SetubiInf extends ModelDb
         $maxId = (int)$this->getMaxId();
         return sprintf("%04d", $maxId + 1);
     }
-    
+
     /**
     *   分類リスト
     *
@@ -63,32 +63,32 @@ class SetubiInf extends ModelDb
             SELECT nm_maker AS nm_bunrui
             FROM public.setubi_inf
         ";
-        
+
         if (!is_null($kb_setubi)) {
             $sql .= "  WHERE kb_setubi = :setubi";
         }
-        
+
         $sql .= "
             GROUP BY nm_maker
             ORDER BY nm_maker
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
-        
+
         if (!is_null($kb_setubi)) {
             $stmt->bindValue(':setubi', $kb_setubi, PDO::PARAM_STR);
         }
-        
+
         $stmt->execute();
         $result = $stmt->fetchAll();
         $items = [];
-        
+
         foreach ($result as $list) {
             $items[] = ['nm_bunrui' => $list['nm_bunrui']];
         }
         return $items;
     }
-    
+
     /**
     *   名称リスト
     *
@@ -101,32 +101,32 @@ class SetubiInf extends ModelDb
             SELECT nm_setubi
             FROM public.setubi_inf
         ";
-        
+
         if (!is_null($kb_setubi)) {
             $sql .= "  WHERE kb_setubi = :setubi";
         }
-        
+
         $sql .= "
             GROUP BY nm_setubi
             ORDER BY nm_setubi
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
-        
+
         if (!is_null($kb_setubi)) {
             $stmt->bindValue(':setubi', $kb_setubi, PDO::PARAM_STR);
         }
-        
+
         $stmt->execute();
         $result = $stmt->fetchAll();
         $items = [];
-        
+
         foreach ($result as $list) {
             $items[] = ['nm_setubi' => $list['nm_setubi']];
         }
         return $items;
     }
-    
+
     /**
     *   部門リスト
     *
@@ -145,7 +145,7 @@ class SetubiInf extends ModelDb
                 ON B.cd_bumon = A.kb_group
             ORDER BY cd_bumon
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return (array)$stmt->fetchAll();

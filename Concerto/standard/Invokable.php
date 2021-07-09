@@ -6,6 +6,8 @@
 *   @version 190523
 */
 
+declare(strict_types=1);
+
 namespace Concerto\standard;
 
 interface Invokable

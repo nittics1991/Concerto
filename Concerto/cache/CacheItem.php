@@ -3,7 +3,7 @@
 /**
  *   CacheItem
  *
- * @version 191716
+ * @version 210615
  */
 
 declare(strict_types=1);
@@ -22,37 +22,37 @@ class CacheItem implements CacheItemInterface
      *   キー
      *
      * @var string
-     **/
+     */
     protected $key;
-    
+
     /**
      *   値
      *
      * @var mixed
-     **/
+     */
     protected $value;
-    
+
     /**
      *   キャッシュヒット
      *
      * @var mixed
-     **/
+     */
     protected $isHit;
-    
+
     /**
      *   キャッシュ期間(sec or UNIX time)
      *
-     * @var integer
-     **/
+     * @var int
+     */
     protected $ttl;
-    
+
     /**
      *   初期有効期間(sec)
      *
-     * @var integer
-     **/
+     * @var int
+     */
     protected $defaultlifetime = 86400;
-    
+
     /**
      *   __construct
      *
@@ -60,7 +60,7 @@ class CacheItem implements CacheItemInterface
      * @param mixed  $value
      * @param int    $ttl   sec | unix time
      * @param bool   $isHit キャッシュヒット
-     **/
+     */
     public function __construct(
         string $key,
         $value,
@@ -72,62 +72,60 @@ class CacheItem implements CacheItemInterface
         $this->isHit = $isHit;
         $this->ttl = (is_null($ttl)) ? $this->defaultlifetime : $ttl;
     }
-    
+
     /**
      *   キー取得
      *
      * @return string
-     **/
-    public function getKey()
+     */
+    public function getKey(): string
     {
-        return $this->key;
+        return $this->key ?? '';
     }
-    
+
     /**
      *   値取得
      *
      * @return mixed
-     **/
-    public function get()
+     */
+    public function get(): mixed
     {
         return $this->value;
     }
-    
+
     /**
      *   キャッシュヒット
      *
      * @return bool
-     **/
-    public function isHit()
+     */
+    public function isHit(): bool
     {
         return $this->isHit;
     }
-    
+
     /**
      *   値設定
      *
-     * @param  mixed $val
-     * @return $this
-     **/
-    public function set($val)
+     * @param  mixed $value
+     * @return static
+     */
+    public function set(mixed $value): static
     {
-        $this->value = $val;
+        $this->value = $value;
         return $this;
     }
-    
+
     /**
      *   有効期限設定(日付指定)
      *
      * @param  DateTimeInterface|null $expiration
-     * @return $this
+     * @return static
      * @throw  InvalidArgumentException
-     **/
-    public function expiresAt($expiration = null)
+     */
+    public function expiresAt(?\DateTimeInterface $expiration): static
     {
         if ($expiration == null) {
             $this->ttl = $this->defaultlifetime;
-        } elseif (is_int($expiration)) {
-            $this->ttl = $expiration - time();
         } elseif ($expiration instanceof DateTimeInterface) {
             $this->ttl = (int)$expiration->format('U') - time();
         } else {
@@ -137,27 +135,35 @@ class CacheItem implements CacheItemInterface
         }
         return $this;
     }
-    
+
     /**
      *   有効期限設定(日付間隔指定)
      *
      * @param  DateInterval|int|null $time
      * @return $this
      * @throw  InvalidArgumentException
-     **/
-    public function expiresAfter($time = null)
+     */
+    public function expiresAfter(int | \DateInterval | null $time): static
     {
         if ($time == null) {
             $this->ttl = $this->defaultlifetime;
         } elseif (is_int($time)) {
             $this->ttl = $time;
         } elseif ($time instanceof DateInterval) {
-            $this->ttl = (int)DateTimeImmutable::createFromFormat(
+            $dt = DateTimeImmutable::createFromFormat(
                 'U',
                 (string)time()
-            )
-                ->add($time)
-                ->format('U') - time();
+            );
+
+            if ($dt === false) {
+                throw new InvalidArgumentException(
+                    "expiration must be DateInterval or integer"
+                );
+            }
+
+            $this->ttl = (int)(
+                    $dt->add($time)->format('U')
+                ) - time();
         } else {
             throw new InvalidArgumentException(
                 "expiration must be DateInterval or integer"
@@ -165,10 +171,12 @@ class CacheItem implements CacheItemInterface
         }
         return $this;
     }
-    
+
     /**
      *   キャッシュ期間取得
-     **/
+     *
+     *  @return int
+     */
     public function getExpiry()
     {
         return $this->ttl;

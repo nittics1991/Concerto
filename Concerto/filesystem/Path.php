@@ -17,12 +17,12 @@ class Path
     *
     *   @param string $path
     *   @return string
-    **/
+    */
     public static function resolve(string $path = __DIR__): string
     {
         $splited = self::split($path);
         $resolved = [];
-        
+
         foreach ($splited as $val) {
             if ($val == '..') {
                 array_pop($resolved);
@@ -34,24 +34,24 @@ class Path
         }
         return self::join($resolved);
     }
-    
+
     /**
     *   split
     *
     *   @param string $path
-    *   @return array
-    **/
+    *   @return string[]
+    */
     public static function split(string $path)
     {
         return (array)mb_split('[\\\\/]', $path);
     }
-    
+
     /**
     *   join
     *
-    *   @param array $pathset
+    *   @param string[] $pathset
     *   @return string
-    **/
+    */
     public static function join(array $pathset): string
     {
         return join(DIRECTORY_SEPARATOR, $pathset);

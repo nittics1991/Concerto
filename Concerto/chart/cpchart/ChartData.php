@@ -3,43 +3,44 @@
 /**
  *   ChartData
  *
- * @version 191216
- **/
+ * @version 210614
+ */
 
 declare(strict_types=1);
 
 namespace Concerto\chart\cpchart;
 
+use InvalidArgumentException;
 use IteratorAggregate;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
-use InvalidArgumentException;
+use Traversable;
 
 class ChartData implements IteratorAggregate
 {
     /**
      *   iniData
      *
-     * @var array
-     **/
+     * @var mixed[]
+     */
     protected $container = [];
-    
+
     /**
      *   __construct
-     *
-     * @param array $params
-     **/
+     *mixed[]
+     * @param mixed[] $params
+     */
     public function __construct(array $params = [])
     {
         $this->container = $params;
     }
-    
+
     /**
      *   bind
      *
-     * @param  array $params
+     * @param mixed[] $params
      * @return $this
-     **/
+     */
     public function bind(array $params)
     {
         $this->container = array_replace_recursive(
@@ -48,13 +49,13 @@ class ChartData implements IteratorAggregate
         );
         return $this;
     }
-    
+
     /**
      *   get
      *
-     * @param  ?string $name
-     * @return array
-     **/
+     * @param ?string $name
+     * @return mixed[]
+     */
     public function get($name = null)
     {
         if (!isset($name)) {
@@ -63,24 +64,24 @@ class ChartData implements IteratorAggregate
         return (isset($this->container[$name])) ?
             $this->container[$name] : null;
     }
-    
+
     /**
      *   {inherit}
-     **/
-    public function getIterator()
+     */
+    public function getIterator(): Traversable
     {
         return new RecursiveIteratorIterator(
             new RecursiveArrayIterator($this->container),
             RecursiveIteratorIterator::SELF_FIRST
         );
     }
-    
+
     /**
      *   import
      *
-     * @param  string $file
+     * @param string $file
      * @return $this
-     **/
+     */
     public function import($file)
     {
         if (!file_exists($file)) {
@@ -89,47 +90,48 @@ class ChartData implements IteratorAggregate
         $this->container = include $file;
         return $this;
     }
-    
+
     /**
      *   getTableData
      *
-     * @return array
-     **/
+     * @return mixed[]
+     */
     public function getTableData()
     {
         $points = $this->container['points'];
         $dataset = $this->container['dataset'];
         $abscissa = isset($dataset['Abscissa'][0]) ?
             $dataset['Abscissa'][0] : null;
-        
+
         if (isset($abscissa)) {
             $backup = $points[$abscissa];
             unset($points[$abscissa]);
             $points = array_merge([$abscissa => $backup], $points);
         }
-        
+
         $result = [];
-        
-        $withoutDescripionTable = function ($points, $abscissa) {
-            foreach ($points as $name => $values) {
-                $result[] = ($name == $abscissa) ?
+
+        $withoutDescripionTable =
+            function ($points, $abscissa) use ($result) {
+                foreach ($points as $name => $values) {
+                    $result[] = ($name == $abscissa) ?
                     array_merge([''], $values)
                     : array_merge([$name], $values);
-            }
-            return $result;
-        };
-        
+                }
+                return $result;
+            };
+
         //not have description
         if (!isset($dataset['SerieDescription'])) {
             return $withoutDescripionTable($points, $abscissa);
         }
-        
+
         //have description
         $descriptions = [];
         foreach ($dataset['SerieDescription'] as $format) {
             $descriptions[$format[0]] = $format[1];
         }
-        
+
         foreach ($points as $name => $values) {
             if ($name == $abscissa) {
                 $result[] = array_merge([''], $values);

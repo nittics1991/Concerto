@@ -12,10 +12,10 @@ class TestClassNotHasConstructParameter implements TestClassInterface
     {
         $this->argument = TestClassNotHasConstructParameter::class;
     }
-    
+
     /**
     *   {inherit}
-    **/
+    */
     public function get()
     {
         return TestClassNotHasConstructParameter::class . ' _get()';

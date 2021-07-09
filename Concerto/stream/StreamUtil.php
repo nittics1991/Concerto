@@ -20,43 +20,43 @@ class StreamUtil
     *   フィルタ名空間
     *
     *   @var string
-    **/
+    */
     public const FILTER_NAME = 'Concerto.StreamUtil.';
-    
+
     /**
     *   定義名リスト
     *
-    *   @var array
-    **/
-    private static $stack = array();
-    
+    *   @var string[]
+    */
+    private static $stack = [];
+
     /**
     *   定義名リスト取得
     *
-    *   @return array
-    **/
+    *   @return string[]
+    */
     public static function getIdList()
     {
         return static::$stack;
     }
-    
+
     /**
     *   定義
     *
     *   @param string $id
     *   @return string フィルター名 or false
-    **/
+    */
     public static function register(string $id)
     {
         $result = true;
         $name = StreamUtil::FILTER_NAME . $id;
-        
+
         if (!in_array($id, static::$stack)) {
             $result = stream_filter_register(
                 $name,
                 __NAMESPACE__ . '\StreamCallbackFilter'
             );
-            
+
             if (!$result) {
                 throw new RuntimeException("can not register:{$id}");
             }
@@ -64,7 +64,7 @@ class StreamUtil
         }
         return $name;
     }
-    
+
     /**
     *   最後尾追加
     *
@@ -73,7 +73,7 @@ class StreamUtil
     *   @param string $id ID
     *   @param int $read_write モード
     *   @return resource
-    **/
+    */
     public static function append(
         $stream,
         callable $callback,
@@ -85,7 +85,7 @@ class StreamUtil
                 "append(stream, callback, name, read_write)"
             );
         }
-        
+
         $namespace = StreamUtil::register($id);
         $filter = stream_filter_append(
             $stream,
@@ -93,13 +93,13 @@ class StreamUtil
             $read_write,
             $callback
         );
-        
+
         if ($filter === false) {
             throw new RuntimeException("can not append filter");
         }
         return $filter;
     }
-    
+
     /**
     *   先頭追加
     *
@@ -108,7 +108,7 @@ class StreamUtil
     *   @param string $id ID
     *   @param int $read_write モード
     *   @return resource
-    **/
+    */
     public static function prepend(
         $stream,
         callable $callback,
@@ -120,7 +120,7 @@ class StreamUtil
                 "append(stream, callback, name, read_write)"
             );
         }
-        
+
         $namespace = StreamUtil::register($id);
         $filter = stream_filter_prepend(
             $stream,
@@ -128,27 +128,27 @@ class StreamUtil
             $read_write,
             $callback
         );
-        
+
         if ($filter === false) {
             throw new RuntimeException("can not prepend filter");
         }
         return $filter;
     }
-    
+
     /**
     *   削除
     *
     *   @param resource $filter
     *   @return bool
-    **/
+    */
     public static function remove($filter): bool
     {
         if (!is_resource($filter)) {
             throw new InvalidArgumentException("args (stream)");
         }
-        
+
         $result = stream_filter_remove($filter);
-        
+
         if ($result === false) {
             throw new RuntimeException("can not remove filter");
         }

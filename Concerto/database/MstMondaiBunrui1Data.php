@@ -3,7 +3,7 @@
 /**
 *   mst_mondai_bunrui1
 *
-*   @version 170711
+*   @version 200605
 */
 
 declare(strict_types=1);
@@ -23,9 +23,8 @@ class MstMondaiBunrui1Data extends ModelData
     protected static $schema = [
         'no_bunrui' => parent::INTEGER
         , 'nm_bunrui' => parent::STRING
-        ,'cd_system' => parent::STRING
     ];
-    
+
     /**
     *   Column Alias
     *
@@ -33,19 +32,14 @@ class MstMondaiBunrui1Data extends ModelData
     */
     protected static $alias = [
     ];
-    
+
     public function isValidNo_bunrui($val)
     {
         return Validate::isInt($val, 1);
     }
-    
+
     public function isValidNm_bunrui($val)
     {
         return Validate::isText($val);
-    }
-    
-    public function isValidCd_system($val)
-    {
-        return Validate::isCdSystem($val);
     }
 }

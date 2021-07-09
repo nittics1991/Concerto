@@ -3,8 +3,10 @@
 /**
 *   Post
 *
-*   @version 190523
+*   @version 210609
 */
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
@@ -20,18 +22,18 @@ class Post extends DataContainerValidatable
     {
         $this->data = $_POST;
     }
-    
+
     /**
     *   バリデート全変数共通処理
     *
     *   @param string $key 変数名
     *   @param mixed $val データ
     *   @return bool
-    **/
-    protected function validCom($key, $val)
+    */
+    protected function validCom($key, $val): bool
     {
         $result = true;
-        
+
         if (is_array($val)) {
             foreach ($val as $key2 => $val2) {
                 $result = $this->validCom($key2, $val2) && $result;
@@ -41,11 +43,12 @@ class Post extends DataContainerValidatable
                 $this->valid[$key][] = 'invalid encoding';
                 $result = false;
             }
-            
+
+            //mb_ereg_matchではエラーの場合がある(php8.0.3)
             if (
-                !mb_ereg_match(
-                    '\A[\x20-\x7e\x80-\xff\x09-\x0a\x0d]*\z',
-                    $val
+                !preg_match(
+                    '/\A[\x20-\x7e\x80-\xff\x09-\x0a\x0d]*\z/',
+                    (string)$val
                 )
             ) {
                 $this->valid[$key][] = 'invalid code';
@@ -54,7 +57,7 @@ class Post extends DataContainerValidatable
         }
         return $result;
     }
-    
+
     /**
     *   AJAX判定
     *
@@ -66,28 +69,28 @@ class Post extends DataContainerValidatable
             strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])
             === 'xmlhttprequest';
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
-    public function offsetGet($key)
+    */
+    public function offsetGet(mixed $offset): mixed
     {
-        $method = 'get' . mb_convert_case($key, MB_CASE_TITLE);
+        $method = 'get' . mb_convert_case($offset, MB_CASE_TITLE);
         if (method_exists($this, $method)) {
-            $value = $this->$method($key);
+            $value = $this->$method($offset);
         } else {
-            $value = parent::offsetGet($key);
+            $value = parent::offsetGet($offset);
         }
         return $this->getFilterCom($value);
     }
-    
+
     /**
     *   get共通フィルタ
     *
-    *   @param string|array $val
-    *   @return string|array
-    **/
+    *   @param string|string[] $val
+    *   @return string|string[]
+    */
     protected function getFilterCom($val)
     {
         if (is_array($val)) {
@@ -100,22 +103,22 @@ class Post extends DataContainerValidatable
         }
         return $this->doGetFilterCom((string)$val);
     }
-    
+
     /**
     *   get共通フィルタ実行
     *
     *   @param string $val
     *   @return string
-    **/
+    */
     protected function doGetFilterCom(string $val)
     {
         return strip_tags($val);
     }
-    
+
     /**
     *   getフィルタ
     *
     *   @see 必要に応じてフィルタ処理を作成する
-    **/
+    */
     //protected function getXxxx($key)
 }

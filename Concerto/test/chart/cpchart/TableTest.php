@@ -5,22 +5,24 @@ declare(strict_types=1);
 namespace Concerto\test\chart\cpchart;
 
 use Concerto\test\ConcertoTestCase;
-use Concerto\chart\cpchart\Table;
-use CpChart\Factory\Factory;
+use Concerto\chart\cpchart\{
+    ChartFactory,
+    Table
+};
 
 class TableTest extends ConcertoTestCase
 {
     private $tmp = __DIR__ . '\\tmp\\';
     private $data;
     private $image;
-    
+
     protected function setUp(): void
     {
-        $factory = new Factory();
+        $factory = new ChartFactory();
         $this->data = $factory->newData();
         $this->image = $factory->newImage(600, 400, $this->data);
     }
-    
+
     public function isWithInRangeProvider()
     {
         return [
@@ -47,20 +49,20 @@ class TableTest extends ConcertoTestCase
             ],  //
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider isWithInRangeProvider
-    **/
+    */
     public function isWithInRange($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new Table($this->data, $this->image);
         $actual = $this->callPrivateMethod($obj, 'isWithInRange', $data);
         $this->assertEquals($expect, $actual);
     }
-    
+
     public function calcCellSizeProvider()
     {
         return [
@@ -77,22 +79,22 @@ class TableTest extends ConcertoTestCase
             ],  //
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider calcCellSizeProvider
-    **/
+    */
     public function calcCellSize($setting, $data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new Table($this->data, $this->image);
-        
+
         $this->setPrivateProperty($obj, 'setting', $setting);
         $actual = $this->callPrivateMethod($obj, 'calcCellSize', [$data]);
         $this->assertEquals($expect, $actual);
     }
-    
+
     public function calcDescriptionCellSizeProvider()
     {
         return [
@@ -112,22 +114,22 @@ class TableTest extends ConcertoTestCase
             ],  //
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider calcDescriptionCellSizeProvider
-    **/
+    */
     public function calcDescriptionCellSize($setting, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new Table($this->data, $this->image);
-        
+
         $this->setPrivateProperty($obj, 'setting', $setting);
         $actual = $this->callPrivateMethod($obj, 'calcDescriptionCellSize');
         $this->assertEquals($expect, $actual);
     }
-    
+
     public function calcDataCellSizeProvider()
     {
         return [
@@ -151,22 +153,22 @@ class TableTest extends ConcertoTestCase
             ],  //
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider calcDataCellSizeProvider
-    **/
+    */
     public function calcDataCellSize($setting, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new Table($this->data, $this->image);
-        
+
         $this->setPrivateProperty($obj, 'setting', $setting);
         $actual = $this->callPrivateMethod($obj, 'calcDataCellSize');
         $this->assertEquals($expect, $actual);
     }
-    
+
     public function drawCellProvider()
     {
         return [
@@ -249,27 +251,27 @@ class TableTest extends ConcertoTestCase
             ],  //
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider drawCellProvider
-    **/
+    */
     public function drawCell($i, $setting, $data)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new Table($this->data, $this->image);
-        
+
         $this->setPrivateProperty($obj, 'setting', $setting);
         $actual = $this->callPrivateMethod($obj, 'drawCell', $data);
-        
+
         $pImage = $this->getPrivateProperty($obj, 'image');
         $file = "{$this->tmp}drawCell{$i}.png";
         $pImage->render($file);
-        
+
         $this->assertEquals(1, 1);
     }
-    
+
     public function drawDescriptionProvider()
     {
         return [
@@ -349,27 +351,27 @@ class TableTest extends ConcertoTestCase
             ],  //
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider drawDescriptionProvider
-    **/
+    */
     public function drawDescription($i, $setting, $data)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new Table($this->data, $this->image);
-        
+
         $this->setPrivateProperty($obj, 'setting', $setting);
         $actual = $this->callPrivateMethod($obj, 'drawDescription', $data);
-        
+
         $pImage = $this->getPrivateProperty($obj, 'image');
         $file = "{$this->tmp}drawDescription{$i}.png";
         $pImage->render($file);
-        
+
         $this->assertEquals(1, 1);
     }
-    
+
     public function drawDataProvider()
     {
         return [
@@ -412,27 +414,27 @@ class TableTest extends ConcertoTestCase
             ],  //
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider drawDataProvider
-    **/
+    */
     public function drawData($i, $setting, $data)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new Table($this->data, $this->image);
-        
+
         $this->setPrivateProperty($obj, 'setting', $setting);
         $actual = $this->callPrivateMethod($obj, 'drawData', $data);
-        
+
         $pImage = $this->getPrivateProperty($obj, 'image');
         $file = "{$this->tmp}drawData{$i}.png";
         $pImage->render($file);
-        
+
         $this->assertEquals(1, 1);
     }
-    
+
     public function renderTableProvider()
     {
         return [
@@ -477,21 +479,21 @@ class TableTest extends ConcertoTestCase
             ],  //
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider renderTableProvider
-    **/
+    */
     public function renderTable($i, $data)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new Table($this->data, $this->image);
         $obj->render($data);
-        
+
         $file = "{$this->tmp}renderTable{$i}.png";
         $this->image->render($file);
-        
+
         $this->assertEquals(1, 1);
     }
 }

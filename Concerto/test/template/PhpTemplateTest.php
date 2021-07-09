@@ -10,38 +10,38 @@ use Concerto\template\PhpTemplate;
 class PhpTemplateTest extends ConcertoTestCase
 {
     public $object;
-    
+
     public function setUp(): void
     {
         parent::setUp();
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function renderException()
     {
 //      $this->markTestIncomplete();
-        
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('file not found:DUMMY');
         $this->object = new PhpTemplate('DUMMY');
         $this->object->render('DATASET');
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function renderException2()
     {
 //      $this->markTestIncomplete();
-        
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('dataset required array');
         $this->object = new PhpTemplate(__FILE__);
         $this->object->render('DATASET');
     }
-    
+
     public function renderProvider()
     {
         return [
@@ -59,17 +59,17 @@ class PhpTemplateTest extends ConcertoTestCase
             ]
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider renderProvider
-    **/
+    */
     public function render($template, $data, $expect)
     {
         //下記メッセージが出てRiskyになる
         //Test code or tested code did not (only) close its own output buffers
      $this->markTestIncomplete();
-        
+
         $this->object = new PhpTemplate($template);
         $actual = $this->object->render($data);
         $this->assertEquals($expect, $actual);

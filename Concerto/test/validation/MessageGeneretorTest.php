@@ -16,15 +16,15 @@ use Concerto\test\validation\constraint\TestConstraint1;
 use Concerto\test\validation\constraint\TestConstraint2;
 use Concerto\validation\ValidationInterface;
 
-class MessageGeneratorTest extends ConcertoTestCase
+class MessageGeneretorTest extends ConcertoTestCase
 {
     /**
     *   @test
-    **/
+    */
     public function first()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new MessageGenerator(new CurlyBracketMessageGenerator());
         $validation = new Validation($obj);
         $validation = $validation->create(
@@ -33,11 +33,11 @@ class MessageGeneratorTest extends ConcertoTestCase
             new GreaterThen([11])
         );
         $this->assertEquals('', $obj->generate($validation));
-        
+
         $message = 'sinple string messafe';
         $obj = $obj->create($message);
         $this->assertEquals($message, $obj->generate($validation));
-        
+
         $message = 'atr={{attribute}} value={{parameters0}} replace message:{{value}}';
         $actual = 'atr=prop1 value=11 replace message:10';
         $obj = $obj->create($message);

@@ -18,7 +18,7 @@ interface LogWriterInterface
     *   @param string $format
     */
     public function setFormat($format);
-    
+
     /**
     *   出力
     *

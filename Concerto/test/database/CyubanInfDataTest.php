@@ -10,12 +10,12 @@ use Concerto\database\CyubanInfData;
 class CyubanInfDataTest extends ConcertoTestCase
 {
     private $class;
-    
+
     protected function setUp(): void
     {
         $this->class = new CyubanInfData();
     }
-    
+
     public static function successValidate()
     {
 //      $this->markTestIncomplete();
@@ -29,12 +29,12 @@ class CyubanInfDataTest extends ConcertoTestCase
             )
         );
     }
-    
+
     /**
     *
     * @dataProvider successValidate
     *
-    **/
+    */
     public function testSuccessValidate(
         $kb_nendo,
         $no_cyu,
@@ -52,9 +52,9 @@ class CyubanInfDataTest extends ConcertoTestCase
         $yn_sp,
         $yn_net
     ) {
-        
+
 //      $this->markTestIncomplete();
-        
+
         $this->class->kb_nendo      = $kb_nendo;
         $this->class->no_cyu        = $no_cyu;
         $this->class->cd_bumon      = $cd_bumon;
@@ -70,7 +70,7 @@ class CyubanInfDataTest extends ConcertoTestCase
         $this->class->dt_hakkou         = $dt_hakkou;
         $this->class->yn_sp             = $yn_sp;
         $this->class->yn_net        = $yn_net;
-        
+
         $this->assertTrue($this->class->isValidKb_nendo($kb_nendo));
         $this->assertTrue($this->class->isValidNo_cyu($no_cyu));
         $this->assertTrue($this->class->isValidCd_bumon($cd_bumon));
@@ -86,10 +86,10 @@ class CyubanInfDataTest extends ConcertoTestCase
         $this->assertTrue($this->class->isValidDt_hakkou($dt_hakkou));
         $this->assertTrue($this->class->isValidYn_sp($yn_sp));
         $this->assertTrue($this->class->isValidYn_net($yn_net));
-        
+
         $this->assertTrue($this->class->isValid());
     }
-    
+
     public static function failureValidate()
     {
 //      $this->markTestIncomplete();
@@ -103,12 +103,12 @@ class CyubanInfDataTest extends ConcertoTestCase
             )
         );
     }
-    
+
     /**
     *
     * @dataProvider failureValidate
     *
-    **/
+    */
     public function testFailureValidate(
         $kb_nendo,
         $no_cyu,
@@ -126,9 +126,9 @@ class CyubanInfDataTest extends ConcertoTestCase
         $yn_sp,
         $yn_net
     ) {
-        
+
 //      $this->markTestIncomplete();
-        
+
         $this->class->kb_nendo      = $kb_nendo;
         $this->class->no_cyu        = $no_cyu;
         $this->class->cd_bumon      = $cd_bumon;
@@ -144,7 +144,7 @@ class CyubanInfDataTest extends ConcertoTestCase
         $this->class->dt_hakkou         = $dt_hakkou;
         $this->class->yn_sp             = $yn_sp;
         $this->class->yn_net        = $yn_net;
-        
+
         $this->assertFalse($this->class->isValidKb_nendo($kb_nendo));
         $this->assertFalse($this->class->isValidNo_cyu($no_cyu));
         $this->assertFalse($this->class->isValidCd_bumon($cd_bumon));
@@ -160,17 +160,17 @@ class CyubanInfDataTest extends ConcertoTestCase
         $this->assertFalse($this->class->isValidDt_hakkou($dt_hakkou));
         $this->assertFalse($this->class->isValidYn_sp($yn_sp));
         $this->assertFalse($this->class->isValidYn_net($yn_net));
-        
+
         $this->assertFalse($this->class->isValid());
     }
-    
+
     public function testGetKbCyumon()
     {
-        
+
 //      $this->markTestIncomplete();
-        
+
         $except = array('受', 'Ａ', 'Ｂ', 'Ｃ', '仮');
-        
+
         $this->assertEquals($except, $this->class->getKbCyumon());
         $this->assertEquals($except[0], $this->class->getKbCyumon('0'));
         $this->assertEquals($except[1], $this->class->getKbCyumon('1'));
@@ -179,8 +179,8 @@ class CyubanInfDataTest extends ConcertoTestCase
         $this->assertEquals($except[4], $this->class->getKbCyumon('4'));
         $this->assertNull($this->class->getKbCyumon('5'));
     }
-    
-    
+
+
     public function validateStaticCallDataProvider()
     {
         return [
@@ -189,7 +189,7 @@ class CyubanInfDataTest extends ConcertoTestCase
             ['validNo_cyu', "ICH00032A",false],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider validateStaticCallDataProvider
@@ -197,7 +197,7 @@ class CyubanInfDataTest extends ConcertoTestCase
     public function validateStaticCall($method, $data, $expect)
     {
 //       $this->markTestIncomplete();
-        
+
         $this->assertEquals(
             $expect,
             call_user_func(

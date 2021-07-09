@@ -9,7 +9,7 @@ use Concerto\mail\MailMessage;
 
 class MailMessageTest extends ConcertoTestCase
 {
-    
+
     public function constructProvidor()
     {
         $params1 = [
@@ -30,12 +30,12 @@ class MailMessageTest extends ConcertoTestCase
             ],
             'type' => 'text'
         ];
-        
+
         return [
             [$params1]
         ];
     }
-    
+
     /**
     *   construct
     *
@@ -45,11 +45,11 @@ class MailMessageTest extends ConcertoTestCase
     public function construct($data)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailMessage($data);
         $this->assertEquals($data, $object->toArray());
     }
-    
+
     /**
     *   accessor
     *
@@ -59,7 +59,7 @@ class MailMessageTest extends ConcertoTestCase
     public function accessor($data)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailMessage($data);
         $this->assertEquals($data['from'], $object->from);
         $this->assertEquals($data['to'], $object->to);
@@ -70,7 +70,7 @@ class MailMessageTest extends ConcertoTestCase
         $this->assertEquals($data['attach'], $object->attach);
         $this->assertEquals($data['type'], $object->type);
     }
-    
+
     public function isValidMailAddressProvidor()
     {
         return [
@@ -92,7 +92,7 @@ class MailMessageTest extends ConcertoTestCase
             [null, false],
         ];
     }
-    
+
     /**
     *   isValidMailAddress
     *
@@ -102,14 +102,14 @@ class MailMessageTest extends ConcertoTestCase
     public function isValidMailAddress($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailMessage();
         $this->assertEquals(
             $expect,
             $this->callPrivateMethod($object, 'isValidMailAddress', [$data])
         );
     }
-    
+
     public function isValidFromProvidor()
     {
         return [
@@ -131,7 +131,7 @@ class MailMessageTest extends ConcertoTestCase
             [null, false],
         ];
     }
-    
+
     /**
     *   isValidFrom
     *
@@ -141,14 +141,14 @@ class MailMessageTest extends ConcertoTestCase
     public function isValidFrom($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailMessage();
         $this->assertEquals(
             $expect,
             $this->callPrivateMethod($object, 'isValidFrom', [$data])
         );
     }
-    
+
     /**
     *   isValidTo
     *
@@ -158,14 +158,14 @@ class MailMessageTest extends ConcertoTestCase
     public function isValidTo($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailMessage();
         $this->assertEquals(
             $expect,
             $this->callPrivateMethod($object, 'isValidTo', [$data])
         );
     }
-    
+
     public function isValidCcProvidor()
     {
         return [
@@ -187,7 +187,7 @@ class MailMessageTest extends ConcertoTestCase
             [null, true],    //diff true
         ];
     }
-    
+
     /**
     *   isValidCc
     *
@@ -197,14 +197,14 @@ class MailMessageTest extends ConcertoTestCase
     public function isValidCc($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailMessage();
         $this->assertEquals(
             $expect,
             $this->callPrivateMethod($object, 'isValidCc', [$data])
         );
     }
-    
+
     /**
     *   isValidBcc
     *
@@ -214,14 +214,14 @@ class MailMessageTest extends ConcertoTestCase
     public function isValidBcc($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailMessage();
         $this->assertEquals(
             $expect,
             $this->callPrivateMethod($object, 'isValidBcc', [$data])
         );
     }
-    
+
     public function isValidSubjectProvidor()
     {
         return [
@@ -231,7 +231,7 @@ class MailMessageTest extends ConcertoTestCase
             ['', true],
         ];
     }
-    
+
     /**
     *   isValidSubject
     *
@@ -241,14 +241,14 @@ class MailMessageTest extends ConcertoTestCase
     public function isValidSubject($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailMessage();
         $this->assertEquals(
             $expect,
             $this->callPrivateMethod($object, 'isValidSubject', [$data])
         );
     }
-    
+
     /**
     *   isValidMessage
     *
@@ -258,14 +258,14 @@ class MailMessageTest extends ConcertoTestCase
     public function isValidMessage($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailMessage();
         $this->assertEquals(
             $expect,
             $this->callPrivateMethod($object, 'isValidMessage', [$data])
         );
     }
-    
+
     public function isValidAttachProvidor()
     {
         return [
@@ -293,7 +293,7 @@ class MailMessageTest extends ConcertoTestCase
             ],
         ];
     }
-   
+
     /**
     *   isValidAttach
     *
@@ -303,14 +303,14 @@ class MailMessageTest extends ConcertoTestCase
     public function isValidAttach($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailMessage();
         $this->assertEquals(
             $expect,
             $this->callPrivateMethod($object, 'isValidAttach', [$data])
         );
     }
-    
+
     public function isValidTypeProvidor()
     {
         return [
@@ -320,7 +320,7 @@ class MailMessageTest extends ConcertoTestCase
             [123, false],
         ];
     }
-    
+
     /**
     *   isValidType
     *
@@ -330,14 +330,14 @@ class MailMessageTest extends ConcertoTestCase
     public function isValidType($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailMessage();
         $this->assertEquals(
             $expect,
             $this->callPrivateMethod($object, 'isValidType', [$data])
         );
     }
-    
+
     public function isValidProvidor()
     {
         $params1 = [
@@ -358,7 +358,7 @@ class MailMessageTest extends ConcertoTestCase
             ],
             'type' => 'text'
         ];
-        
+
         $params2 = [
             'from' => ['aaa@' => 'AAA'],
             'to' => ['bbb@localhost' => 'BBB', '' => 'B'],
@@ -371,7 +371,7 @@ class MailMessageTest extends ConcertoTestCase
                 ],
             'type' => 'xml'
         ];
-        
+
         $err2 = [
             'from' => ['aaa@'],
             'to' => [''],
@@ -382,13 +382,13 @@ class MailMessageTest extends ConcertoTestCase
             'attach' => [0],
             'type' => [''],
         ];
-        
+
         return [
             [$params1, true, []],
             [$params2, false, $err2],
         ];
     }
-    
+
     /**
     *   isValid
     *
@@ -398,7 +398,7 @@ class MailMessageTest extends ConcertoTestCase
     public function isValid($data, $expect, $err)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailMessage($data);
         $this->assertEquals($expect, $object->isValid());
         $this->assertEquals($err, $object->getValidError());

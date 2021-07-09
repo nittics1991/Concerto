@@ -3,8 +3,10 @@
 /**
 *   メッセージテンプレート
 *
-*   @ver 180614
-**/
+*   @ver 210608
+*/
+
+declare(strict_types=1);
 
 namespace Concerto\template;
 
@@ -16,33 +18,34 @@ abstract class AbstractMessageGenerator implements MessageGeneratorInterface
     *   template
     *
     *   @var string
-    **/
+    */
     protected $template;
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     abstract public function generate(array $parameters = []): string;
-    
-    /**
-    *   __construct
-    *
-    *   @param string $template
-    **/
-    public function __construct(string $template = '')
-    {
-        $this->template = $template;
-    }
-    
+
     /**
     *   create
     *
     *   @param string $template
     *   @return MessageGeneratorInterface
-    **/
-    public function create(string $template = ''): MessageGeneratorInterface
-    {
+    */
+    public static function create(
+        string $template = ''
+    ): MessageGeneratorInterface {
         return new static($template);
+    }
+
+    /**
+    *   __construct
+    *
+    *   @param string $template
+    */
+    public function __construct(string $template = '')
+    {
+        $this->template = $template;
     }
 }

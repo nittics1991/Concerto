@@ -3,7 +3,7 @@
 /**
 *   文字変換
 *
-*   @version 181029
+*   @version 200819
 */
 
 declare(strict_types=1);
@@ -16,7 +16,7 @@ class MbConvert
     *   変換テーブル
     *
     *   @var array
-    **/
+    */
     protected static $convertTables =
         ['a' => 'あ', 'i' => 'い', 'u' => 'う', 'e' => 'え', 'o' => 'お'
             , 'k' => ['a' => 'か', 'i' => 'き', 'u' => 'く', 'e' => 'け', 'o' => 'こ'
@@ -109,7 +109,7 @@ class MbConvert
                 ]
             ]
         ];
-    
+
     /**
     *   ローマ字=>かな変換
     *
@@ -121,31 +121,50 @@ class MbConvert
         $kana = '';
         $roma = str_split(strtolower($romaji));
         $boin = array('a', 'i', 'u', 'e', 'o');
-        
-        for ($i = 0; $i < count($roma); $i++) {
+
+        for (
+            $i = 0, $length1 = count($roma);
+            $i < $length1;
+            $i++
+        ) {
             $t = ord($roma[$i]);
             //アルファベット以外
-            if (($t < 0x61) || ($t > 0x7a)) {
+            if ($t < 0x61 || $t > 0x7a) {
                 $kana .= $roma[$i];
             //母音
             } elseif (in_array($roma[$i], $boin)) {
                 $kana .= static::$convertTables[$roma[$i]];
             //子音で最終文字
             } elseif ($i >= count($roma)) {
-                for ($j = $i; $j < count($roma); $j++) {
+                for (
+                    $j = $i, $length2 = count($roma);
+                    $j < $length2;
+                    $j++
+                ) {
                     $kana .= $roma[$j];
                 }
             //nnはん
-            } elseif (($roma[$i] == 'n') && ($roma[$i + 1] == 'n')) {
+            } elseif (
+                $roma[$i] == 'n'
+                && isset($roma[$i + 1])
+                && $roma[$i + 1] == 'n'
+            ) {
                 $kana .= 'ん';
                 $i++;
             //同じ子音が続く(nnを除く)
-            } elseif (($roma[$i] == $roma[$i + 1]) && ($roma[$i + 1] != 'n')) {
+            } elseif (
+                isset($roma[$i + 1])
+                && $roma[$i] == $roma[$i + 1]
+                && $roma[$i + 1] != 'n'
+            ) {
                 $kana .= 'っ';
             //子音
             } else {
                 //子音の後ろが母音
-                if (in_array($roma[$i + 1], $boin)) {
+                if (
+                    isset($roma[$i + 1])
+                    && in_array($roma[$i + 1], $boin)
+                ) {
                     $kana .= static::$convertTables[$roma[$i]][$roma[$i + 1]];
                     $i++;
                 //テーブルに存在すれば子音

@@ -22,19 +22,19 @@ class RealUrlTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider constructCallProvider
-    **/
+    */
     public function constructCall($baseUrl, $origin)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new RealUrl($baseUrl);
         $this->assertEquals($origin, $this->getPrivateProperty($obj, 'origin'));
     }
-    
+
     public function buildProvider()
     {
         return [
@@ -106,15 +106,15 @@ class RealUrlTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider buildProvider
-    **/
+    */
     public function build($baseUrl, $url, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new RealUrl($baseUrl);
         $this->assertEquals($expect, $obj->build($url));
     }

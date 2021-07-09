@@ -22,12 +22,12 @@ class MstBumon extends ModelDb
     *   @var string
     */
     protected $schema = 'public.mst_bumon';
-    
+
     /**
     *   部門リスト(注番あり部門)
     *
     *   @return array [[cd_bumon, nm_bumon], ...]
-    **/
+    */
     public function getCyubanBumon()
     {
         $sql = "
@@ -39,7 +39,7 @@ class MstBumon extends ModelDb
             WHERE A.fg_cost = '1'
             ORDER BY A.cd_bumon
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return (array)$stmt->fetchAll();

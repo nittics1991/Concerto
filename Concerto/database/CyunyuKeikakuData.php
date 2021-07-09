@@ -3,8 +3,8 @@
 /**
 *   cyunyu_keikaku
 *
-*   @version 190912
-**/
+*   @version 210302
+*/
 
 declare(strict_types=1);
 
@@ -35,14 +35,14 @@ class CyunyuKeikakuData extends ModelData
         , "tm_cyokka" => parent::DOUBLE
         , "yn_money" => parent::INTEGER
     );
-    
+
     /**
     *   非連想配列一括入力用対応テーブル
     *
     *   @var array
-    **/
+    */
     protected static $number_table = array(
-        
+
         0 => 'update',
         1 => 'editor',
         2 => "no_id",
@@ -56,23 +56,23 @@ class CyunyuKeikakuData extends ModelData
         10 => "tm_cyokka",
         11 => "yn_money"
     );
-    
+
     /**
     *   数値配列一括入力
     *
     *   @param array $array
     *   @throws InvalidArgumentException
-    **/
+    */
     public function fromNumberArray(array $array)
     {
         foreach ($array as $key => $val) {
             if (!array_key_exists($key, static::$number_table)) {
                 throw new InvalidArgumentException("array key not exists:{$key}_{$val}");
             }
-            
+
             $prop = static::$number_table[$key];
             $type = static::$schema[$prop];
-            
+
             switch ($type) {
                 case parent::INTEGER:
                     $data = intval(
@@ -90,67 +90,67 @@ class CyunyuKeikakuData extends ModelData
             $this->data[$prop] = $data;
         }
     }
-    
+
     /**
     *   数値配列一括出力
     *
     *   @return array
-    **/
+    */
     public function toNumberArray()
     {
         $tables = static::$number_table;
         ksort($tables, SORT_NUMERIC);
-        $items = array();
-        
+        $items = [];
+
         foreach ($tables as $val) {
             $items[] = $this->data[$val];
         }
         return $items;
     }
-    
+
     public function isValidUpdate($val)
     {
         return Validate::isTextDateTime($val);
     }
-    
+
     public function isValidEditor($val)
     {
         return Validate::isTanto($val);
     }
-    
+
     public function isValidNo_id($val)
     {
         return Validate::isInt($val, 0, 1000);
     }
-    
+
     public function isValidNo_cyu($val)
     {
         return Validate::isCyuban($val);
     }
-    
+
     public function isValidNo_ko($val)
     {
         return Validate::isKoban($val);
     }
-    
+
     public function isValidDt_kanjyo($val)
     {
         return Validate::isTextDateYYYYMM($val);
     }
-    
+
     public function isValidCd_genka_yoso($val)
     {
         return Validate::isGenkaYoso($val);
     }
-    
+
     public function isValidCd_bumon($val)
     {
         return Validate::isBumon($val);
     }
-    
+
     public function isValidNm_cyunyu($val)
     {
-        if ($this->cd_genka_yoso == 'B') {
+        if ($this->cd_genka_yoso == 'C1') {
             return Validate::isTanto($val);
         }
         return Validate::isTextEscape($val, 0, 100)
@@ -158,7 +158,7 @@ class CyunyuKeikakuData extends ModelData
             && !Validate::hasTextHtml($val)
             && !Validate::hasTextDatabase($val);
     }
-    
+
     public function isValidNm_syohin($val)
     {
         if ($val == '') {
@@ -169,12 +169,12 @@ class CyunyuKeikakuData extends ModelData
             && !Validate::hasTextHtml($val)
             && !Validate::hasTextDatabase($val);
     }
-    
+
     public function isValidTm_cyokka($val)
     {
         return Validate::isDouble($val);
     }
-    
+
     public function isValidYn_money($val)
     {
         return Validate::isInt($val);

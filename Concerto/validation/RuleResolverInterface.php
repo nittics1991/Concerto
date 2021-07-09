@@ -4,7 +4,7 @@
 *   RuleResolverInterface
 *
 *   @ver 180614
-**/
+*/
 
 declare(strict_types=1);
 
@@ -19,6 +19,6 @@ interface RuleResolverInterface
     *   @param array
     *   @param string|Closure|ConstraintInterface|callable
     *   @return array [ValidationInterface, ...]
-    **/
+    */
     public function resolve($name, array $values, $rule);
 }

@@ -3,7 +3,7 @@
 /**
 *   mail_inf
 *
-*   @version 181207
+*   @version 210610
 */
 
 declare(strict_types=1);
@@ -21,55 +21,55 @@ class MailInf extends ModelDb
     *   @var string
     */
     protected $schema = 'public.mail_inf';
-    
+
     /**
     *   no_seq最大値取得
     *
     *   @param MailInfData $obj
-    *   @return integer
+    *   @return ?int
     */
     public function getMaxNoSeq(MailInfData $obj)
     {
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var \PDOStatement
         */
         static $stmt;
-        
+
         /**
         *   WHERE前回値
         *
         *   @var array
         */
         static $where_old;
-        
+
         $where_key = array_keys($obj->toArray());
-        
+
         if (($where_key != $where_old) || (empty($stmt))) {
             $sql = "SELECT MAX(no_seq) AS no_seq 
                     FROM {$this->schema} 
                     WHERE 1 = 1 
             ";
-            
+
             if (!empty($where_key)) {
                 foreach ($obj->toArray() as $key => $val) {
                     if (!is_null($val)) {
-                        $sql .= "AND $key = :$key ";
+                        $sql .= "AND {$key} = :{$key} ";
                     }
                 }
             }
-            
+
             $stmt = $this->pdo->prepare($sql);
             $where_old = $where_key;
         }
-        
+
         $this->bind($stmt, $obj);
         $stmt->execute();
-        $result = $stmt->fetchAll();
-        return (is_null($result[0]['no_seq'])) ?         0 : $result[0]['no_seq'];
+        $result = $stmt->fetchColumn(0);
+        return $result === false ? null : (int)$result;
     }
-    
+
     /**
     *   最新情報取得取得
     *
@@ -81,19 +81,19 @@ class MailInf extends ModelDb
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var \PDOStatement
         */
         static $stmt;
-        
+
         /**
         *   WHERE前回値
         *
         *   @var array
         */
         static $where_old;
-        
+
         $where_key = array_keys($obj->toArray());
-        
+
         if (($where_key != $where_old) || (empty($stmt))) {
             $sql = "
                 WITH view AS
@@ -101,7 +101,7 @@ class MailInf extends ModelDb
                     FROM {$this->schema} 
                     WHERE 1 = 1 
             ";
-            
+
             if (!empty($where_key)) {
                 foreach ($obj->toArray() as $key => $val) {
                     if (!is_null($val)) {
@@ -109,7 +109,7 @@ class MailInf extends ModelDb
                     }
                 }
             }
-            
+
             $sql .= "
                     )
                 SELECT * 
@@ -119,16 +119,16 @@ class MailInf extends ModelDb
                     FROM view
                     )
             ";
-            
+
             $stmt = $this->pdo->prepare($sql);
             $where_old = $where_key;
         }
-        
+
         $this->bind($stmt, $obj);
         $stmt->execute();
         return (array)$stmt->fetchAll();
     }
-    
+
     /**
     *   ins_date最大日取得
     *
@@ -139,24 +139,24 @@ class MailInf extends ModelDb
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var \PDOStatement
         */
         static $stmt;
-        
+
         if (is_null($stmt)) {
             $sql = "
                 SELECT MAX(ins_date) AS ins_date 
                 FROM {$this->schema} 
             ";
-        
+
             $stmt = $this->pdo->prepare($sql);
         }
-        
+
         $stmt->execute();
-        $result = $stmt->fetchAll();
-        return $result[0]['ins_date'];
+        $result = $stmt->fetchColumn(0);
+        return $result === false ? '' : (string)$result;
     }
-    
+
     /**
     *   ins_date最小日取得
     *
@@ -167,89 +167,90 @@ class MailInf extends ModelDb
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var \PDOStatement
         */
         static $stmt;
-        
+
         if (is_null($stmt)) {
             $sql = "
                 SELECT MIN(ins_date) AS ins_date 
                 FROM {$this->schema} 
             ";
-        
+
             $stmt = $this->pdo->prepare($sql);
         }
-        
+
         $stmt->execute();
-        $result = $stmt->fetchAll();
-        return $result[0]['ins_date'];
+        $result = $stmt->fetchColumn(0);
+        return $result === false ? '' : (string)$result;
     }
-    
+
     /**
     *   承認メールの終了フラグfg_endを同期
     *
     *   @param MailInfData $mailInfData
-    **/
-    public function syncWfMailEndStatus(MailInfData $mailInfData)
-    {
+    */
+    public function syncWfMailEndStatus(
+        MailInfData $mailInfData
+    ): void {
         $sql = "
             UPDATE public.mail_inf
             SET fg_end = '1'
             WHERE 1 = 1
         ";
-        
+
         $stringBinds = [];
         $strongProperties = [
             'cd_type', 'no_cyu', 'no_seq', 'cd_bumon', 'kb_nendo',
         ];
-        
+
         $intBinds = [];
         $intProperties = [
             'no_page'
         ];
-        
+
         foreach ($strongProperties as $property) {
             if (isset($mailInfData->$property)) {
                 $sql .= " AND {$property} = :{$property}";
                 $stringBinds[":{$property}"] = $mailInfData->$property;
             }
         }
-        
+
         foreach ($intProperties as $property) {
             if (isset($mailInfData->$property)) {
                 $sql .= " AND {$property} = :{$property}";
                 $intBinds[":{$property}"] = $mailInfData->$property;
             }
         }
-        
+
         $stmt = $this->pdo->prepare($sql);
-        
+
         foreach ($stringBinds as $key => $val) {
             $stmt->bindValue($key, $val, PDO::PARAM_STR);
         }
-        
+
         foreach ($intBinds as $key => $val) {
             $stmt->bindValue($key, $val, PDO::PARAM_INT);
         }
-        
+
         $stmt->execute();
     }
-    
+
     /**
-    *   一般申請新ID取得
+    *   新番号生成
     *
+    *   @param string $nm_sequence
     *   @return int
-    **/
-    public function getNewGeneralId()
+    */
+    public function generateNewNo(string $nm_sequence): int
     {
         $sql = "
-            SELECT MAX(COALESCE(no_page, 0)) AS no_id
-            FROM {$this->schema}
-            WHERE cd_type = '13'
+            SELECT NEXTVAL(:seq)
         ";
+
         $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':seq', $nm_sequence, PDO::PARAM_STR);
         $stmt->execute();
-        $stmt->setFetchMode(PDO::FETCH_COLUMN, 0);
-        return (int)($stmt->fetch() + 1);
+        return (int)$stmt->fetchColumn();
     }
 }

@@ -3,7 +3,7 @@
 /**
 *   mst_mondai_yoin
 *
-*   @version 200326
+*   @version 200605
 */
 
 declare(strict_types=1);
@@ -25,9 +25,8 @@ class MstMondaiYoinData extends ModelData
         , 'no_bunrui2' => parent::INTEGER
         , 'cd_yoin' => parent::STRING
         , 'nm_yoin' => parent::STRING
-        ,'cd_system' => parent::STRING
     ];
-    
+
     /**
     *   Column Alias
     *
@@ -35,29 +34,25 @@ class MstMondaiYoinData extends ModelData
     */
     protected static $alias = [
     ];
-    
+
     public function isValidNo_bunrui1($val)
     {
         return Validate::isInt($val, 1);
     }
-    
+
     public function isValidNo_bunrui2($val)
     {
         return Validate::isInt($val, 1);
     }
-    
+
     public function isValidCd_yoin($val)
     {
-        return Validate::isText($val, 2, 2) && mb_ereg_match('[A-Z0-9]{2}', $val);
+        return Validate::isText($val, 2, 3)
+            && mb_ereg_match('[A-Z0-9]{2,3}', $val);
     }
-    
+
     public function isValidNm_yoin($val)
     {
         return Validate::isText($val);
-    }
-    
-    public function isValidCd_system($val)
-    {
-        return Validate::isCdSystem($val);
     }
 }

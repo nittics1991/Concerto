@@ -49,137 +49,137 @@ class ClaimInfData extends ModelData
         'update' => parent::STRING,
         'editor' => parent::STRING,
     ];
-    
+
     public function isValidNo_claim($val)
     {
         return Validate::isCyuban($val);
     }
-    
+
     public function isValidKb_nendo($val)
     {
         return Validate::isNendo($val);
     }
-    
+
     public function isValidCd_bumon($val)
     {
         return Validate::isBumon($val);
     }
-    
+
     public function isValidNo_cyu($val)
     {
         return Validate::isCyuban($val);
     }
-    
+
     public function isValidNo_cyu_zn($val)
     {
         return Validate::isCyuban($val);
     }
-    
+
     public function isValidNm_user($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidNm_system($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidCd_tanto($val)
     {
         return Validate::isTanto($val);
     }
-    
+
     public function isValidNm_renraku($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidDt_hassei($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidNm_mondai($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidNm_keika($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidNm_genin($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidNm_taisaku($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidNm_saihatu($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidDt_kaisyu($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidNm_doc($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidNm_pro($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidDt_pkanryu($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidDt_kakunin($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidNm_kakunin($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidNm_biko($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidNm_tyousa($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidNm_syonin($val)
     {
         return Validate::isTextEscape($val);
     }
-    
+
     public function isValidIns_date($val)
     {
         return Validate::isTextDateTime($val);
     }
-    
+
     public function isValidUpdate($val)
     {
         return Validate::isTextDateTime($val);
     }
-    
+
     public function isValidEditor($val)
     {
         return Validate::isTanto($val);

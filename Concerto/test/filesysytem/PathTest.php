@@ -12,7 +12,7 @@ class PathTest extends ConcertoTestCase
     public function resolveProvider()
     {
         $ds = DIRECTORY_SEPARATOR;
-        
+
         return [
             [
                 "/var/log/db/message",
@@ -32,15 +32,15 @@ class PathTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider resolveProvider
-    **/
+    */
     public function resolve($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($expect, Path::resolve($data));
     }
 }

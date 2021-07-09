@@ -18,6 +18,6 @@ interface ExcelBuilderInterface
     *    @param resource $excel EXCEL APP
     *    @param resource $book EXCEL BOOK
     *    @return bool
-    **/
+    */
     public function build($excel, $book);
 }

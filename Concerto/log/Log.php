@@ -21,7 +21,7 @@ class Log implements LoggerInterface, LogInterface
     /**
     *   レベル
     *
-    **/
+    */
     public const DEBUG = 100;
     public const INFO = 200;
     public const NOTICE = 250;
@@ -30,12 +30,12 @@ class Log implements LoggerInterface, LogInterface
     public const CRITICAL = 500;
     public const ALERT = 550;
     public const EMERGENCY = 600;
-    
+
     /**
     *   レベルマップ
     *
-    *   @var array
-    **/
+    *   @var int[]
+    */
     private static $levelmap = [
         LogLevel::DEBUG => self::DEBUG,
         LogLevel::INFO => self::INFO,
@@ -46,21 +46,21 @@ class Log implements LoggerInterface, LogInterface
         LogLevel::ALERT => self::ALERT,
         LogLevel::EMERGENCY => self::EMERGENCY
     ];
-    
+
     /**
     *   ログライター
     *
-    *   @var array
+    *   @var LogWriterInterface[]
     */
     private $writers = [];
-    
+
     /**
     *   レベル制限値
     *
     *   @var int
-    **/
+    */
     private $limit;
-    
+
     /**
     *   __construct
     *
@@ -72,40 +72,41 @@ class Log implements LoggerInterface, LogInterface
         $this->writers[] = $writer;
         $this->setLimit($limit);
     }
-    
+
     /**
     *   制限値設定
     *
     *   @param int|string $limit
-    **/
+    *   @return void
+    */
     private function setLimit($limit)
     {
         if (is_int($limit)) {
             $this->limit = $limit;
             return;
         }
-        
+
         if (is_string($limit) && array_key_exists($limit, self::$levelmap)) {
             $this->limit = self::$levelmap[$limit];
             return;
         }
         throw new InvalidArgumentException("limit not defined");
     }
-    
+
     /**
     *   {inherit}
     *
     */
-    public function addWriter(LogWriterInterface $writer)
+    public function addWriter(LogWriterInterface $writer): void
     {
         $this->writers[] = $writer;
     }
-    
+
     /**
     *   {inherit}
     *
     */
-    public function write($messages)
+    public function write($messages): void
     {
         if ($this->depth($messages) == 0) {
             $list = array(array($messages));
@@ -116,18 +117,18 @@ class Log implements LoggerInterface, LogInterface
         } else {
             throw new InvalidArgumentException("log error");
         }
-        
+
         $cnt = 0;
         foreach ($this->writers as $writer) {
             $writer->write($list[$cnt]);
             $cnt++;
         }
     }
-    
+
     /**
     *   配列次元数
     *
-    *   @param array $array 配列
+    *   @param mixed[] $array 配列
     *   @param int $depth 次元数
     *   @return int 次元数
     */
@@ -136,23 +137,24 @@ class Log implements LoggerInterface, LogInterface
         if (!is_array($array)) {
             return $depth;
         }
-        
+
         $tmp = [];
         $depth++;
         foreach ($array as $val) {
             $tmp[] = $this->depth($val, $depth);
         }
-        return max($tmp);
+        return (int)max($tmp);
     }
-    
+
     //以下、PSR-3対応
-    
+
     /**
     * Logs with an arbitrary level.
     *
     * @param mixed  $level
     * @param string $message
-    * @param array  $context
+    * @param mixed[]  $context
+    * @return void
     */
     public function log($level, $message, array $context = [])
     {
@@ -166,24 +168,25 @@ class Log implements LoggerInterface, LogInterface
         } else {
             throw new LogException("level not defined");
         }
-        
-        $outdata = is_string($message) ? $message : $this->obj2str($message);
-        
+
+        $outdata = is_string($message) ?
+            $message : $this->obj2str($message);
+
         if (count($context) > 0) {
             $outdata = $this->interpolate($outdata, $context);
         }
-        
+
         if ($lvl <= $this->limit) {
             $this->write($outdata);
         }
     }
-    
+
     /**
     *   obj2str
     *
     *   @param object $obj
     *   @return string
-    **/
+    */
     private function obj2str($obj)
     {
         if (is_object($obj) && method_exists($obj, '__toString')) {
@@ -191,14 +194,14 @@ class Log implements LoggerInterface, LogInterface
         }
         return '';
     }
-    
+
     /**
     *   変数展開
     *
     *   @param string $message
-    *   @param array $context
+    *   @param mixed[] $context
     *   @return string
-    **/
+    */
     private function interpolate($message, array $context)
     {
         $replace = [];
@@ -213,20 +216,19 @@ class Log implements LoggerInterface, LogInterface
         }
         return strtr($message, $replace);
     }
-    
+
     /**
     * System is unusable.
     *
     * @param string $message
-    * @param array  $context
-    *
-    * @return null
+    * @param mixed[]  $context
+    * @return void
     */
     public function emergency($message, array $context = [])
     {
         $this->log(LogLevel::EMERGENCY, $message, $context);
     }
-    
+
     /**
     * Action must be taken immediately.
     *
@@ -234,44 +236,41 @@ class Log implements LoggerInterface, LogInterface
     * trigger the SMS alerts and wake you up.
     *
     * @param string $message
-    * @param array  $context
-    *
-    * @return null
+    * @param mixed[]  $context
+    * @return void
     */
     public function alert($message, array $context = [])
     {
         $this->log(LogLevel::ALERT, $message, $context);
     }
-    
+
     /**
     * Critical conditions.
     *
     * Example: Application component unavailable, unexpected exception.
     *
     * @param string $message
-    * @param array  $context
-    *
-    * @return null
+    * @param mixed[]  $context
+    * @return void
     */
     public function critical($message, array $context = [])
     {
         $this->log(LogLevel::CRITICAL, $message, $context);
     }
-    
+
     /**
     * Runtime errors that do not require immediate action but should typically
     * be logged and monitored.
     *
     * @param string $message
-    * @param array  $context
-    *
-    * @return null
+    * @param mixed[]  $context
+    * @return void
     */
     public function error($message, array $context = [])
     {
         $this->log(LogLevel::ERROR, $message, $context);
     }
-    
+
     /**
     * Exceptional occurrences that are not errors.
     *
@@ -279,50 +278,46 @@ class Log implements LoggerInterface, LogInterface
     * that are not necessarily wrong.
     *
     * @param string $message
-    * @param array  $context
-    *
-    * @return null
+    * @param mixed[]  $context
+    * @return void
     */
     public function warning($message, array $context = [])
     {
         $this->log(LogLevel::WARNING, $message, $context);
     }
-    
+
     /**
     * Normal but significant events.
     *
     * @param string $message
-    * @param array  $context
-    *
-    * @return null
+    * @param mixed[]  $context
+    * @return void
     */
     public function notice($message, array $context = [])
     {
         $this->log(LogLevel::NOTICE, $message, $context);
     }
-    
+
     /**
     * Interesting events.
     *
     * Example: User logs in, SQL logs.
     *
     * @param string $message
-    * @param array  $context
-    *
-    * @return null
+    * @param mixed[]  $context
+    * @return void
     */
     public function info($message, array $context = [])
     {
         $this->log(LogLevel::INFO, $message, $context);
     }
-    
+
     /**
     * Detailed debug information.
     *
     * @param string $message
-    * @param array  $context
-    *
-    * @return null
+    * @param mixed[]  $context
+    * @return void
     */
     public function debug($message, array $context = [])
     {

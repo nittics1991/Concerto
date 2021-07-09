@@ -20,7 +20,7 @@ class Tmal0160 extends ModelDb
     *   @var string
     */
     protected $schema = 'symphony.tmal0160';
-    
+
     /**
     *   予算機種リスト
     *
@@ -39,7 +39,7 @@ class Tmal0160 extends ModelDb
                 ON B.kisyu_cd = A.cd_kisyu
             ORDER BY A.cd_kisyu
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return (array)$stmt->fetchAll();

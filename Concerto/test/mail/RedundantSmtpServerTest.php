@@ -29,7 +29,7 @@ class SmtpFailure implements MailTransferInterface
 
 class RedundantSmtpServerTest extends ConcertoTestCase
 {
-    
+
     /**
     *   add
     *
@@ -38,26 +38,26 @@ class RedundantSmtpServerTest extends ConcertoTestCase
     public function add()
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new RedundantSmtpServer();
         $expect = [];
         $expect[0] = new SmtpSuccess();
         $object->add($expect[0]);
         $this->assertEquals($expect, $this->getPrivateProperty($object, 'servers'));
-        
+
         $expect[1] = new SmtpSuccess();
         $object->add($expect[1]);
         $this->assertEquals($expect, $this->getPrivateProperty($object, 'servers'));
-        
+
         $expect[2] = new SmtpSuccess();
         $object->add($expect[2]);
         $this->assertEquals($expect, $this->getPrivateProperty($object, 'servers'));
-        
+
         //constructor setting
         $object = new RedundantSmtpServer($expect);
         $this->assertEquals($expect, $this->getPrivateProperty($object, 'servers'));
     }
-    
+
     public function sendExceptionProvider()
     {
         return [
@@ -69,28 +69,28 @@ class RedundantSmtpServerTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   sendException
     *
     *   @test
     *   @dataProvider sendExceptionProvider
-    **/
+    */
     public function sendException($data)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new RedundantSmtpServer([]);
         $object->add(new SmtpSuccess());
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("required MailMessage");
         $object->send($data);
     }
-    
+
     public function sendProvider()
     {
         $message = new MailMessage();
-        
+
         return [
             [
                 [new SmtpSuccess(), new SmtpSuccess()],
@@ -109,7 +109,7 @@ class RedundantSmtpServerTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   send
     *
@@ -119,11 +119,11 @@ class RedundantSmtpServerTest extends ConcertoTestCase
     public function send($servers, $mails, $expect)
     {
 //      $this->markTestIncomplete();
-         
+
         $object = new RedundantSmtpServer($servers);
         $this->assertEquals($expect, $object->send($mails));
     }
-    
+
     public function RedundantProvider()
     {
         return [
@@ -139,7 +139,7 @@ class RedundantSmtpServerTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   Redundant(prophecy mock)
     *
@@ -149,20 +149,24 @@ class RedundantSmtpServerTest extends ConcertoTestCase
     public function Redundant($servers, $mails, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $stubs = [];
-        for ($i = 0; $i < count($servers); $i++) {
+        for (
+            $i = 0, $length = count($servers);
+            $i < $length;
+            $i++
+        ) {
             $prop = $this->prophesize(get_class($servers[$i]));
             $prop->willImplement('Concerto\mail\MailTransferInterface');
-            
+
             $prop->send($mails)->shouldBeCalledTimes(1);
             $stubs[$i] = $prop->reveal();
         }
-        
+
         $object = new RedundantSmtpServer($stubs);
         $result = $object->send($mails);
     }
-    
+
     /**
     *   Redundant(phpunit mock)
     *
@@ -172,23 +176,27 @@ class RedundantSmtpServerTest extends ConcertoTestCase
     public function Redundant2($servers, $mails, $expect)
     {
         $this->markTestIncomplete();
-        
+
         //dataProvider 1件目はOK
         $stubs = [];
-        for ($i = 0; $i < count($servers); $i++) {
+        for (
+            $i = 0, $length = count($servers);
+            $i < $length;
+            $i++
+        ) {
             $stubs[$i] = $this
                 ->getMockBuilder(get_class($servers[$i]))
                 ->setMethods(['send'])
                 ->getMock()
             ;
-            
+
             $stubs[$i]
                 ->expects($this->exactly($expect[$i]))
                 ->method('send')
                 ->will($this->returnValue(true))
             ;
         }
-        
+
         $object = new RedundantSmtpServer($stubs);
         $result = $object->send($mails);
     }

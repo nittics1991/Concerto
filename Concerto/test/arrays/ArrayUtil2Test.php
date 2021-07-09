@@ -12,11 +12,11 @@ class ArrayUtil2Test extends ConcertoTestCase
     /**
     *
     *   @test
-    **/
+    */
     public function initArray()
     {
 //      $this->markTestIncomplete();
-        
+
         $actual = ArrayUtil::initArray('z', array('X', 'Y'), array('A', 'B', 'C'), array(1, 2));
         $expect = array(
             'X' => array(
@@ -49,7 +49,7 @@ class ArrayUtil2Test extends ConcertoTestCase
             )
         );
         $this->assertEquals($expect, $actual);
-        
+
         $actual = ArrayUtil::initArray(null, array('A', 'B', 'C'), array(1, 2));
         $expect =  array(
             'A' => array(
@@ -71,11 +71,11 @@ class ArrayUtil2Test extends ConcertoTestCase
     /**
     *
     *   @test
-    **/
+    */
     public function pivot()
     {
 //      $this->markTestIncomplete();
-        
+
         $x = array(
             array('mon' => '1', 'tgt' => 'tel', 'c' => 13, 'd' => 14, 'e' => 21, 'tanto' => 'A'),
             array('mon' => '1', 'tgt' => 'tel', 'c' => 11, 'd' => 12, 'e' => 22, 'tanto' => 'A'),
@@ -83,7 +83,7 @@ class ArrayUtil2Test extends ConcertoTestCase
             array('mon' => '2', 'tgt' => 'tel', 'c' => 17, 'd' => 18, 'e' => 24, 'tanto' => 'B'),
             array('mon' => '2', 'tgt' => 'tel', 'c' => 19, 'd' => 20, 'e' => 25, 'tanto' => 'A')
         );
-        
+
         $expect = array(
             array('tgt' => 'mon', 1 => '1', 2 => '2'),
             'c' => array(
@@ -95,7 +95,7 @@ class ArrayUtil2Test extends ConcertoTestCase
                 array('tgt' => 'tel', 1 => 462, 2 => 600)
             )
         );
-        
+
         $actual = ArrayUtil::pivot(
             $x,
             'tgt',
@@ -105,10 +105,10 @@ class ArrayUtil2Test extends ConcertoTestCase
                 'e' => 'array_product'
             )
         );
-        
+
         $this->assertEquals($expect, $actual);
-        
-        
+
+
         $expect = array(
             array('tgt' => 'tanto', 'A' => 'A', 'B' => 'B'),
             'c' => array(
@@ -116,7 +116,7 @@ class ArrayUtil2Test extends ConcertoTestCase
                 array('tgt' => 'tel', 'A' => 43, 'B' => 17)
             ),
         );
-        
+
         $actual = ArrayUtil::pivot(
             $x,
             'tgt',
@@ -125,83 +125,84 @@ class ArrayUtil2Test extends ConcertoTestCase
                 'c' => 'array_sum',
             )
         );
-        
+
         $this->assertEquals($expect, $actual);
     }
-    
+
     /**
     *
     *   @test
-    **/
+    */
     public function max()
     {
 //      $this->markTestIncomplete();
-        
+
         $data = array(11, 2, 3, 3.14, 16, 4);
         $this->assertEquals(16, ArrayUtil::max($data));
-        
+
         $data = array(11, 2, 3, 3.14, 16, 'A', false, true);
         $this->assertEquals(16, ArrayUtil::max($data));
-        
+
         $data = array();
         $this->assertEquals(null, ArrayUtil::max($data));
-        
+
         $data = array(11, 'A', 'C', 'AA', 'B');
         $this->assertEquals('C', ArrayUtil::max($data, SORT_NATURAL));
-        
+
         //
         $this->assertEquals(null, ArrayUtil::max([], SORT_NATURAL));
     }
-    
+
     /**
     *
     *   @test
-    **/
+    */
     public function min()
     {
 //      $this->markTestIncomplete();
-        
+
         $data = array(11, 2, 3, 3.14, 16, 4);
         $this->assertEquals(2, ArrayUtil::min($data));
-        
+
         $data = array(11, 2, 3, 3.14, 16, 'A', false, true);
-        $this->assertEquals(false, ArrayUtil::min($data));
-        
+        // $this->assertEquals(false, ArrayUtil::min($data));
+        $this->assertEquals('A', ArrayUtil::min($data));
+
         $data = array();
         $this->assertEquals(null, ArrayUtil::min($data));
-        
+
         $data = array('D', 'A', 'C', 'AA', 'B');
         $this->assertEquals('A', ArrayUtil::min($data, SORT_NATURAL));
-        
+
         $this->assertEquals(null, ArrayUtil::min([], SORT_NATURAL));
     }
-    
+
     /**
     *
     *   @test
-    **/
+    */
     public function first()
     {
 //      $this->markTestIncomplete();
-        
+
         $data = array(11, 2, 3, 3.14, 16, 4);
         $this->assertEquals(11, ArrayUtil::first($data));
-        
+
         $data = array();
         $this->assertEquals(null, ArrayUtil::first($data));
     }
-    
+
     /**
     *
     *   @test
-    **/
+    */
     public function last()
     {
 //      $this->markTestIncomplete();
-        
+
         $data = array(11, 2, 3, 3.14, 16, 4);
         $this->assertEquals(4, ArrayUtil::last($data));
-        
+
         $data = array();
         $this->assertEquals(null, ArrayUtil::last($data));
     }

@@ -3,7 +3,7 @@
 /**
 *   wf_gijiroku
 *
-*   @version 160203
+*   @version 210118
 */
 
 declare(strict_types=1);
@@ -21,7 +21,7 @@ class WfGijiroku extends ModelDb
     *   @var string
     */
     protected $schema = 'public.wf_gijiroku';
-    
+
     /**
     *   nm_basyoリスト
     *
@@ -34,27 +34,28 @@ class WfGijiroku extends ModelDb
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var \PDOStatement
         */
         static $stmt;
-        
+
         if (is_null($stmt)) {
-            $sql = "SELECT DISTINCT nm_basyo 
-                    FROM {$this->schema} 
-                    WHERE dt_kaisai BETWEEN :start AND :end
-                    ORDER BY nm_basyo 
+            $sql = "
+                SELECT DISTINCT nm_basyo 
+                FROM {$this->schema} 
+                WHERE dt_kaisai BETWEEN :start AND :end
+                ORDER BY nm_basyo 
             ";
-        
+
             $stmt = $this->pdo->prepare($sql);
         }
-        
-        $stmt->bindParam(':start', $dt_start, PDO::PARAM_STR);
-        $stmt->bindParam(':end', $dt_end, PDO::PARAM_STR);
+
+        $stmt->bindValue(':start', $dt_start, PDO::PARAM_STR);
+        $stmt->bindValue(':end', $dt_end, PDO::PARAM_STR);
         $stmt->execute();
-        
+
         $result = $stmt->fetchAll();
-        $items = array();
-        
+        $items = [];
+
         foreach ((array)$result as $val) {
             $items[] = $val;
         }

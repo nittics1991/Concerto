@@ -30,7 +30,7 @@ class ConfigReaderXml implements ConfigReaderInterface
             ),
             true
         );
-        
+
         if (!is_array($data)) {
             throw new RuntimeException(
                 "config file read error"

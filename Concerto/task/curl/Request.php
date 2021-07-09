@@ -20,30 +20,30 @@ class Request
     *   ID
     *
     *   @var string
-    **/
+    */
     private $id;
-    
+
     /**
     *   ハンドル
     *
     *   @var resource
-    **/
+    */
     private $handle;
-    
+
     /**
     *   レスポンス
     *
     *   @var Response
-    **/
+    */
     private $response;
-    
+
     /**
     *   __construct
     *
     *   @param string$id
     *   @param array $options
     *   @throws RuntimeException
-    **/
+    */
     public function __construct(string $id, array $options = [])
     {
         if (($this->handle = curl_init()) === false) {
@@ -52,13 +52,13 @@ class Request
         $this->id = $id;
         $this->setOpt($options);
     }
-    
+
     /**
     *   オプション設定
     *
     *   @param array $options
     *   @throws InvalidArgumentException
-    **/
+    */
     private function setOpt(array $options)
     {
         foreach ($options as $key => $val) {
@@ -69,49 +69,49 @@ class Request
             }
         }
     }
-    
+
     /**
     *   送信
     *
     *   @return bool
-    **/
+    */
     public function send()
     {
         $successed = true;
         if (($response = curl_exec($this->handle)) === false) {
             $successed =  false;
         }
-        
+
         $this->response = new Response($this->handle, (string)$response);
         curl_close($this->handle);
         return $successed;
     }
-    
+
     /**
     *   ID取得
     *
     *   @return string
-    **/
+    */
     public function getId()
     {
         return $this->id;
     }
-    
+
     /**
     *   ハンドル取得
     *
     *   @return resource
-    **/
+    */
     public function getHandle()
     {
         return $this->handle;
     }
-    
+
     /**
     *   レスポンス取得
     *
     *   @return Response
-    **/
+    */
     public function getResponse()
     {
         return $this->response;

@@ -20,7 +20,7 @@ class Tpal0010 extends ModelDb
     *   @var string
     */
     protected $schema = 'symphony.tpal0010';
-    
+
     /**
     *   年度リスト
     *
@@ -31,10 +31,10 @@ class Tpal0010 extends ModelDb
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var \PDOStatement
         */
         static $stmt;
-        
+
         if (is_null($stmt)) {
             $sql = "SELECT kb_nendo
                 FROM
@@ -67,10 +67,10 @@ class Tpal0010 extends ModelDb
                     )
                 ORDER BY kb_nendo DESC
             ";
-        
+
             $stmt = $this->pdo->prepare($sql);
         }
-        
+
         $stmt->execute();
         return (array)$stmt->fetchAll();
     }

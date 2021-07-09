@@ -14,13 +14,13 @@ class PdoServiceProviderTest extends ConcertoTestCase
 {
     private $container;
     private $config;
-    
+
     public function setUp(): void
     {
         $this->container = new ServiceContainer();
         $this->container->delegate(new ServiceProviderContainer());
         $this->container->addServiceProvider(PdoServiceProvider::class);
-        
+
         $this->config =
             [
                 'database' => [
@@ -38,14 +38,14 @@ class PdoServiceProviderTest extends ConcertoTestCase
             ];
         $this->container->bind('configSystem', $this->config);
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function getObject()
     {
 //       $this->markTestIncomplete();
-        
+
         $this->assertInstanceOf(PDO::class, $this->container->get('concertoPdo'));
         $this->assertInstanceOf(PDO::class, $this->container->get('symphonyPdo'));
     }

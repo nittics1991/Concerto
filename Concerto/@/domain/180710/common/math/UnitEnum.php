@@ -16,7 +16,7 @@ class UnitEnum extends Enum
     *   単位
     *
     *   @var string
-    **/
+    */
     const BAG = 'bag';  //袋
     const BOLT = 'bolt';  //本
     const BOX = 'box';  //箱

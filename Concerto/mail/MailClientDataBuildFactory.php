@@ -3,7 +3,7 @@
 /**
 *   factory
 *
-*   @version 151110
+*   @version 210616
 */
 
 declare(strict_types=1);
@@ -11,12 +11,16 @@ declare(strict_types=1);
 namespace Concerto\mail;
 
 use PDO;
-use Concerto\database\MailCcInf;
-use Concerto\database\MailCcInfData;
-use Concerto\database\MailInf;
-use Concerto\standard\Session;
-use Concerto\standard\ViewStandard;
+use Concerto\database\{
+    MailCcInf,
+    MailCcInfData,
+    MailInf
+};
 use Concerto\mail\MailClientDataBuildFactoryInterface;
+use Concerto\standard\{
+    Session,
+    ViewStandard,
+};
 
 class MailClientDataBuildFactory implements MailClientDataBuildFactoryInterface
 {
@@ -26,7 +30,7 @@ class MailClientDataBuildFactory implements MailClientDataBuildFactoryInterface
     *   @var PDO
     */
     private $pdo;
-    
+
     /**
     *   __construct
     *
@@ -36,36 +40,37 @@ class MailClientDataBuildFactory implements MailClientDataBuildFactoryInterface
     {
         $this->pdo = $pdo;
     }
-    
+
     /**
     *   factory
     */
-    public function getPdo()
+    public function getPdo(): PDO
     {
         return $this->pdo;
     }
-    
-    public function getMailCcInf()
+
+    public function getMailCcInf(): MailCcInf
     {
         return new MailCcInf($this->pdo);
     }
-    
-    public function getMailCcInfData()
+
+    public function getMailCcInfData(): MailCcInfData
     {
         return new MailCcInfData();
     }
-    
-    public function getMailInf()
+
+    public function getMailInf(): MailInf
     {
         return new MailInf($this->pdo);
     }
-    
-    public function getSession($namespace = null)
-    {
+
+    public function getSession(
+        ?string $namespace = null
+    ): Session {
         return new Session($namespace);
     }
-    
-    public function getViewStandard()
+
+    public function getViewStandard(): ViewStandard
     {
         return new ViewStandard();
     }

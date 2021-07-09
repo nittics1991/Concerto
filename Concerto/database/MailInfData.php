@@ -3,7 +3,7 @@
 /**
 *   mail_inf
 *
-*   @version 191023
+*   @version 210118
 */
 
 declare(strict_types=1);
@@ -39,14 +39,14 @@ class MailInfData extends ModelData
         , "fg_end" => parent::STRING
         , "fg_cancel" => parent::STRING
     );
-    
+
     /**
     *   Column Alias
     *
     *   @var array
     */
-    protected static $alias = array();
-    
+    protected static $alias = [];
+
     /**
     *   メールタイプ
     *
@@ -67,8 +67,9 @@ class MailInfData extends ModelData
         '12' => '見積台帳',
         '13' => '一般申請',
         '14' => '製番完成期限',
+        '15' => 'WF懸案',
     );
-    
+
     /**
     *   複数メールアドレス文字列 配列変換
     *
@@ -79,8 +80,8 @@ class MailInfData extends ModelData
     public function parseAddress($address, $delimiter = ';')
     {
         $explode = explode($delimiter, $address);
-        
-        $result = array();
+
+        $result = [];
         foreach ((array)$explode as $adr) {
             if (mb_strlen(trim($adr)) > 0) {
                 $result[] = $adr;
@@ -88,14 +89,14 @@ class MailInfData extends ModelData
         }
         return $result;
     }
-    
-    
-    
+
+
+
     public function isValidIns_date($val)
     {
         return Validate::isTextDateTime($val);
     }
-    
+
     public function isValidFrom_tanto($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -103,15 +104,15 @@ class MailInfData extends ModelData
         }
         return Validate::isTanto($val);
     }
-    
+
     public function isValidTo_tanto($val)
     {
         return Validate::isTanto($val);
     }
-    
+
     //nm_title
     //nm_comment
-    
+
     public function isValidNo_cyu($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -119,7 +120,7 @@ class MailInfData extends ModelData
         }
         return Validate::isCyuban($val);
     }
-    
+
     public function isValidNo_seq($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -127,7 +128,7 @@ class MailInfData extends ModelData
         }
         return Validate::isTextInt($val, 0);
     }
-    
+
     public function isValidCd_bumon($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -135,7 +136,7 @@ class MailInfData extends ModelData
         }
         return Validate::isBumon($val);
     }
-    
+
     public function isValidKb_Nendo($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -143,12 +144,12 @@ class MailInfData extends ModelData
         }
         return Validate::isNendo($val);
     }
-    
+
     public function isValidCd_type($val)
     {
         return Validate::isTextInt($val, 1);
     }
-    
+
     public function isValidFrom_adr($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -156,7 +157,7 @@ class MailInfData extends ModelData
         }
         return Validate::isEmailText($val);
     }
-    
+
     public function isValidTo_adr($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -164,7 +165,7 @@ class MailInfData extends ModelData
         }
         return Validate::isEmailText($val);
     }
-    
+
     public function isValidCc_adr($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -172,7 +173,7 @@ class MailInfData extends ModelData
         }
         return Validate::isEmailText($val);
     }
-    
+
     public function isValidNo_page($val)
     {
         if (is_null($val)) {
@@ -180,9 +181,9 @@ class MailInfData extends ModelData
         }
         return Validate::isInt($val, 0);
     }
-    
+
     //cd_sts
-    
+
     /**
     *   メールタイプ取得
     *
@@ -194,13 +195,13 @@ class MailInfData extends ModelData
         if (is_null($id)) {
             return $this->cd_type_list;
         }
-        
+
         if (array_key_exists($id, $this->cd_type_list)) {
             return $this->cd_type_list[$id];
         }
         return null;
     }
-    
+
     public function isValidFg_end($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -208,7 +209,7 @@ class MailInfData extends ModelData
         }
         return Validate::isTextBool($val);
     }
-    
+
     public function isValidFg_cancel($val)
     {
         if (is_null($val) || ($val == '')) {

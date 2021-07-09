@@ -18,7 +18,7 @@ class SalesCustomer extends EntityObject
     /**
     *   {inherit}
     *
-    **/
+    */
     protected static $properties = [
         'customerId',   //CustomerId
         'customerOrderId',  //CustomerOederId
@@ -26,25 +26,25 @@ class SalesCustomer extends EntityObject
         'destinationAddress',   //PostalAddress
         'destinationTelephone', //TelephoneNumber
     ];
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function getId()
     {
         return $this->customerId->getId();
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function equales()
     {
         return $this->customerId->equales();
     }
-    
+
     public function isValidCustomerId($val)
     {
         if (!$val instanceof CustomerId) {
@@ -52,7 +52,7 @@ class SalesCustomer extends EntityObject
         }
         return $this->customerId->isValid();
     }
-    
+
     public function isValidCustomerOrderId($val)
     {
         if (!$val instanceof CustomerOrderId) {
@@ -60,12 +60,12 @@ class SalesCustomer extends EntityObject
         }
         return $this->customerOrderId->isValid();
     }
-    
+
     public function isValidReciever($val)
     {
         return Validate::isText($val, 0, 100);
     }
-    
+
     public function isValidDestinationAddress($val)
     {
         if (!$val instanceof PostalAddress) {
@@ -73,7 +73,7 @@ class SalesCustomer extends EntityObject
         }
         return $this->destinationAddress->isValid();
     }
-    
+
     public function isValidDestinationTelephone($val)
     {
         if (!$val instanceof TelephoneNumber) {

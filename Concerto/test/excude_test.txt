@@ -1,0 +1,7 @@
+テスト対象からの除外
+
+各テストクラスのdocコメントアノテーションに下記を追加
+
+@group excludes
+
+phpunit 実行時　--exclude-group=excludes で実行

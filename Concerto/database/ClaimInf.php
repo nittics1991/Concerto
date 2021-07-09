@@ -3,7 +3,7 @@
 /**
 *   claim_inf
 *
-*   @version 200304
+*   @version 201222
 */
 
 declare(strict_types=1);
@@ -22,12 +22,12 @@ class ClaimInf extends ModelDb
     *   @var string
     */
     protected $schema = 'public.claim_inf';
-    
+
     /**
     *   年度リスト
     *
     *   @return array
-    **/
+    */
     public function getNendoList(): array
     {
         $sql = "
@@ -35,12 +35,12 @@ class ClaimInf extends ModelDb
             FROM {$this->schema}
             ORDER BY kb_nendo DESC
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return (array)$stmt->fetchAll();
     }
-    
+
     /**
     *   期間内クレーム新規
     *
@@ -55,7 +55,7 @@ class ClaimInf extends ModelDb
         if (!isset($kb_nendo)) {
             return array_fill(0, 6, 0);
         }
-        
+
         $sql = "
             SELECT
                 SUBSTR(dt_hassei, 1, 6) dt_yyyymm,
@@ -64,43 +64,43 @@ class ClaimInf extends ModelDb
             WHERE SUBSTR(dt_hassei, 1, 6) >= :dt_start
                 AND SUBSTR(dt_hassei, 1, 6) <= :dt_end
         ";
-        
+
         if (isset($cd_bumon)) {
             $sql .= " AND cd_bumon = :cd_bumon";
         }
-        
+
         $sql .= "
             GROUP BY SUBSTR(dt_hassei, 1, 6)
             ORDER BY SUBSTR(dt_hassei, 1, 6)
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
-        
+
         $dt_yyyymm = FiscalYear::getNendoyyyymm($kb_nendo);
-        $stmt->bindValue(':dt_start', $dt_yyyymm[0], PDO::PARAM_STR);
-        $stmt->bindValue(':dt_end', $dt_yyyymm[5], PDO::PARAM_STR);
-        
+        $stmt->bindValue(':dt_start', $dt_yyyymm[0] ?? '', PDO::PARAM_STR);
+        $stmt->bindValue(':dt_end', $dt_yyyymm[5] ?? '', PDO::PARAM_STR);
+
         if (isset($cd_bumon)) {
             $stmt->bindValue(':cd_bumon', $cd_bumon, PDO::PARAM_STR);
         }
-        
+
         $stmt->execute();
         $result = $stmt->fetchAll();
-        
+
         if (count($result) === 0) {
             return array_fill(0, 6, 0);
         }
-        
+
         $aggs = array_column($result, 'cnt', 'dt_yyyymm');
         $items = [];
-        
+
         foreach ($dt_yyyymm as $yyyymm) {
             $items[] = isset($aggs[$yyyymm]) ?
                 $aggs[$yyyymm] : 0;
         }
         return $items;
     }
-    
+
     /**
     *   期間内クレーム完了
     *
@@ -115,7 +115,7 @@ class ClaimInf extends ModelDb
         if (!isset($kb_nendo)) {
             return array_fill(0, 6, 0);
         }
-        
+
         $sql = "
             SELECT
                 SUBSTR(dt_kakunin, 1, 6) dt_yyyymm,
@@ -124,43 +124,43 @@ class ClaimInf extends ModelDb
             WHERE SUBSTR(dt_kakunin, 1, 6) >= :dt_start
                 AND SUBSTR(dt_kakunin, 1, 6) <= :dt_end
         ";
-        
+
         if (isset($cd_bumon)) {
             $sql .= " AND cd_bumon = :cd_bumon";
         }
-        
+
         $sql .= "
             GROUP BY SUBSTR(dt_kakunin, 1, 6)
             ORDER BY SUBSTR(dt_kakunin, 1, 6)
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
-        
+
         $dt_yyyymm = FiscalYear::getNendoyyyymm($kb_nendo);
-        $stmt->bindValue(':dt_start', $dt_yyyymm[0], PDO::PARAM_STR);
-        $stmt->bindValue(':dt_end', $dt_yyyymm[5], PDO::PARAM_STR);
-        
+        $stmt->bindValue(':dt_start', $dt_yyyymm[0] ?? '', PDO::PARAM_STR);
+        $stmt->bindValue(':dt_end', $dt_yyyymm[5] ?? '', PDO::PARAM_STR);
+
         if (isset($cd_bumon)) {
             $stmt->bindValue(':cd_bumon', $cd_bumon, PDO::PARAM_STR);
         }
-        
+
         $stmt->execute();
         $result = $stmt->fetchAll();
-        
+
         if (count($result) === 0) {
             return array_fill(0, 6, 0);
         }
-        
+
         $aggs = array_column($result, 'cnt', 'dt_yyyymm');
         $items = [];
-        
+
         foreach ($dt_yyyymm as $yyyymm) {
             $items[] = isset($aggs[$yyyymm]) ?
                 $aggs[$yyyymm] : 0;
         }
         return $items;
     }
-    
+
     /**
     *   先期残数
     *
@@ -175,31 +175,32 @@ class ClaimInf extends ModelDb
         if (!isset($kb_nendo)) {
             return 0;
         }
-        
+
         $sql = "
             SELECT COUNT(*) AS cnt
             FROM public.claim_inf
             WHERE dt_hassei < :dt_yyyymmdd
                 AND (dt_kakunin = '' OR dt_kakunin >= :dt_yyyymmdd)
         ";
-        
+
         if (isset($cd_bumon)) {
             $sql .= " AND cd_bumon = :cd_bumon";
         }
-        
+
         $stmt = $this->pdo->prepare($sql);
-        
+
         $dt_yyyymm = FiscalYear::getNendoyyyymm($kb_nendo);
+        $dt_yyyymm[0] = $dt_yyyymm[0] ?? '';
         $stmt->bindValue(':dt_yyyymmdd', "{$dt_yyyymm[0]}01", PDO::PARAM_STR);
-        
+
         if (isset($cd_bumon)) {
             $stmt->bindValue(':cd_bumon', $cd_bumon, PDO::PARAM_STR);
         }
-        
+
         $stmt->execute();
         return (int)$stmt->fetchColumn(0);
     }
-    
+
     /**
     *   期間内費用リスト
     *
@@ -211,10 +212,10 @@ class ClaimInf extends ModelDb
         ?string $kb_nendo = null,
         ?string $cd_bumon = null
     ): array {
-        
+
         $func_init = function () {
             $items = [];
-            
+
             for ($i = 0; $i < 6; $i++) {
                 $items[] = [
                     'yn_yusyo' => 0,
@@ -223,11 +224,11 @@ class ClaimInf extends ModelDb
             }
             return $items;
         };
-        
+
         if (!isset($kb_nendo)) {
             return $func_init();
         }
-        
+
         $sql = "
             SELECT
                 SUBSTR(dt_kakunin, 1, 6) dt_yyyymm,
@@ -239,37 +240,37 @@ class ClaimInf extends ModelDb
             WHERE SUBSTR(dt_kakunin, 1, 6) >= :dt_start
                 AND SUBSTR(dt_kakunin, 1, 6) <= :dt_end
         ";
-        
+
         if (isset($cd_bumon)) {
             $sql .= " AND cd_bumon = :cd_bumon";
         }
-        
+
         $sql .= "
             GROUP BY SUBSTR(dt_kakunin, 1, 6)
             ORDER BY SUBSTR(dt_kakunin, 1, 6)
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
-        
+
         $dt_yyyymm = FiscalYear::getNendoyyyymm($kb_nendo);
-        $stmt->bindValue(':dt_start', $dt_yyyymm[0], PDO::PARAM_STR);
-        $stmt->bindValue(':dt_end', $dt_yyyymm[5], PDO::PARAM_STR);
-        
+        $stmt->bindValue(':dt_start', $dt_yyyymm[0] ?? '', PDO::PARAM_STR);
+        $stmt->bindValue(':dt_end', $dt_yyyymm[5] ?? '', PDO::PARAM_STR);
+
         if (isset($cd_bumon)) {
             $stmt->bindValue(':cd_bumon', $cd_bumon, PDO::PARAM_STR);
         }
-        
+
         $stmt->execute();
         $result = $stmt->fetchAll();
-        
+
         if (count($result) === 0) {
             return $func_init();
         }
-        
+
         $aggs_yusyo = array_column($result, 'yn_yusyo', 'dt_yyyymm');
         $aggs_syoryaku = array_column($result, 'yn_syoryaku', 'dt_yyyymm');
         $items = [];
-        
+
         foreach ($dt_yyyymm as $yyyymm) {
             $item['yn_yusyo'] = isset($aggs_yusyo[$yyyymm]) ?
                 $aggs_yusyo[$yyyymm] : 0;

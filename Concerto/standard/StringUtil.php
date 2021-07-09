@@ -3,8 +3,10 @@
 /**
 *   String Util
 *
-*   @version 190523
+*   @version 210608
 */
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
@@ -24,7 +26,7 @@ final class StringUtil
             $data,
             JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
         );
-        
+
         if ($json === false) {
             throw new InvalidArgumentException(
                 "json encode error"
@@ -32,7 +34,7 @@ final class StringUtil
         }
         return $json;
     }
-    
+
     /**
     *   JSON整形
     *
@@ -45,7 +47,7 @@ final class StringUtil
             json_decode($json),
             JSON_PRETTY_PRINT
         );
-        
+
         if ($formated === false) {
             throw new InvalidArgumentException(
                 "json format error"
@@ -53,17 +55,17 @@ final class StringUtil
         }
         return $formated;
     }
-    
+
     /**
     *   文字を1文字毎配列変換
     *
     *   @param string $string
-    *   @return array
+    *   @return string[]
     */
     public static function strToArray($string): array
     {
-        $splited = preg_split("//u", $string, null, PREG_SPLIT_NO_EMPTY);
-        
+        $splited = preg_split("//u", $string, -1, PREG_SPLIT_NO_EMPTY);
+
         if ($splited === false) {
             throw new InvalidArgumentException(
                 "split error"
@@ -71,7 +73,7 @@ final class StringUtil
         }
         return $splited;
     }
-    
+
     /**
     *   javascriptリテラルエスケープ
     *
@@ -110,7 +112,7 @@ final class StringUtil
                 1,1,1,1,1,1,1,1,1,1, // 249
                 1,1,1,1,1,1,1, // 255
         ];
-        
+
         // 文字エンコーディングはUTF-8
         $mblen = mb_strlen($str, 'UTF-8');
         $utf32 = mb_convert_encoding($str, 'UTF-32', 'UTF-8');
@@ -139,17 +141,17 @@ final class StringUtil
         }
         return $encoded;
     }
-    
+
     /**
     *   文字列＝＞16進コード
     *
     *   @param string $string
-    *   @return array
+    *   @return string[]
     */
     public static function strToCode(string $string): array
     {
         $ar = static::strToArray($string);
-        
+
         return array_map(
             function ($val) {
                 return bin2hex($val);
@@ -157,11 +159,11 @@ final class StringUtil
             $ar
         );
     }
-    
+
     /**
     *   16進コード＝＞文字列
     *
-    *   @param array $array
+    *   @param string[] $array
     *   @return string
     */
     public static function codeToStr(array $array): string
@@ -174,17 +176,17 @@ final class StringUtil
         );
         return implode('', $bins);
     }
-    
+
     /**
     *   token分解
     *
     *   @param string $string
-    *   @return array
+    *   @return string[]
     */
     public static function token(string $string): array
     {
-        $splited = mb_split('\s', $string);
-        
+        $splited = (array)mb_split('\s', $string);
+
         return array_values(
             array_filter(
                 $splited,

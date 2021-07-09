@@ -9,7 +9,7 @@ class EmailAddress extends ValueObject
         $exploded = explode('@', $this->id);
         return array_first($exploded);
     }
-    
+
     public function domain()
     {
         $exploded = explode('@', $this->id);

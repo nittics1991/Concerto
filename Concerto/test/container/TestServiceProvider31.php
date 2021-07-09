@@ -12,11 +12,11 @@ class TestServiceProvider31 extends AbstractServiceProvider implements BootableS
     protected $provides = [
       \PDO::class
     ];
-    
+
     public function register()
     {
     }
-    
+
     public function boot()
     {
         $pdo = new \PDO($this->getContainer()->get('database.dns'));

@@ -3,7 +3,7 @@
 /**
 *   wf_kennann
 *
-*   @version 160307
+*   @version 210610
 */
 
 declare(strict_types=1);
@@ -21,7 +21,7 @@ class WfKennann extends ModelDb
     *   @var string
     */
     protected $schema = 'public.wf_kennann';
-    
+
     /**
     *   no_seq最大値取得
     *
@@ -34,28 +34,27 @@ class WfKennann extends ModelDb
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var \PDOStatement
         */
         static $stmt;
-        
+
         if (is_null($stmt)) {
             $sql = "SELECT MAX(no_seq) AS no_seq 
                     FROM {$this->schema} 
                     WHERE no_cyu = :no_cyu 
                     AND no_page = :no_page 
             ";
-        
+
             $stmt = $this->pdo->prepare($sql);
         }
-        
-        $stmt->bindParam(':no_cyu', $no_cyu, PDO::PARAM_STR);
-        $stmt->bindParam(':no_page', $no_page, PDO::PARAM_INT);
+
+        $stmt->bindValue(':no_cyu', $no_cyu, PDO::PARAM_STR);
+        $stmt->bindValue(':no_page', $no_page, PDO::PARAM_INT);
         $stmt->execute();
-        
-        $result = $stmt->fetch();
-        return (is_null($result['no_seq'])) ?        0 : $result['no_seq'];
+        $result = $stmt->fetchColumn(0);
+        return $result === false ? 0 : (int)$result;
     }
-    
+
     /**
     *   未完リスト取得
     *
@@ -67,10 +66,10 @@ class WfKennann extends ModelDb
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var \PDOStatement
         */
         static $stmt;
-        
+
         if (is_null($stmt)) {
             $sql = "
                 SELECT * 
@@ -79,13 +78,13 @@ class WfKennann extends ModelDb
                     OR dt_kakunin IS NULL) 
                     AND dt_kigen < :date 
             ";
-            
+
             $stmt = $this->pdo->prepare($sql);
         }
-        
-        $date = ($past) ?    date('Ymd') : '00000000';
-        
-        $stmt->bindParam(':date', $date, PDO::PARAM_STR);
+
+        $date = ($past) ? date('Ymd') : '00000000';
+
+        $stmt->bindValue(':date', $date, PDO::PARAM_STR);
         $stmt->execute();
         return (array)$stmt->fetchAll();
     }

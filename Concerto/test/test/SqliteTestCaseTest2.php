@@ -40,7 +40,7 @@ class SqliteTestCaseTest2 extends abstractSqliteTestCase
             __DIR__ . '\\data\\_modeldb.yml'
         );
     }
-    
+
     protected function setUp(): void
     {
         $pdo = $this->initPdo();
@@ -49,16 +49,16 @@ class SqliteTestCaseTest2 extends abstractSqliteTestCase
         $this->setupTable($modelDb, $modelData);
         parent::setup();
     }
-    
+
     /**
     *   DB test方法確認
     *
     *   @test
-    **/
+    */
     public function test1()
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals(
             true,
             is_object($this->getConnection()->createDataSet()->getTable('_modeldb'))

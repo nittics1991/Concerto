@@ -17,6 +17,6 @@ interface MailTransferInterface
     *
     *   @param mixed $mails
     *   @rerurn bool
-    **/
+    */
     public function send($mails);
 }

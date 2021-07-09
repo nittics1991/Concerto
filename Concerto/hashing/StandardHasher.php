@@ -4,7 +4,7 @@
 *   StandardHasher
 *
 *   @version 190520
-**/
+*/
 
 declare(strict_types=1);
 
@@ -18,24 +18,24 @@ class StandardHasher implements HasherInterface
     /**
     *   options
     *
-    *   @var array
-    **/
+    *   @var mixed[]
+    */
     protected $options;
-    
+
     /**
     *   __costruct
     *
-    *   @param array $options
-    **/
+    *   @param mixed[] $options
+    */
     public function __construct(array $options = [])
     {
         $this->options = $options;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function hash(string $value): string
     {
         $result = password_hash($value, PASSWORD_DEFAULT, $this->options);
@@ -46,20 +46,20 @@ class StandardHasher implements HasherInterface
         }
         return $result;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function verify(string $value, string $hashedValue): bool
     {
         return password_verify($value, $hashedValue);
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function check(string $hash): bool
     {
         return ! password_needs_rehash(

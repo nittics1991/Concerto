@@ -12,50 +12,37 @@ class ImageOperationTest extends ConcertoTestCase
     /**
     *   @test
     */
-    public function construct1Exception()
-    {
-//      $this->markTestIncomplete();
-        
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('resource type not matche');
-        $image = 1;
-        $obj = new ImageOperation($image);
-    }
-    
-    /**
-    *   @test
-    **/
     public function construct1()
     {
 //      $this->markTestIncomplete();
-        
+
         $image = imagecreatetruecolor(10, 20);
         $obj = new ImageOperation($image);
         $actual = $this->getPrivateProperty($obj, 'image');
-        $this->assertEquals('gd', get_resource_type($actual));
+        $this->assertEquals($actual instanceof \GdImage, true);
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function createFromFile()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = ImageOperation::createFromFile(
             __DIR__ . '\\tmp\\afterCanvas1.png'
         );
         $actual = $this->getPrivateProperty($obj, 'image');
-        $this->assertEquals('gd', get_resource_type($actual));
+        $this->assertEquals($actual instanceof \GdImage, true);
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function merge1()
     {
 //      $this->markTestIncomplete();
-        
+
         $image = imagecreatetruecolor(200, 200);
         imagefilledrectangle(
             $image,
@@ -66,9 +53,9 @@ class ImageOperationTest extends ConcertoTestCase
             imagecolorallocate($image, 255, 0, 0)
         );
         $obj = new ImageOperation($image);
-        
+
         $file = __DIR__ . '\\tmp\\afterCanvas1.png';
-        
+
         $x = $obj->merge($file, 20, 20);
             $x->output(__DIR__ . '\\tmp\\merge1.png');
         $this->assertEquals(1, 1);

@@ -13,10 +13,10 @@ class Argv1 extends Argv
     protected static $definedShortOptions = ['o::', 'm:', 'f'];
     protected static $definedLongOptions = ['user:', 'email::', 'mark'];
     protected static $definedOptindOptions = ['text', 'meaningless::', 'necessary:'];
-    
+
     // protected static $definedShortOptions = ['a:', 'b:',];
     // protected static $definedOptindOptions = ['test:', ];
-    
+
     public function isValidM($val)
     {
         return isset($val);

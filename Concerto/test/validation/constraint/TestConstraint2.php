@@ -13,12 +13,12 @@ class TestConstraint2 extends AbstractConstraint
         $this->value = $val;
         return $val < $this->parameters[1];
     }
-    
+
     public function name()
     {
         return 'OverWriteNameMethod';
     }
-    
+
     public function message()
     {
         return sprintf(

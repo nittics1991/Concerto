@@ -5,7 +5,7 @@
 *
 *   @ver 170210
 *   @see https://github.com/ecfectus/container
-**/
+*/
 
 declare(strict_types=1);
 
@@ -18,6 +18,6 @@ interface BootableServiceProviderInterface extends ServiceProviderInterface
     /**
     *   プロバイダ登録時実行処理
     *
-    **/
+    */
     public function boot();
 }

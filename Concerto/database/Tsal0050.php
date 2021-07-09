@@ -20,7 +20,7 @@ class Tsal0050 extends ModelDb
     *   @var string
     */
     protected $schema = 'symphony.tsal0050';
-    
+
     /**
     *   納期年月リスト
     *
@@ -31,10 +31,10 @@ class Tsal0050 extends ModelDb
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var \PDOStatement
         */
         static $stmt;
-        
+
         if (is_null($stmt)) {
             $sql = "SELECT DISTINCT substr(noki_day, 1, 6) AS dt_yyyymm
                     FROM {$this->schema} 
@@ -42,10 +42,10 @@ class Tsal0050 extends ModelDb
                         AND noki_day != ''
                     ORDER BY substr(noki_day, 1, 6) DESC
             ";
-        
+
             $stmt = $this->pdo->prepare($sql);
         }
-        
+
         $stmt->execute();
         return (array)$stmt->fetchAll();
     }

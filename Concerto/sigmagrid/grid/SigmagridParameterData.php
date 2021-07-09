@@ -19,20 +19,20 @@ class SigmagridParameterData extends DataContainerValidatable
     /**
     *   Columns(over write)
     *
-    *   @var array
+    *   @var string[]
     */
     protected static $schema = array('token');
-    
+
     /**
     *   __construct
     *
-    *   @param array $params
-    **/
+    *   @param mixed[] $params
+    */
     public function __construct(array $params = [])
     {
         $this->fromArray($params);
     }
-    
+
     public function isValidToken($val)
     {
         return Csrf::isValid($val, false);

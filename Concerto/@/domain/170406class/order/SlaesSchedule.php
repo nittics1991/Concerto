@@ -17,7 +17,7 @@ class SlaesSchedule extends ValueObject
     /**
     *   {inherit}
     *
-    **/
+    */
     protected static $properties = [
         'deliveryDate',
         'paymentDate',
@@ -27,37 +27,37 @@ class SlaesSchedule extends ValueObject
         'salesDate',
         'quotationSalesDate',
     ];
-    
+
     public function isValidDeliveryDate($val)
     {
         return ($val instanceof DateTimeObject);
     }
-    
+
     public function isValidPaymentDate($val)
     {
         return ($val instanceof DateTimeObject);
     }
-    
+
     public function isValidOrderIssueDate($val)
     {
         return ($val instanceof DateTimeObject);
     }
-    
+
     public function isValidOrderDate($val)
     {
         return ($val instanceof DateTimeObject);
     }
-    
+
     public function isValidOrderNumberingIsssueDate($val)
     {
         return ($val instanceof DateTimeObject);
     }
-    
+
     public function isValidSalesDate($val)
     {
         return ($val instanceof DateTimeObject);
     }
-    
+
     public function isValidQuotationSalesDate($val)
     {
         return ($val instanceof YearMonth);

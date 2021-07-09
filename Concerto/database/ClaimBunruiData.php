@@ -28,14 +28,14 @@ class ClaimBunruiData extends ModelData
         'kb_jyudaido' => parent::STRING,
         'nm_bunrui' => parent::STRING,
     ];
-    
+
     /**
     *   Column Alias
     *
     *   @var array
     */
     protected static $alias = [];
-    
+
     /**
     *   種別
     *
@@ -47,7 +47,7 @@ class ClaimBunruiData extends ModelData
         2 => '問合せ',
         3 => 'その他'
     ];
-    
+
     /**
     *   原因
     *
@@ -65,7 +65,7 @@ class ClaimBunruiData extends ModelData
         'W' => '誤操作･誤運用',
         'X' => '保留･不明･他',
     ];
-    
+
     /**
     *   重大度
     *
@@ -77,7 +77,7 @@ class ClaimBunruiData extends ModelData
         2 => '軽微',
         3 => '外見的',
     ];
-    
+
     /**
     *   費用
     *
@@ -87,7 +87,7 @@ class ClaimBunruiData extends ModelData
         0 => '有償',
         1 => '無償',
     ];
-    
+
     /**
     *   種別
     *
@@ -104,7 +104,7 @@ class ClaimBunruiData extends ModelData
         }
         return;
     }
-    
+
     /**
     *   原因
     *
@@ -121,7 +121,7 @@ class ClaimBunruiData extends ModelData
         }
         return;
     }
-    
+
     /**
     *   重大度
     *
@@ -138,7 +138,7 @@ class ClaimBunruiData extends ModelData
         }
         return;
     }
-    
+
     /**
     *   費用
     *
@@ -155,28 +155,28 @@ class ClaimBunruiData extends ModelData
         }
         return;
     }
-    
+
     public function isValidNo_claim($val)
     {
         return ClaimInfData::isValidNo_claim($val);
     }
-    
+
     public function isValidKb_syubetu($val)
     {
         return Validate::isTextInt($val, 0, 4);
     }
-    
+
     public function isValidKb_genin($val)
     {
         return Validate::isText($val, 1, 1)
             && mb_ereg_match('\A[A-Z]\z');
     }
-    
+
     public function isValidKb_jyudaido($val)
     {
         return Validate::isTextInt($val, 0, 4);
     }
-    
+
     public function isValidNm_bunrui($val)
     {
         return Validate::isTextEscape($val);

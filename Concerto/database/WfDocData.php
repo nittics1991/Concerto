@@ -3,7 +3,7 @@
 /**
 *   wf_doc
 *
-*   @version 151105
+*   @version 201130
 */
 
 declare(strict_types=1);
@@ -20,55 +20,67 @@ class WfDocData extends ModelData
     *
     *   @var array
     */
-    protected static $schema = array(
-         "no_cyu" => parent::STRING
-        , "no_seq" => parent::INTEGER
-        , "nm_file" => parent::STRING
-        , "no_doc" => parent::STRING
-        , "nm_file_inf" => parent::STRING
-        , "no_page" => parent::INTEGER
-    );
-    
+    protected static $schema = [
+         'no_cyu' => parent::STRING,
+        'no_seq' => parent::INTEGER,
+        'nm_file' => parent::STRING,
+        'nm_file_inf' => parent::STRING,
+        'no_page' => parent::INTEGER,
+        'cd_job' => parent::STRING,
+    ];
+
     /**
     *   Column Alias
     *
     *   @var array
     */
-    protected static $alias = array();
-    
+    protected static $alias = [];
+
+    /**
+    *   no_seq => cd_job
+    *
+    *   @param int $no_seq
+    *   @return string
+    */
+    public function noSeq2CdJob(
+        int $no_seq
+    ): string {
+        return sprintf('wf_doc_%02d', $no_seq);
+    }
+
     public function isValidNo_cyu($val)
     {
-        if (is_null($val) || ($val == '')) {
-            return true;
-        }
         return Validate::isCyuban($val);
     }
-    
-    public function isValidNo_seq($val)
+
+    public function isValidNo_page($val)
     {
-        if (is_null($val) || ($val == '')) {
-            return true;
-        }
         return Validate::isInt($val, 0);
     }
-    
-    //nm_file
-    
-    public function isValidNo_doc($val)
+
+    public function isValidNo_seq($val)
     {
-        if (is_null($val) || ($val == '')) {
-            return true;
-        }
-        return Validate::isTextInt($val, 0);
+        return Validate::isInt($val, 0);
     }
-    
-    //nm_file_inf
-    
-    public function isValidNo_page($val)
+
+    public function isValidCd_job($val)
+    {
+        return mb_ereg_match('\Awf_doc_[0-9]{2}\z', $val);
+    }
+
+    public function isValidNm_file($val)
     {
         if (is_null($val)) {
             return true;
         }
-        return Validate::isInt($val, 0);
+        return Validate::isText($val);
+    }
+
+    public function isValidNm_file_inf($val)
+    {
+        if (is_null($val)) {
+            return true;
+        }
+        return Validate::isText($val);
     }
 }

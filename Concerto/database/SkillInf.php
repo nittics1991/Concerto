@@ -21,7 +21,7 @@ class SkillInf extends ModelDb
     *   @var string
     */
     protected $schema = 'public.skill_inf';
-    
+
     /**
     *   年度リスト
     *
@@ -32,19 +32,19 @@ class SkillInf extends ModelDb
         /**
         *   プリペア
         *
-        *   @var resorce
+        *   @var \PDOStatement
         */
         static $stmt;
-        
+
         if (is_null($stmt)) {
             $sql = "SELECT DISTINCT kb_nendo 
                     FROM {$this->schema} 
                     ORDER BY kb_nendo DESC
             ";
-        
+
             $stmt = $this->pdo->prepare($sql);
         }
-        
+
         $stmt->execute();
         return (array)$stmt->fetchAll();
     }

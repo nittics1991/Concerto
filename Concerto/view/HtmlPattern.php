@@ -17,7 +17,7 @@ class HtmlPattern implements Invokable
     /**
     *   pattern
     *
-    *   @var array
+    *   @var string[]
     */
     protected $patterns = [
         'Ymd' => '^20\d{6}$',   //yyyymmdd
@@ -28,17 +28,17 @@ class HtmlPattern implements Invokable
         //半角カナ　制御記号　記号禁止
         'KCM' => '^[^｡-ﾟ\x00-\x1f\x7f\x20-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e]*$',
     ];
-    
+
     /**
     *   __construct
     *
-    *   @param array $patterns
+    *   @param string[] $patterns
     */
     public function __construct(array $patterns = [])
     {
         $this->patterns = (array)array_replace($this->patterns, $patterns);
     }
-    
+
     /**
     *   {inherit}
     */

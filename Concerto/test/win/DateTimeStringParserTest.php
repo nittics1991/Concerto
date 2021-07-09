@@ -17,7 +17,7 @@ class DateTimeStringParserTest extends ConcertoTestCase
             ['20170403112233x1'],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider parseExceptionProvider1
@@ -25,23 +25,23 @@ class DateTimeStringParserTest extends ConcertoTestCase
     public function parseException1($data)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->expectException(\InvalidArgumentException::class);
         $obj = DateTimeStringParser::parse($data);
     }
-    
+
     public function parseProvider()
     {
         $dataset = [
             '20170403112233+540',
             '20170403112233.45678-65',
         ];
-        
+
         $expects = [
             \DateTime::createFromFormat('YmdHisT', '20170403112233+0900'),
             \DateTime::createFromFormat('YmdHisT', '20170403112233-0105'),
         ];
-        
+
         return array_map(
             function ($date, $expect) {
                 return [$date, $expect];
@@ -50,7 +50,7 @@ class DateTimeStringParserTest extends ConcertoTestCase
             $expects
         );
     }
-    
+
     /**
     *   @test
     *   @dataProvider parseProvider
@@ -58,7 +58,7 @@ class DateTimeStringParserTest extends ConcertoTestCase
     public function parse($data, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $actual = DateTimeStringParser::parse($data);
         $this->assertEquals($expect, $actual);
     }

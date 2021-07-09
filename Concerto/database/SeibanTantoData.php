@@ -3,7 +3,7 @@
 /**
 *   seiban_tanto
 *
-*   @version 150419
+*   @version 200901
 */
 
 declare(strict_types=1);
@@ -16,6 +16,13 @@ use Concerto\Validate;
 class SeibanTantoData extends ModelData
 {
     /**
+    *   no_seq 手動設定
+    *
+    *   @var string
+    */
+    public const MANUAL = 'M';
+
+    /**
     *   Columns
     *
     *   @var array
@@ -27,22 +34,22 @@ class SeibanTantoData extends ModelData
         , "no_seq" => parent::STRING
         , "no_ko" => parent::STRING
     );
-    
+
     public function isValidIns_date($val)
     {
         return Validate::isTextDateTime($val);
     }
-    
+
     public function isValidNo_cyu($val)
     {
         return Validate::isCyuban($val);
     }
-    
+
     public function isValidCd_tanto($val)
     {
         return Validate::isTanto($val);
     }
-    
+
     public function isValidNo_Seq($val)
     {
         if ($val == 'M') {
@@ -50,7 +57,7 @@ class SeibanTantoData extends ModelData
         }
         return Validate::isTextInt($val, 0);
     }
-    
+
     public function isValidNo_ko($val)
     {
         if ($val == '') {

@@ -4,7 +4,7 @@
 *   RespectException
 *
 *   @ver 180621
-**/
+*/
 
 declare(strict_types=1);
 

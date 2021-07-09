@@ -3,7 +3,7 @@
 /**
 *   haraidasi_inf
 *
-*   @version 170605
+*   @version 210119
 */
 
 declare(strict_types=1);
@@ -21,31 +21,31 @@ class HaraidasiInfData extends ModelData
     *   @var array
     */
     protected static $schema = [
-        "update" => parent::STRING
-        , "editor" => parent::STRING
-        , "no_cyumon" => parent::STRING
-        , "no_bunno" => parent::STRING
-        , "cd_sts" => parent::INTEGER
-        , "no_adr" => parent::STRING
-        , "nm_adr" => parent::STRING
-        , "no_tel" => parent::STRING
-        , "nm_to" => parent::STRING
-        , "nm_biko" => parent::STRING
-        , "dt_sinsei" => parent::STRING
-        , "dt_haraidasi" => parent::STRING
-        , "dt_uketori" => parent::STRING
-        , "cd_tanto" => parent::STRING
-        , "cd_haraidasi" => parent::STRING
-        , "cd_uketori" => parent::STRING
+        'up_date' => parent::STRING,
+        'editor' => parent::STRING,
+        'no_cyumon' => parent::STRING,
+        'no_bunno' => parent::STRING,
+        'cd_sts' => parent::INTEGER,
+        'no_adr' => parent::STRING,
+        'nm_adr' => parent::STRING,
+        'no_tel' => parent::STRING,
+        'nm_to' => parent::STRING,
+        'nm_biko' => parent::STRING,
+        'dt_sinsei' => parent::STRING,
+        'dt_haraidasi' => parent::STRING,
+        'dt_uketori' => parent::STRING,
+        'cd_tanto' => parent::STRING,
+        'cd_haraidasi' => parent::STRING,
+        'cd_uketori' => parent::STRING,
     ];
-    
+
     /**
     *   Column Alias
     *
     *   @var array
     */
     protected static $alias = [];
-    
+
     /**
     *   ステータスタイプ
     *
@@ -57,7 +57,7 @@ class HaraidasiInfData extends ModelData
         2 => '払出準備済',
         3 => '受取済',
     ];
-    
+
     /**
     *   ステータスタイプ取得
     *
@@ -69,29 +69,29 @@ class HaraidasiInfData extends ModelData
         if (is_null($id)) {
             return $this->cd_sts_list;
         }
-        
+
         if (array_key_exists($id, $this->cd_sts_list)) {
             return $this->cd_sts_list[$id];
         }
         return null;
     }
-    
-    
-    public function isValidUpdate($val)
+
+
+    public function isValidUp_date($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidEditor($val)
     {
         return Validate::isTanto($val);
     }
-    
+
     public function isValidNo_cyumon($val)
     {
         return Validate::isCyumon($val);
     }
-    
+
     public function isValidNo_bunno($val)
     {
         if (
@@ -103,7 +103,7 @@ class HaraidasiInfData extends ModelData
         }
         return true;
     }
-    
+
     public function isValidCd_sts($val)
     {
         if (is_null($val)) {
@@ -111,7 +111,7 @@ class HaraidasiInfData extends ModelData
         }
         return Validate::isInt($val, 0, 3);
     }
-    
+
     public function isValidNo_adr($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -119,7 +119,7 @@ class HaraidasiInfData extends ModelData
         }
         return Validate::isText($val);
     }
-    
+
     public function isValidNm_adr($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -127,7 +127,7 @@ class HaraidasiInfData extends ModelData
         }
         return Validate::isText($val);
     }
-    
+
     public function isValidNo_tel($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -135,7 +135,7 @@ class HaraidasiInfData extends ModelData
         }
         return Validate::isText($val);
     }
-    
+
     public function isValidNm_to($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -143,7 +143,7 @@ class HaraidasiInfData extends ModelData
         }
         return Validate::isText($val);
     }
-    
+
     public function isValidNm_biko($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -151,7 +151,7 @@ class HaraidasiInfData extends ModelData
         }
         return Validate::isText($val);
     }
-    
+
     public function isValidDt_sinsei($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -159,7 +159,7 @@ class HaraidasiInfData extends ModelData
         }
         return Validate::isTextDateTime($val);
     }
-    
+
     public function isValidDt_haraidasi($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -167,7 +167,7 @@ class HaraidasiInfData extends ModelData
         }
         return Validate::isTextDateTime($val);
     }
-    
+
     public function isValidDt_uketori($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -175,7 +175,7 @@ class HaraidasiInfData extends ModelData
         }
         return Validate::isTextDateTime($val);
     }
-    
+
     public function isValidCd_tanto($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -183,7 +183,7 @@ class HaraidasiInfData extends ModelData
         }
         return Validate::isTanto($val);
     }
-    
+
     public function isValidCd_haraidasi($val)
     {
         if (is_null($val) || ($val == '')) {
@@ -191,7 +191,7 @@ class HaraidasiInfData extends ModelData
         }
         return Validate::isTanto($val);
     }
-    
+
     public function isValidCd_uketori($val)
     {
         if (is_null($val) || ($val == '')) {

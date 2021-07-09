@@ -15,7 +15,7 @@ interface ConfigReaderInterface
     /**
      *   読み込み
      *
-     * @return array
+     * @return mixed[]
      */
     public function read(): array;
 }

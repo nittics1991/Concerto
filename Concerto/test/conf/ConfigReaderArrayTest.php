@@ -16,25 +16,25 @@ class ConfigReaderArrayTest extends ConcertoTestCase
     public function ExceptionConstruct()
     {
 //      $this->markTestIncomplete();
-        
+
         $file = __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'read.zzz';
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('file not found');
         $object = new ConfigReaderArray($file);
     }
-    
+
     /**
     * @test
     */
     public function SuccessFileRead()
     {
 //      $this->markTestIncomplete();
-        
+
         $fileName = 'read.php';
         $file = __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . $fileName;
         $obj = new ConfigReaderArray($file);
         $actual = $obj->read();
-        
+
         $expect = array(
             'database' => array (
                 'default' => array(

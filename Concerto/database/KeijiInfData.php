@@ -3,7 +3,7 @@
 /**
 *   keiji_inf
 *
-*   @version 180913
+*   @version 210118
 */
 
 declare(strict_types=1);
@@ -22,38 +22,38 @@ class KeijiInfData extends ModelData
     */
     protected static $schema = [
         'no_keiji' => parent::INTEGER,
-        'update' => parent::STRING,
+        'up_date' => parent::STRING,
         'editor' => parent::STRING,
         'nm_comment' => parent::STRING,
         'dt_kigen' => parent::STRING,
         'cd_bumon' => parent::STRING,
         'cd_tanto' => parent::STRING,
     ];
-    
+
     /**
     *   Validate
     *
-    **/
+    */
     public function isValidNo_doc($val)
     {
         return Validate::isInt($val, 1);
     }
-    
-    public function isValidUpdate($val)
+
+    public function isValidUp_date($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidEditor($val)
     {
         return Validate::isTanto($val);
     }
-    
+
     public function isValidNm_comment($val)
     {
         return Validate::isText($val, 0);
     }
-    
+
     public function isValidDt_kigen($val)
     {
         if (is_null($val) || $val == '') {
@@ -61,7 +61,7 @@ class KeijiInfData extends ModelData
         }
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidCd_bumon($val)
     {
         if ($val == null || $val == '') {
@@ -69,7 +69,7 @@ class KeijiInfData extends ModelData
         }
         return Validate::isBumon($val);
     }
-    
+
     public function isValidCd_tanto($val)
     {
         if ($val == null || $val == '') {

@@ -13,7 +13,7 @@ class NoHasherTest extends ConcertoTestCase
     {
         parent::setUp();
     }
-    
+
     public function mainProvider()
     {
         return [
@@ -27,7 +27,7 @@ class NoHasherTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider mainProvider
@@ -35,9 +35,9 @@ class NoHasherTest extends ConcertoTestCase
     public function main($password, $options)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new NoHasher($options);
-        
+
         $hash = $obj->hash($password);
         $this->assertEquals(true, $obj->check($hash));
         $this->assertEquals(true, $obj->verify($password, $hash));

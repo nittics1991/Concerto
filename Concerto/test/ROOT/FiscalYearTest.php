@@ -16,9 +16,9 @@ class FiscalYearTest extends ConcertoTestCase
     public function testSuccessGetPresentNendo()
     {
 //      $this->markTestIncomplete();
-        
+
         $today = getdate();
-        
+
         if ($today['mon'] >= 4 && $today['mon'] <= 9) {
             $expect = $today['year'] . 'K';
         } elseif ($today['mon'] >= 10 && $today['mon'] <= 12) {
@@ -26,10 +26,10 @@ class FiscalYearTest extends ConcertoTestCase
         } else {
             $expect = ($today['year'] - 1) . 'S';
         }
-        
+
         $this->assertEquals($expect, FiscalYear::getPresentNendo());
     }
-    
+
     /**
     *   指定年度の次年度
     *
@@ -44,18 +44,18 @@ class FiscalYearTest extends ConcertoTestCase
             array('2015', false)
         );
     }
-    
+
     /**
     *   @dataProvider providerSuccessGetNextNendo
     *
-    **/
+    */
     public function testSuccessGetNextNendo($argv, $result)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($result, FiscalYear::getNextNendo($argv));
     }
-    
+
     /**
     *   指定年度の前年度
     *
@@ -70,18 +70,18 @@ class FiscalYearTest extends ConcertoTestCase
             array('2015', false)
         );
     }
-    
+
     /**
     *   @dataProvider providerSuccessGetPreviousNendo
     *
-    **/
+    */
     public function testSuccessGetPreviousNendo($argv, $result)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($result, FiscalYear::getPreviousNendo($argv));
     }
-    
+
     /**
     *   年度記号＝＞年度全角
     *
@@ -96,18 +96,18 @@ class FiscalYearTest extends ConcertoTestCase
             array('2015', false)
         );
     }
-    
+
     /**
     *   @dataProvider providerSuccessNendoCodeToZn
     *
-    **/
+    */
     public function testSuccessNendoCodeToZn($argv, $result)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($result, FiscalYear::nendoCodeToZn($argv));
     }
-    
+
     /**
     *   年度全角＝＞年度記号
     *
@@ -122,18 +122,18 @@ class FiscalYearTest extends ConcertoTestCase
             array('2015K', false)
         );
     }
-    
+
     /**
     *   @dataProvider providerSuccessNendoZnToCode
     *
-    **/
+    */
     public function testSuccessNendoZnToCode($argv, $result)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($result, FiscalYear::nendoZnToCode($argv));
     }
-    
+
     /**
     *   年度内年月
     *
@@ -146,21 +146,21 @@ class FiscalYearTest extends ConcertoTestCase
             array('1K', array()),
             array('2015Z', array()),
             array('2015', array())
-            
+
         );
     }
-    
+
     /**
     *   @dataProvider providerSuccessGetNendoyyyymm
     *
-    **/
+    */
     public function testSuccessGetNendoyyyymm($argv, $result)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($result, FiscalYear::getNendoyyyymm($argv));
     }
-    
+
     /**
     *   年度内年月
     *
@@ -173,21 +173,21 @@ class FiscalYearTest extends ConcertoTestCase
             array('1K', array()),
             array('2015Z', array()),
             array('2015', array())
-            
+
         );
     }
-    
+
     /**
     *   @dataProvider providerSuccessGetNendomm
     *
-    **/
+    */
     public function testSuccessGetNendomm($argv, $result)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($result, FiscalYear::getNendomm($argv));
     }
-    
+
     /**
     *   年月=>年度
     *
@@ -212,18 +212,18 @@ class FiscalYearTest extends ConcertoTestCase
             array('201613', false)
         );
     }
-    
+
     /**
     *   @dataProvider providerSuccessGetyyyymmToNendo
     *
-    **/
+    */
     public function testSuccessGetyyyymmToNendo($argv, $result)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($result, FiscalYear::getyyyymmToNendo($argv));
     }
-    
+
     /**
     *   年度=>開始年月・終了年月
     *
@@ -238,45 +238,45 @@ class FiscalYearTest extends ConcertoTestCase
             array('2015', array())
         );
     }
-    
+
     /**
     *   @dataProvider providerSuccessGetNendoPeriod
     *
-    **/
+    */
     public function testSuccessGetNendoPeriod($argv, $result)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($result, FiscalYear::getNendoPeriod($argv));
     }
-    
+
     /**
     *
     *   @test
-    **/
+    */
     public function addNendo()
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals('2015K', FiscalYear::addNendo('2015K', 0));
-        
+
         $this->assertEquals('2015S', FiscalYear::addNendo('2015K', 1));
         $this->assertEquals('2016K', FiscalYear::addNendo('2015K', 2));
         $this->assertEquals('2016S', FiscalYear::addNendo('2015K', 3));
-        
+
         $this->assertEquals('2016K', FiscalYear::addNendo('2015S', 1));
         $this->assertEquals('2016S', FiscalYear::addNendo('2015S', 2));
         $this->assertEquals('2017K', FiscalYear::addNendo('2015S', 3));
-        
+
         $this->assertEquals('2014S', FiscalYear::addNendo('2015K', -1));
         $this->assertEquals('2014K', FiscalYear::addNendo('2015K', -2));
         $this->assertEquals('2013S', FiscalYear::addNendo('2015K', -3));
-        
+
         $this->assertEquals('2015K', FiscalYear::addNendo('2015S', -1));
         $this->assertEquals('2014S', FiscalYear::addNendo('2015S', -2));
         $this->assertEquals('2014K', FiscalYear::addNendo('2015S', -3));
     }
-    
+
     public function getNendoPeriodCollectionProvider()
     {
         return [
@@ -285,7 +285,7 @@ class FiscalYearTest extends ConcertoTestCase
                 '2016K',
                 ['2013S', '2014K', '2014S', '2015K', '2015S', '2016K']
             ],
-            
+
             [
                 '2016K',
                 '2013S',
@@ -293,50 +293,50 @@ class FiscalYearTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider getNendoPeriodCollectionProvider
-    **/
+    */
     public function getNendoPeriodCollection($start, $end, $expect)
     {
         $actual = FiscalYear::getNendoPeriodCollection($start, $end);
         reset($expect);
-       
+
         foreach ($actual as $list) {
             $this->assertEquals(current($expect), $list['kb_nendo']);
             $this->assertEquals(FiscalYear::nendoCodeToZn(current($expect)), $list['nm_nendo']);
             next($expect);
         }
     }
-    
+
     public function diffProvider()
     {
         return [
             ['2016K', '2016K', 0],
             ['2016S', '2016S', 0],
-            
+
             ['2016K', '2016S', 1],
             ['2016K', '2017K', 2],
             ['2016K', '2017S', 3],
             ['2016K', '2018K', 4],
             ['2016K', '2018S', 5],
             ['2016K', '2019K', 6],
-            
+
             ['2016K', '2015S', -1],
             ['2016K', '2015K', -2],
             ['2016K', '2014S', -3],
             ['2016K', '2014K', -4],
             ['2016K', '2013S', -5],
             ['2016K', '2013K', -6],
-            
+
             ['2016S', '2017K', 1],
             ['2016S', '2017S', 2],
             ['2016S', '2018K', 3],
             ['2016S', '2018S', 4],
             ['2016S', '2019K', 5],
             ['2016S', '2019S', 6],
-            
+
             ['2016S', '2016K', -1],
             ['2016S', '2015S', -2],
             ['2016S', '2015K', -3],
@@ -345,11 +345,11 @@ class FiscalYearTest extends ConcertoTestCase
             ['2016S', '2013S', -6],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider diffProvider
-    **/
+    */
     public function testDiff($base, $target, $expect)
     {
         $this->assertEquals(FiscalYear::diff($base, $target), $expect);

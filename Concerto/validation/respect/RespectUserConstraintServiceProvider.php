@@ -5,7 +5,7 @@
 *
 *   @version 180711
 *   @see ユーザ設定ルールはRules,Exceptionsという名前のフォルダに作成する
-**/
+*/
 
 declare(strict_types=1);
 
@@ -18,7 +18,7 @@ class RespectUserConstraintServiceProvider extends AbstractDirectoryServiceProvi
     /**
     *   {inherit}
     *
-    **/
+    */
     protected $subDirName = 'Rules';
     protected $prefixId = 'validation';
 }

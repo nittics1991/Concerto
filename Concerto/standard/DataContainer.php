@@ -3,8 +3,10 @@
 /**
 *   データコンテナ
 *
-*   @version 190524
+*   @version 210609
 */
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
@@ -16,39 +18,39 @@ abstract class DataContainer extends ArrayAccessObject
     /**
     *   カラム情報(overwrite)
     *
-    *   @var array
+    *   @var string[]
     *   @example array('bool_data', 'int_data')
     */
     protected static $schema = [];
-    
+
     /**
     *   {inherit}
     *
     */
-    public function offsetGet($key)
+    public function offsetGet(mixed $offset): mixed
     {
-        if ($this->offsetExists($key)) {
-            return $this->data[$key];
+        if ($this->offsetExists($offset)) {
+            return $this->data[$offset];
         }
-        
-        if (in_array($key, static::$schema)) {
+
+        if (in_array($offset, static::$schema)) {
             return null;
         }
-        throw new InvalidArgumentException("no property called:{$key}");
+        throw new InvalidArgumentException("no property called:{$offset}");
     }
-    
+
     /**
     *   {inherit}
     *
     */
-    public function offsetSet($key, $val)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        if (!in_array($key, static::$schema)) {
-            throw new InvalidArgumentException("no property called:{$key}");
+        if (!in_array($offset, static::$schema)) {
+            throw new InvalidArgumentException("no property called:{$offset}");
         }
-        $this->data[$key] = $val;
+        $this->data[$offset] = $value;
     }
-    
+
     /**
     *   カラム情報
     *
@@ -60,7 +62,7 @@ abstract class DataContainer extends ArrayAccessObject
         if (is_null($key)) {
             return static::$schema;
         }
-        
+
         if (($pos = array_search($key, static::$schema)) !== false) {
             return static::$schema[$pos];
         }

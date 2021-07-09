@@ -21,10 +21,10 @@ class OverheadCost
     int $unitPrice;
     string $unit;
     int $price;
-    
+
     //materialのみ
     MaterialProcurementId $materialProcurementId
-    
+
     OrderId $orderId;
     OrderDetailId $orderDetailId;
     DepartmentId $departmentId;

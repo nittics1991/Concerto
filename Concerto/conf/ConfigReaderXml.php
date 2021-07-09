@@ -26,7 +26,7 @@ class ConfigReaderXml extends AbstractConfigReader
             ),
             true
         );
-        
+
         if (!is_array($data)) {
             throw new RuntimeException(
                 "config file read error"

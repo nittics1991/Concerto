@@ -22,21 +22,21 @@ class Csrf
     *   @var string
     */
     protected static $namespace = 'csrf';
-    
+
     /**
     *   token最大byte
     *
     *   @var int
     */
     protected static $token_max_byte = 32;
-    
+
     /**
     *   token保持数
     *
     *   @var int
     */
     protected static $token_length = 50;
-    
+
     /**
     *   token生成
     *
@@ -51,26 +51,26 @@ class Csrf
         if ($length > self::$token_max_byte) {
             throw new InvalidArgumentException("invalid parameter");
         }
-        
+
         if (session_status() !== PHP_SESSION_ACTIVE) {
             @session_start();
         }
-        
+
         $token = bin2hex(random_bytes($length));
-        
+
         if (!$token) {
             throw new RuntimeException('require openssl');
         }
-        
+
         $_SESSION[self::$namespace][$token] = strtotime("+{$timeout} min");
         if (count($_SESSION[self::$namespace]) > self::$token_length) {
             array_shift($_SESSION[self::$namespace]);
         }
-        
+
         self::refresh();
         return $token;
     }
-    
+
     /**
     *   バリデート
     *
@@ -83,47 +83,49 @@ class Csrf
         if (!mb_check_encoding((string)$token)) {
             return false;
         }
-        
+
         if (session_status() != PHP_SESSION_ACTIVE) {
             @session_start();
         }
-        
+
         self::refresh();
-        
+
         if (empty($token) || !isset($_SESSION[self::$namespace])) {
             return false;
         }
         $result = array_key_exists($token, (array)$_SESSION[self::$namespace]);
-        
+
         if ($remove) {
             self::remove($token);
         }
         return $result;
     }
-    
+
     /**
     *   token削除
     *
     *   @param ?string $token
+    *   @return void
     */
     public static function remove(?string $token = null)
     {
         if (session_status() != PHP_SESSION_ACTIVE) {
             @session_start();
         }
-        
+
         self::refresh();
-        
+
         if (is_null($token)) {
             unset($_SESSION[self::$namespace]);
         } elseif (array_key_exists($token, $_SESSION[self::$namespace])) {
             unset($_SESSION[self::$namespace][$token]);
         }
     }
-    
+
     /**
     *   タイムアウトtoken削除
     *
+    *   @return void
     */
     public static function refresh()
     {
@@ -131,11 +133,11 @@ class Csrf
             @session_start();
         }
         $now = time();
-        
+
         if (!isset($_SESSION[self::$namespace])) {
             return;
         }
-        
+
         foreach ((array)$_SESSION[self::$namespace] as $key => $val) {
             if ($val < $now) {
                 unset($_SESSION[self::$namespace][$key]);

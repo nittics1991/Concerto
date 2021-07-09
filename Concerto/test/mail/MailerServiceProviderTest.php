@@ -14,13 +14,13 @@ class MailerServiceProviderTest extends ConcertoTestCase
 {
     private $container;
     private $config;
-    
+
     public function setUp(): void
     {
         $this->container = new ServiceContainer();
         $this->container->delegate(new ServiceProviderContainer());
         $this->container->addServiceProvider(MailerServiceProvider::class);
-        
+
         $this->config =
             [
                 'smtp' => [
@@ -40,14 +40,14 @@ class MailerServiceProviderTest extends ConcertoTestCase
             ];
         $this->container->bind('configSystem', $this->config);
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function getObject()
     {
 //       $this->markTestIncomplete();
-        
+
         $this->assertInstanceOf(MailTransferInterface::class, $this->container->get(MailTransferInterface::class));
     }
 }

@@ -35,7 +35,7 @@ class MaterialProcurementItemOrder
 {
     MaterialProcurementId $MaterialProcurementId
     PuchasePrice $puchasePrice
-    
+
     Supplier $Supplier
 }
 

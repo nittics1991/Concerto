@@ -34,14 +34,14 @@ class MondaitenInfData extends ModelData
         , "nm_biko" => parent::STRING
         , "up_date" => parent::STRING
     ];
-    
+
     /**
     *   Column Alias
     *
     *   @var array
     */
     protected static $alias = [];
-    
+
     /**
     *   発生場所
     *
@@ -55,7 +55,7 @@ class MondaitenInfData extends ModelData
         4 => '現調・試験',
         5 => '現地その他',
     ];
-    
+
     /**
     *   発生場所取得
     *
@@ -67,70 +67,70 @@ class MondaitenInfData extends ModelData
         if (is_null($id)) {
             return $this->cd_hassei_list;
         }
-        
+
         if (array_key_exists($id, $this->cd_hassei_list)) {
             return $this->cd_hassei_list[$id];
         }
         return null;
     }
-    
-    
+
+
     public function isValidNo_cyu($val)
     {
         return Validate::isCyuban($val);
     }
-    
+
     public function isValidNo_page($val)
     {
         return Validate::isInt($val, 0);
     }
-    
+
     public function isValidNo_seq($val)
     {
         return Validate::isInt($val, 0);
     }
-    
+
     public function isValidCd_hassei($val)
     {
         return Validate::isTextInt($val, 0, 5);
     }
-    
+
     public function isValidCd_bunrui($val)
     {
         return Validate::isText($val, 2, 2)
             && mb_ereg_match('\A[0-9A-Z]{2}\z', $val);
     }
-    
+
     public function isValidNo_mondai($val)
     {
         return Validate::isInt($val, 0);
     }
-    
+
     public function isValidTm_cyokka($val)
     {
         return Validate::isFloat($val, 0);
     }
-    
+
     public function isValidDt_hassei($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidDt_kaito($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidDt_kakunin($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidNm_biko($val)
     {
         return Validate::isText($val);
     }
-    
+
     public function isValidUp_date($val)
     {
         return Validate::isTextDate($val);

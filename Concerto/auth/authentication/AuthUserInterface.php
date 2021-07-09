@@ -16,13 +16,13 @@ interface AuthUserInterface
     *   ID取得
     *
     *   @return ?string
-    **/
+    */
     public function getId(): ?string;
-    
+
     /**
     *   パスワード取得
     *
     *   @return ?string
-    **/
+    */
     public function getPassword(): ?string;
 }

@@ -26,7 +26,7 @@ class MailAdrData extends ModelData
         , "cd_tanto" => parent::STRING
         , "cd_adr" => parent::STRING
     );
-    
+
     /**
     *   Column Alias
     *
@@ -34,23 +34,23 @@ class MailAdrData extends ModelData
     */
     protected static $alias = array(
     );
-    
-    
+
+
     public function isValidUpdate($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidEditor($val)
     {
         return Validate::isTanto($val);
     }
-    
+
     public function isValidCd_tanto($val)
     {
         return Validate::isTanto($val);
     }
-    
+
     public function isValidCd_adr($val)
     {
         return Validate::isText($val);

@@ -11,14 +11,14 @@ class FullUrlTest extends ConcertoTestCase
 {
     /**
     *   @test
-    **/
+    */
     public function build()
     {
 //      $this->markTestIncomplete();
-        
+
         $baseUrl = 'http://example.co.jp/path/to/real/';
         $obj = new FullUrl($baseUrl);
-        
+
         $url = '../test/tmp/target';
         $actual = 'http://example.co.jp/path/to/test/tmp/target';
         $this->assertEquals($actual, $obj($url));

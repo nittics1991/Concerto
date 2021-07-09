@@ -3,7 +3,7 @@
 /**
 *   マルチバイト文字
 *
-*   @version 191216
+*   @version 200917
 */
 
 declare(strict_types=1);
@@ -14,6 +14,17 @@ use InvalidArgumentException;
 
 class MbString
 {
+    /**
+    *   バイト長
+    *
+    *   @param string $data
+    *   @return int
+    */
+    public static function byteLength(string $data): int
+    {
+        return mb_strlen($data, '8bit');
+    }
+
     /**
     *   文字列削除
     *
@@ -34,15 +45,15 @@ class MbString
         }
         return static::splice($target, $offset, $length, '', $encoding);
     }
-    
+
     /**
     *   正規表現全マッチ
     *
     *   @param string $pattern パターン
     *   @param string $string 対象
     *   @param string $option オプション @see mb_regex_set_options
-    *   @return array マッチ文字情報 @see mb_ereg_match_regs
-    **/
+    *   @return mixed[] マッチ文字情報 @see mb_ereg_search_regs
+    */
     public static function eregMatchAll(
         string $pattern,
         string $string,
@@ -51,7 +62,7 @@ class MbString
         mb_ereg_search_init($string);
         $counter = mb_strlen($string);
         $result = [];
-        
+
         while (
             (($ans = mb_ereg_search_regs($pattern, $option)) !== false)
             && ($counter >= 0)
@@ -62,7 +73,7 @@ class MbString
         }
         return $result;
     }
-    
+
     /**
     *   5C文字エスケープ
     *
@@ -72,16 +83,20 @@ class MbString
     public static function escape5c(string $string)
     {
         $result = $string;
-        
+
         array_walk(
             MbStringConst::$sjis5c,
             function (&$val, $key) use (&$result) {
-                $result = mb_ereg_replace($val, "{$val}\\", (string)$result);
+                $result = (string)mb_ereg_replace(
+                    $val,
+                    "{$val}\\",
+                    (string)$result
+                );
             }
         );
         return $result;
     }
-    
+
     /**
     *   mb_expode
     *
@@ -89,7 +104,7 @@ class MbString
     *   @param string $string 文字列
     *   @param int $limit 配列要素数
     *   @param string $encoding エンコード
-    *   @return array
+    *   @return string[]
     */
     public static function explode(
         string $delimiter,
@@ -98,7 +113,7 @@ class MbString
         string $encoding = 'UTF-8'
     ): array {
         $tmp = mb_regex_encoding();
-        
+
         mb_regex_encoding($encoding);
         $delimiter = (string)mb_ereg_replace(
             '[.\\\\+*?\\[^$(){}|]',
@@ -106,11 +121,12 @@ class MbString
             $delimiter
         );
         $ret = mb_split($delimiter, $string, $limit);
-        
+
         mb_regex_encoding($tmp);
-        return $ret;
+
+        return $ret === false ? [] : $ret;
     }
-    
+
     /**
     *   文字列挿入
     *
@@ -128,7 +144,7 @@ class MbString
     ): string {
         return static::splice($target, $offset, 0, $string, $encoding);
     }
-    
+
     /**
     *   文字列に5C文字が含むか確認
     *
@@ -138,7 +154,7 @@ class MbString
     public static function is5c(string $string): bool
     {
         $cnt = 0;
-        
+
         array_walk(
             MbStringConst::$sjis5c,
             function (&$val, $key) use (&$cnt, $string) {
@@ -147,7 +163,7 @@ class MbString
         );
         return $cnt > 0;
     }
-    
+
     /**
     *   mb_replace
     *
@@ -165,16 +181,16 @@ class MbString
     ) {
         $tmp = mb_regex_encoding();
         mb_regex_encoding($encoding);
-        
+
         foreach ((array)$search as $s) {
             $s = (string)mb_ereg_replace('[.\\\\+*?\\[^$(){}|]', '\\\\0', $s);
-            $subject = mb_ereg_replace($s, $replace, (string)$subject);
+            $subject = (string)mb_ereg_replace($s, $replace, (string)$subject);
         }
-        
+
         mb_regex_encoding($tmp);
         return $subject;
     }
-    
+
     /**
     *   部分文字列抽出置換
     *
@@ -184,7 +200,7 @@ class MbString
     *   @param string $replacement 置換文字列
     *   @param string $encoding エンコード
     *   @return string
-    **/
+    */
     public static function splice(
         string $string,
         int $offset,
@@ -194,11 +210,11 @@ class MbString
     ): string {
         $target = MbString::strToArray($string, $encoding);
         $len = (is_null($length)) ?  count($target) : $length;
-        
+
         array_splice($target, $offset, $len, $replacement);
         return implode('', $target);
     }
-    
+
     /**
     *   mb_split
     *
@@ -215,40 +231,48 @@ class MbString
         if ($split_length < 1) {
             return false;
         }
-        
+
         $ret = [];
         $len = mb_strlen($string, $encoding);
-        
+
         for ($i = 0; $i < $len; $i += $split_length) {
             $ret[] = mb_substr($string, $i, $split_length, $encoding);
         }
-        
+
         if (!$ret) {
             $ret[] = '';
         }
         return $ret;
     }
-    
+
+
+    // *   @return string[]
+
+
     /**
     *   文字を1文字毎配列変換
     *
     *   @param string $string 対象文字列
     *   @param string $encoding エンコード
     *   @return array
-    **/
+    */
     public static function strToArray(
         string $string,
         string $encoding = 'UTF-8'
     ): array {
         $encoded = mb_convert_encoding($string, 'UTF-8', $encoding);
-        $result = (array)preg_split("//u", $encoded, 0, PREG_SPLIT_NO_EMPTY);
-        
-        array_walk($result, function (&$val, $key) use ($encoding) {
-            $val = mb_convert_encoding($val, $encoding, 'UTF-8');
-        });
+
+        $result = (array)preg_split(
+            "//u",
+            $encoded,
+            0,
+            PREG_SPLIT_NO_EMPTY
+        );
+
+        mb_convert_variables($encoding, 'UTF-8', $result);
         return $result;
     }
-    
+
     /**
     *   TAB=>空白変換
     *
@@ -256,7 +280,7 @@ class MbString
     *   @param int $length TAB幅
     *   @param ?string $encoding エンコーディング
     *   @return string
-    **/
+    */
     public static function tab2space(
         string $string,
         int $length = 4,
@@ -265,7 +289,7 @@ class MbString
         if (!is_int($length) || ($length < 0)) {
             throw new InvalidArgumentException("required integer >0");
         }
-        
+
         $encoding = is_null($encoding) ? mb_internal_encoding() : $encoding;
         $result = '';
         $haystack = $string;
@@ -277,20 +301,20 @@ class MbString
         $result .= $haystack;
         return $result;
     }
-    
+
     /**
     *   toLowerCamel
     *
     *   @param string $string
     *   @return string
-    **/
+    */
     public static function toLowerCamel(string $string): string
     {
         $uppered = MbString::toUpperCamel($string);
         return mb_strtolower(mb_substr($uppered, 0, 1)) .
             mb_substr($uppered, 1);
     }
-    
+
     /**
     *   toSnake
     *
@@ -299,7 +323,7 @@ class MbString
     *   @caution
     *       '_mst_Bumon_data' ==> '_mst__bumon_data' //unsder scoreはそのまま残る
     *       'mstBumon_Data' ==> 'mst_bumon__data' //_Data ==> __dataとなる
-    **/
+    */
     public static function toSnake(string $string): string
     {
         $replaced = (string)mb_ereg_replace_callback(
@@ -309,7 +333,7 @@ class MbString
             },
             $string
         );
-        
+
         if (
             mb_substr($replaced, 0, 1) == '_' &&
             mb_substr($string, 0, 1) != '_'
@@ -318,13 +342,13 @@ class MbString
         }
         return $replaced;
     }
-    
+
     /**
     *   toUpperCamel
     *
     *   @param string $string
     *   @return string
-    **/
+    */
     public static function toUpperCamel(string $string): string
     {
         $snaked = MbString::toSnake($string);
@@ -332,7 +356,7 @@ class MbString
         $titled = mb_convert_case($replaced, MB_CASE_TITLE);
         return implode('', explode(' ', $titled));
     }
-    
+
     /**
     *   mb_trim
     *
@@ -351,21 +375,21 @@ class MbString
         $charlist = is_null($charlist) ?
            mb_convert_encoding(" \t\n\r\0　\x0B", $encoding, 'UTF-8') :
             $charlist;
-        
+
         $pattern = "[{$charlist}]";
         $ret = (string)mb_ereg_replace("\A{$pattern}+", '', $str);
         $ret = (string)mb_ereg_replace("{$pattern}+\z", '', $ret);
-        
+
         mb_regex_encoding($tmp);
         return $ret;
     }
-    
+
     /**
     *   エンコードチェック
     *
     *   @param string $string
     *   @return bool
-    **/
+    */
     public static function validEncodeName(string $string): bool
     {
         $encodings = mb_list_encodings();

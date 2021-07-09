@@ -26,22 +26,22 @@ class CyunyuLockData extends ModelData
         , "cd_tanto" => parent::STRING
         , "ins_date" => parent::STRING
     );
-    
+
     public function isValidNo_cyu($val)
     {
         return Validate::isCyuban($val);
     }
-    
+
     public function isValidNo_ko($val)
     {
         return Validate::isKoban($val);
     }
-    
+
     public function isValidCd_tanto($val)
     {
         return Validate::isTanto($val);
     }
-    
+
     public function isValidIns_date($val)
     {
         return Validate::isTextDateTime($val);

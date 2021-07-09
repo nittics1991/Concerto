@@ -13,47 +13,47 @@ class _DataContainerValidatable extends DataContainerValidatable
     protected static $schema = array(
         'b_data', 'i_data', 'f_data', 'd_data', 's_data', 'Z_DATA'
     );
-    
+
     public function isValidB_data($val)
     {
         return is_null($val) || is_bool($val);
     }
-    
+
     public function isValidI_data($val)
     {
         return (is_null($val) || is_int($val)) ?     true : 'NG';
     }
-    
+
     public function isValidF_data($val)
     {
         return (is_null($val) || is_float($val)) ?   true : array('type_check_error' => $val);
     }
-    
+
     public function isValidD_data($val)
     {
         return is_null($val) || is_double($val);
     }
-    
+
     public function isValidS_data($val)
     {
         return is_null($val) || is_string($val);
     }
-    
-    protected function validCom($key, $val)
+
+    protected function validCom($key, $val): bool
     {
         if (!isset($val)) {
             return true;
         }
-        
+
         $result = parent::validCom($key, $val);
-        
+
         if (!mb_ereg_match('\A[\x20-\x7e\x80-\xff\x09-\x0a\x0d]*\z', (string)$val)) {
             $this->valid[$key][] = 'invalid code';
             return false;
         }
         return $result;
     }
-    
+
     //isValidAddressRecursive用
     protected function validRecursive($val)
     {
@@ -66,7 +66,7 @@ class TestDataContainerValidatable extends DataContainerValidatable
     protected static $schema = array(
         'data_i', 'data_o', 'data_ao', 'data_c'
     );
-    
+
     public function __construct()
     {
         $this->data_o = new _DataContainerValidatable();
@@ -79,17 +79,17 @@ class TestDataContainerValidatable extends DataContainerValidatable
             new _DataContainerValidatable()
         ]);
     }
-    
+
     public function isValidData_i($val)
     {
         return (is_null($val) || is_int($val)) ?     true : 'NG';
     }
-    
+
     public function isValidData_o($val)
     {
         return $val->isValid();
     }
-    
+
     public function isValidData_ao($val)
     {
         $result = true;
@@ -98,7 +98,7 @@ class TestDataContainerValidatable extends DataContainerValidatable
         }
         return $result;
     }
-    
+
     public function isValidData_c($val)
     {
         $result = true;
@@ -113,10 +113,10 @@ class TestDataContainerValidatable extends DataContainerValidatable
 class TestDataContainerValidatableRelation extends _DataContainerValidatable
 {
     //validRelation要
-    protected function validRelation()
+    protected function validRelation(): bool
     {
         $result = $this->i_data > $this->f_data;
-        
+
         if (!$result) {
             $this->valid['isIntBiggerFloat'][] = 'error';
         }
@@ -131,58 +131,58 @@ class TestDataContainerValidatableRelation extends _DataContainerValidatable
 class _DataContainerValidatableTest extends ConcertoTestCase
 {
     private $object;
-    
+
     protected function setUp(): void
     {
         $this->object = new _DataContainerValidatable();
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function validCustom()
     {
 //      $this->markTestIncomplete();
-        
+
         //non isValidXXX
         $args = array('Z_DATA' , 'abCD56#$漢字\nかなカタカタ');
         $actual = $this->callPrivateMethod($this->object, 'validCustom', $args);
         $this->assertEquals(true, $actual);
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function isValid()
     {
 //      $this->markTestIncomplete();
-        
+
         $this->object->b_data = 'STRING';
         $this->assertEquals(false, $this->object->isValid());
         $this->assertEquals(array('b_data' => array('')), $this->object->getValidError());
-        
+
         $this->object->unsetAll();
         $this->object->b_data = true;
         $this->assertEquals(true, $this->object->isValid());
         $this->assertEquals(array(), $this->object->getValidError());
-        
+
         $this->object->unsetAll();
         $this->object->i_data = 'STRING';
         $this->assertEquals(false, $this->object->isValid());
         $this->assertEquals(array('i_data' => array('NG')), $this->object->getValidError());
-        
+
         $this->object->unsetAll();
         $this->object->f_data = 'STRING';
         $this->assertEquals(false, $this->object->isValid());
         $this->assertEquals(array('f_data' => array('type_check_error' => 'STRING')), $this->object->getValidError());
-        
+
         $this->object->unsetAll();
         $this->object->f_data = $data = 'STRING' . chr(0x0b);
         $this->assertEquals(false, $this->object->isValid());
         $expect = ['f_data' => ['type_check_error' => $data, 0 => 'invalid code']];
         $this->assertEquals($expect, $this->object->getValidError());
     }
-    
+
     public function validRecursiveErrorProvider()
     {
         return [
@@ -194,7 +194,7 @@ class _DataContainerValidatableTest extends ConcertoTestCase
                 true,
                 []
             ],
-           
+
             [
                 'DUMMY',
                 200,
@@ -216,7 +216,7 @@ class _DataContainerValidatableTest extends ConcertoTestCase
                     ]
                 ]
             ],
-            
+
             [
                 100,
                 200,
@@ -230,7 +230,7 @@ class _DataContainerValidatableTest extends ConcertoTestCase
                     ]
                 ]
             ],
-            
+
             [
                 100,
                 200,
@@ -244,39 +244,39 @@ class _DataContainerValidatableTest extends ConcertoTestCase
                     ]
                 ]
             ],
-            
+
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider validRecursiveErrorProvider
-    **/
+    */
     public function validRecursiveError($i, $o, $ao, $c, $valid, $error)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new TestDataContainerValidatable();
         $object->data_i = $i;
         $object->data_o->i_data = $o;
-        
+
         //$object->data_ao[1]->i_data = 300;
         $obj = $object['data_ao'][1];
         $obj->i_data = $ao;
-        
+
         $object->data_c[1]->i_data = $c;
-        
+
         $this->assertEquals($valid, $object->isValid());
         $this->assertEquals($error, $object->getValidError());
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function isValidRecursive()
     {
 //      $this->markTestIncomplete();
-        
+
         $actual = $this->callPrivateMethod(
             $this->object,
             'isValidRecursive',
@@ -286,7 +286,7 @@ class _DataContainerValidatableTest extends ConcertoTestCase
             ]
         );
         $this->assertEquals(true, $actual);
-        
+
         $actual = $this->callPrivateMethod(
             $this->object,
             'isValidRecursive',
@@ -297,39 +297,39 @@ class _DataContainerValidatableTest extends ConcertoTestCase
         );
         $this->assertEquals(false, $actual);
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function validRelation()
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new TestDataContainerValidatableRelation();
-        
+
         $obj->i_data = 2;
         $obj->f_data = 1.0;
         $this->assertEquals(true, $obj->isValid());
-        
+
         $obj->f_data = 3.0;
         $this->assertEquals(false, $obj->isValid());
-        
+
         $error = $obj->getValidError();
         $this->assertEquals('error', $error['isIntBiggerFloat'][0]);
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function statiCallValidateMethod()
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals(
             TestDataContainerValidatableRelation::validI_data(10),
             true
         );
-        
+
         $this->assertEquals(
             TestDataContainerValidatableRelation::validI_data(1.25),
             'NG'

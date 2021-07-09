@@ -3,7 +3,7 @@
 /**
  *   キャッシュプール(Memcache)
  *
- * @version 191216
+ * @version 210614
  */
 
 declare(strict_types=1);
@@ -12,6 +12,7 @@ namespace Concerto\cache;
 
 use Exception;
 use Memcache;
+use RuntimeException;
 use Concerto\cache\CacheException;
 use Concerto\cache\CacheItemPool;
 use Concerto\cache\InvalidArgumentException;
@@ -22,23 +23,23 @@ class MemcachePool extends CacheItemPool
      *   キャッシュアダプタ
      *
      * @var Memcache
-     **/
+     */
     protected $adapter;
-    
+
     /**
      *   圧縮指定
      *
      * @var int
-     **/
+     */
     protected $compressed;
-    
+
     /**
-     *   コンストラクタ
+     *   __construct
      *
-     * @param string   $namespace
+     * @param string $namespace
      * @param Memcache $memcache
-     * @param bool     $compressed 圧縮指定
-     **/
+     * @param bool $compressed 圧縮指定
+     */
     public function __construct(
         $namespace,
         Memcache $memcache,
@@ -48,26 +49,38 @@ class MemcachePool extends CacheItemPool
         $this->adapter = $memcache;
         $this->compressed = $compressed ? MEMCACHE_COMPRESSED : 0;
     }
-    
+
     /**
      *   キーマップ取得
      *
-     * @return array
-     * @throw  CacheException
+     * @return string[]
+     * @throw CacheException
      */
     public function getKeys()
     {
         $result = [];
-        
+
         try {
             $items = $this->adapter->getStats('items');
+            if ($items == false) {
+                throw new RuntimeException(
+                    "failure Memcache status:items"
+                );
+            }
+
             foreach ((array)$items['items'] as $slabid => $item) {
                 $cachedump = $this->adapter->getStats(
                     'cachedump',
                     $slabid,
                     (int)$item['number']
                 );
-                
+
+                if ($items == false) {
+                    throw new RuntimeException(
+                        "failure Memcache status:items.{$slabid}"
+                    );
+                }
+
                 foreach (array_keys((array)$cachedump) as $key) {
                     if (mb_strpos($key, $this->namespace) === 0) {
                         $result[] = $key;
@@ -79,18 +92,18 @@ class MemcachePool extends CacheItemPool
         }
         return $result;
     }
-    
+
     /**
      *   キャッシュ取得
      *
-     * @param  array $ids
-     * @return array [[key => val], ...]
+     * @param string[] $ids
+     * @return mixed[] [[key => val], ...]
      * @throws InvalidArgumentException
      */
     protected function fetch(array $ids)
     {
         $result = [];
-        
+
         foreach ($ids as $id) {
             if (($gets = $this->adapter->get($id)) === false) {
                 throw new InvalidArgumentException("not have:{$id}");
@@ -99,7 +112,7 @@ class MemcachePool extends CacheItemPool
         }
         return $result;
     }
-    
+
     /**
      *   全キャッシュ削除
      *
@@ -107,20 +120,24 @@ class MemcachePool extends CacheItemPool
      */
     protected function doClear()
     {
-        $ids = $this->getKeys();
+        try {
+            $ids = $this->getKeys();
+        } catch (Exception $e) {
+            return false;
+        }
         return $this->doDelete($ids);
     }
-    
+
     /**
      *   キャッシュ削除
      *
-     * @param  array $ids
+     * @param string[] $ids
      * @return bool
      */
     protected function doDelete(array $ids)
     {
         $result = true;
-        
+
         try {
             foreach ($ids as $id) {
                 if ($this->adapter->delete($id) == false) {
@@ -132,26 +149,29 @@ class MemcachePool extends CacheItemPool
         }
         return $result;
     }
-    
+
     /**
      *   キャッシュ保存
      *
-     * @return array 保存したキー
+     * @return string[] 保存したキー
      */
     protected function doSave()
     {
         $saved = [];
-        
+
         try {
             foreach ($this->deferred as $key => $item) {
                 $id = $this->makeId($key);
-                
+
+                $expiry = method_exists($item, 'getExpiry') ?
+                    $item->getExpiry() : 0;
+
                 if (
                     $this->adapter->set(
                         $id,
                         $item->get(),
                         $this->compressed,
-                        $item->getExpiry()
+                        $expiry
                     )
                 ) {
                     $saved[] = $key;
@@ -162,25 +182,37 @@ class MemcachePool extends CacheItemPool
         }
         return $saved;
     }
-    
+
     /**
      *   アイテム情報取得
      *
-     * @param  string $id
-     * @return array|null ['size' => size, 'expiry' => unix time]
-     * @throw  CacheException
-     **/
+     * @param string $id
+     * @return ?mixed[] ['size' => size, 'expiry' => unix time]
+     * @throw CacheException
+     */
     public function getItemInfo($id)
     {
         try {
             $items = $this->adapter->getStats('items');
+            if ($items == false) {
+                throw new RuntimeException(
+                    "failure Memcache status:items"
+                );
+            }
+
             foreach ((array)$items['items'] as $slabid => $item) {
                 $cachedump = $this->adapter->getStats(
                     'cachedump',
                     $slabid,
                     (int)$item['number']
                 );
-                
+
+                if ($items == false) {
+                    throw new RuntimeException(
+                        "failure Memcache status:items.{$slabid}"
+                    );
+                }
+
                 foreach ((array)$cachedump as $key => $val) {
                     if ("{$this->namespace}.{$id}" == $key) {
                         return ['size' => $val[0], 'expiry' => $val[1]];

@@ -21,13 +21,13 @@ class MstMitumoriBunya extends ModelDb
     *   @var string
     */
     protected $schema = 'public.mst_mitumori_bunya';
-    
+
     /**
     *   分野リスト
     *
     *   @param string $cd_system
     *   @return array
-    **/
+    */
     public function getBunyaList(string $cd_system)
     {
         $sql = "

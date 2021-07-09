@@ -22,14 +22,14 @@ class ClaimKihonData extends ModelData
     */
     protected static $schema = [
     ];
-    
+
     /**
     *   Column Alias
     *
     *   @var array
     */
     protected static $alias = [];
-    
+
     /**
     *   種別
     *
@@ -41,7 +41,7 @@ class ClaimKihonData extends ModelData
         2 => '問合せ',
         3 => 'その他'
     ];
-    
+
     /**
     *   原因
     *
@@ -59,7 +59,7 @@ class ClaimKihonData extends ModelData
         'W' => '誤操作･誤運用',
         'X' => '保留･不明･他',
     ];
-    
+
     /**
     *   重大度
     *
@@ -71,7 +71,7 @@ class ClaimKihonData extends ModelData
         2 => '軽微',
         3 => '外見的',
     ];
-    
+
     /**
     *   費用
     *
@@ -81,7 +81,7 @@ class ClaimKihonData extends ModelData
         0 => '有償',
         1 => '無償',
     ];
-    
+
     /**
     *   種別
     *
@@ -98,7 +98,7 @@ class ClaimKihonData extends ModelData
         }
         return;
     }
-    
+
     /**
     *   原因
     *
@@ -115,7 +115,7 @@ class ClaimKihonData extends ModelData
         }
         return;
     }
-    
+
     /**
     *   重大度
     *
@@ -132,7 +132,7 @@ class ClaimKihonData extends ModelData
         }
         return;
     }
-    
+
     /**
     *   費用
     *

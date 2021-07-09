@@ -3,7 +3,7 @@
 /**
 *   project_cyuban
 *
-*   @version 150428
+*   @version 210119
 */
 
 declare(strict_types=1);
@@ -20,28 +20,16 @@ class ProjectCyubanData extends ModelData
     *
     *   @var array
     */
-    protected static $schema = array(
-        "update" => parent::STRING
-        , "editor" => parent::STRING
-        , "no_project" => parent::INTEGER
-        , "no_cyu" => parent::STRING
-    );
-    
-    public function isValidUpdate($val)
-    {
-        return Validate::isTextDate($val);
-    }
-    
-    public function isValidEditor($val)
-    {
-        return Validate::isTanto($val);
-    }
-    
+    protected static $schema = [
+        'no_project' => parent::INTEGER,
+        'no_cyu' => parent::STRING,
+    ];
+
     public function isValidNo_project($val)
     {
         return Validate::isInt($val, 1);
     }
-    
+
     public function isValidNo_cyu($val)
     {
         return Validate::isCyuban($val);

@@ -3,9 +3,9 @@
 /**
 *   Service Container
 *
-*   @ver 170714
+*   @ver 210615
 *   @see https://github.com/ecfectus/container
-**/
+*/
 
 declare(strict_types=1);
 
@@ -25,44 +25,45 @@ class ServiceProviderContainer extends ServiceContainer implements
     ContainerAwareInterface
 {
     use ContainerAwareTrait;
-    
+
     /**
     *   booted
     *
     *   @var bool
-    **/
+    */
     protected $booted = false;
-    
+
     /**
     *   providers
     *
-    *   @var array
-    **/
+    *   @var mixed[]
+    */
     protected $providers = [];
-    
+
     /**
     *   provides
     *
-    *   @var array
-    **/
+    *   @var mixed[]
+    */
     protected $provides = [];
-    
+
     /**
     *   addServiceProvider
     *
     *   @param string $provider
-    **/
+    *   @return mixed
+    */
     public function addServiceProvider($provider)
     {
         $instance = ($this->getContainer()->has($provider)) ?
             $this->getContainer()->get($provider) : new $provider();
-        
+
         $this->providers[$provider] = $instance;
-        
+
         if ($instance instanceof ContainerAwareInterface) {
             $instance->setContainer($this->getContainer());
         }
-        
+
         //boot後に追加されたProviderのboot()を実行
         if (
             $this->booted
@@ -70,25 +71,25 @@ class ServiceProviderContainer extends ServiceContainer implements
         ) {
             $instance->boot();
         }
-        
+
         if ($instance instanceof ServiceProviderInterface) {
             foreach ($instance->provides() as $service) {
                 $this->provides[$service] = $provider;
             }
             return $this;
         }
-        
+
         throw new InvalidArgumentException(
             "must be a fully qualified class name or instance of :"
             . ServiceProviderInterface::class
         );
     }
-    
+
     /**
     *   bootServiceProviders
     *
-    **/
-    public function bootServiceProviders()
+    */
+    public function bootServiceProviders(): void
     {
         foreach ($this->providers as $provider) {
             if ($provider instanceof BootableServiceProviderInterface) {
@@ -97,11 +98,11 @@ class ServiceProviderContainer extends ServiceContainer implements
         }
         $this->booted = true;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function get($id)
     {
         if (!$this->has($id)) {
@@ -111,7 +112,7 @@ class ServiceProviderContainer extends ServiceContainer implements
         }
         $provider = $this->provides[$id];
         $instance = $this->providers[$provider];
-        
+
         //register into the main container.
         //this instance will never be called again so we could destroy
         //it if we wanted to @TODO
@@ -121,12 +122,12 @@ class ServiceProviderContainer extends ServiceContainer implements
         //and fetch it
         return $this->getContainer()->get($id);
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
-    public function has($id)
+    */
+    public function has(string $id): bool
     {
         return array_key_exists($id, $this->provides);
     }

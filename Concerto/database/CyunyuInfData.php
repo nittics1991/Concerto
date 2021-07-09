@@ -3,7 +3,7 @@
 /**
 *   cyunyu_inf
 *
-*   @version 191017
+*   @version 210302
 */
 
 declare(strict_types=1);
@@ -20,6 +20,13 @@ use Concerto\Validate;
 class CyunyuInfData extends ModelData
 {
     /**
+    *   cd_tanto
+    *
+    *   @var string
+    */
+    public const CD_TANTO_UNDEFINED = 'XXXXXXXX';
+
+    /**
     *   Columns
     *
     *   @var array
@@ -35,7 +42,6 @@ class CyunyuInfData extends ModelData
         , "tm_cyokka" => parent::DOUBLE
         , "yn_cyokka" => parent::INTEGER
         , "yn_cyokuzai" => parent::INTEGER
-        , "yn_ryohi" => parent::INTEGER
         , "yn_etc" => parent::INTEGER
         , "nm_tanto" => parent::STRING
         , "nm_syohin" => parent::STRING
@@ -43,7 +49,6 @@ class CyunyuInfData extends ModelData
         , "cd_bumon" => parent::STRING
         , "no_cyumon" => parent::STRING
         , "no_seq" => parent::INTEGER
-        , "fg_kanjyo" => parent::STRING
         , "up_date" => parent::STRING
         , "cd_rev" => parent::STRING
         , "no_tehai" => parent::STRING
@@ -52,99 +57,94 @@ class CyunyuInfData extends ModelData
         , "no_cyu_furikae" => parent::STRING
         , "no_ko_furikae" => parent::STRING
     );
-    
+
     /**
     *   原価要素コード
     *
     *   @var array
     */
-    private $cd_genka_yoso_list = ['A' => '直材費', 'B' => '直課費', 'C' => '経費'];
-    
+    private $cd_genka_yoso_list = ['A' => '直材費', 'C1' => '直課費', 'C' => '経費'];
+
     public function isValidKb_nendo($val)
     {
         return Validate::isNendo($val);
     }
-    
+
     public function isValidNo_cyu($val)
     {
-        return CyubanInfData::isValidNo_cyu($val);
+        return CyubanInfData::validNo_cyu($val);
     }
-    
+
     public function isValidNo_ko($val)
     {
-        return KobanInfData::isValidNo_ko($val);
+        return KobanInfData::validNo_ko($val);
     }
-    
+
     public function isValidDt_kanjyo($val)
     {
         return Validate::isTextDateYYYYMM($val);
     }
-    
+
     public function isValidCd_genka_yoso($val)
     {
         return Validate::isGenkaYoso($val);
     }
-    
+
     public function isValidCd_tanto($val)
     {
-        if ($val == 'XXXXXXXX') {
+        if ($val == static::CD_TANTO_UNDEFINED) {
             return true;
         }
-        return MstTantoData::isValidCd_tanto($val);
+        return MstTantoData::validCd_tanto($val);
     }
-    
+
     public function isValidDt_cyunyu($val)
     {
         return Validate::isTextDate($val);
     }
-    
+
     public function isValidTm_cyokka($val)
     {
         return Validate::isDouble($val);
     }
-    
+
     public function isValidYn_cyokka($val)
     {
         return Validate::isInt($val);
     }
-    
+
     public function isValidYn_cyokuzai($val)
     {
         return Validate::isInt($val);
     }
-    
-    public function isValidYn_ryohi($val)
-    {
-        return Validate::isInt($val);
-    }
-    
+
     public function isValidYn_etc($val)
     {
         return Validate::isInt($val);
     }
-    
+
     public function isValidNm_tanto($val)
     {
         return Validate::isTextEscape($val, 0, 100)
             && !Validate::hasTextHankaku($val);
     }
-    
+
     public function isValidNm_syohin($val)
     {
         return Validate::isTextEscape($val, 0, 100)
             && !Validate::hasTextHankaku($val);
     }
-    
+
     public function isValidKb_cyunyu($val)
     {
         return Validate::isTextBool($val);
     }
-    
+
     public function isValidCd_bumon($val)
     {
-        return MstBumonData::isValidBumon_code($val);
+        return MstBumonData::validCd_bumon($val);
     }
-    
+
     public function isValidNo_cyumon($val)
     {
         return is_string($val)
@@ -154,52 +154,47 @@ class CyunyuInfData extends ModelData
                 $val
             );
     }
-    
+
     public function isValidNo_seq($val)
     {
         return Validate::isInt($val, 0);
     }
-    
-    public function isValidFg_kanjyo($val)
-    {
-        return Validate::isTextBool($val);
-    }
-    
+
     public function isValidUp_date($val)
     {
         return Validate::isTextDateTime($val);
     }
-    
+
     public function isValidCd_rev($val)
     {
         return Validate::isAscii($val);
     }
-    
+
     public function isValidNo_tehai($val)
     {
         return Validate::isAscii($val);
     }
-    
+
     public function isValidNm_tehai($val)
     {
         return Validate::isTextEscape($val, null, null, null, '\r\n\t');
     }
-    
+
     public function isValidCd_furikae($val)
     {
         return Validate::isText($val);
     }
-    
+
     public function isValidNo_cyu_furikae($val)
     {
-        return CyubanInfData::isValidNo_cyu($val);
+        return CyubanInfData::validNo_cyu($val);
     }
-    
+
     public function isValidNo_ko_furikae($val)
     {
-        return KobanInfData::isValidNo_ko($val);
+        return KobanInfData::validNo_ko($val);
     }
-    
+
     /**
     *   原価要素コード取得
     *
@@ -211,7 +206,7 @@ class CyunyuInfData extends ModelData
         if (is_null($id)) {
             return $this->cd_genka_yoso_list;
         }
-        
+
         if (array_key_exists($id, $this->cd_genka_yoso_list)) {
             return $this->cd_genka_yoso_list[$id];
         }

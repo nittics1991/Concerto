@@ -11,12 +11,12 @@ use Concerto\Validate;
 class MstTantoDataTest extends ConcertoTestCase
 {
     private $class;
-    
+
     protected function setUp(): void
     {
         $this->class = new MstTantoData();
     }
-    
+
     public static function successDataSetProvider()
     {
 //      $this->markTestIncomplete();
@@ -35,12 +35,12 @@ class MstTantoDataTest extends ConcertoTestCase
             )
         );
     }
-    
+
     /**
     *
     * @dataProvider successDataSetProvider
     *
-    **/
+    */
     public function testSuccessDataSet(
         $cd_tanto,
         $disp_seq,
@@ -55,7 +55,7 @@ class MstTantoDataTest extends ConcertoTestCase
         $ri_cyokka,
         $username
     ) {
-    
+
 //      $this->markTestIncomplete();
 
         $this->class->cd_tanto = $cd_tanto;
@@ -70,7 +70,7 @@ class MstTantoDataTest extends ConcertoTestCase
         $this->class->fg_mail = $fg_mail;
         $this->class->ri_cyokka = $ri_cyokka;
         $this->class->username = $username;
-        
+
         $this->assertEquals($cd_tanto, $this->class->cd_tanto);
         $this->assertEquals($disp_seq, $this->class->disp_seq);
         $this->assertEquals($nm_tanto, $this->class->nm_tanto);
@@ -83,7 +83,7 @@ class MstTantoDataTest extends ConcertoTestCase
         $this->assertEquals($fg_mail, $this->class->fg_mail);
         $this->assertEquals($ri_cyokka, $this->class->ri_cyokka);
         $this->assertEquals($username, $this->class->username);
-        
+
         $this->assertTrue(isset($this->class->cd_tanto));
         $this->assertTrue(isset($this->class->disp_seq));
         $this->assertTrue(isset($this->class->nm_tanto));
@@ -97,12 +97,12 @@ class MstTantoDataTest extends ConcertoTestCase
         $this->assertTrue(isset($this->class->ri_cyokka));
         $this->assertTrue(isset($this->class->username));
     }
-    
+
     /**
     *
     * @dataProvider successDataSetProvider
     *
-    **/
+    */
     public function testSuccessValid(
         $cd_tanto,
         $disp_seq,
@@ -117,7 +117,7 @@ class MstTantoDataTest extends ConcertoTestCase
         $ri_cyokka,
         $username
     ) {
-    
+
 //      $this->markTestIncomplete();
 
         $this->class->cd_tanto = $cd_tanto;
@@ -132,8 +132,8 @@ class MstTantoDataTest extends ConcertoTestCase
         $this->class->fg_mail = $fg_mail;
         $this->class->ri_cyokka = $ri_cyokka;
         $this->class->username = $username;
-        
-        
+
+
         $this->assertTrue($this->class->isValidcd_tanto($cd_tanto));
         $this->assertTrue($this->class->isValidDisp_seq($disp_seq));
         $this->assertTrue($this->class->isValidnm_tanto($nm_tanto));
@@ -146,42 +146,42 @@ class MstTantoDataTest extends ConcertoTestCase
         $this->assertTrue($this->class->isValidFg_mail($fg_mail));
         $this->assertTrue($this->class->isValidRi_cyokka($ri_cyokka));
         $this->assertTrue($this->class->isValidUsername($username));
-        
+
         $this->assertTrue($this->class->isValid());
     }
-    
+
     public function testLogin()
     {
         $password = 'manager';
         $this->class->password = $password;
-        
+
         $this->assertTrue($this->class->isValidPassword($password));
         $this->assertTrue($this->class->isValid());
     }
-    
+
     /**
     *
     * @dataProvider successDataSetProvider
     *
-    **/
+    */
     public function testSuccessAlias()
     {
         $this->class->cd_tanto    = '98765ITC';
         $this->class->nm_tanto    = 'name';
         $this->class->cd_bumon      = 'ICH02';
-        
+
         $this->assertEquals($this->class->cd_tanto, $this->class->cd_tanto);
         $this->assertEquals($this->class->nm_tanto, $this->class->nm_tanto);
         $this->assertEquals($this->class->cd_bumon, $this->class->cd_bumon);
-        
+
         $this->assertEquals(true, isset($this->class->cd_tanto));
         $this->assertEquals(true, isset($this->class->nm_tanto));
         $this->assertEquals(true, isset($this->class->cd_bumon));
-        
+
         $this->class->cd_tanto    = '12345ITC';
         $this->class->nm_tanto    = '名前';
         $this->class->cd_bumon      = 'ICC12';
-        
+
         $this->assertEquals($this->class->cd_tanto, $this->class->cd_tanto);
         $this->assertEquals($this->class->nm_tanto, $this->class->nm_tanto);
         $this->assertEquals($this->class->cd_bumon, $this->class->cd_bumon);

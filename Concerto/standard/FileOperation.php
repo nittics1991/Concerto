@@ -3,8 +3,10 @@
 /**
 *   ファイル操作
 *
-*   @version 190523
+*   @version 210616
 */
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
@@ -21,14 +23,14 @@ class FileOperation
     *   @var bool
     */
     private $flag;
-    
+
     /**
     *   フィルタ関数
     *
     *   @var callable
     */
     private $filter;
-    
+
     /**
     *   __construct
     *
@@ -38,7 +40,7 @@ class FileOperation
     public function __construct($filter = true, $func = null)
     {
         $this->flag = $filter;
-        
+
         if ($filter) {
             if (is_callable($func)) {
                 $this->filter = $func;
@@ -49,7 +51,7 @@ class FileOperation
             }
         }
     }
-    
+
     /**
     *   ErrorException
     *
@@ -61,7 +63,7 @@ class FileOperation
         }
         throw new ErrorException($message, 0, $no, $file, $line);
     }
-    
+
     /**
     *   パスフィルタリング
     *   @param string $path パス
@@ -84,7 +86,7 @@ class FileOperation
         }
         return $path;
     }
-    
+
     /**
     *   コピー
     *
@@ -98,7 +100,7 @@ class FileOperation
     {
         $src    = $this->getFilterPath($from);
         $dest   = $this->getFilterPath($to);
-                    
+
         if (file_exists($src)) {
             if (($overwrite) || (!$overwrite && !file_exists($dest))) {
                 set_error_handler([$this,  'errorHandler']);
@@ -119,7 +121,7 @@ class FileOperation
         }
         throw new InvalidArgumentException("file not found:{$src}");
     }
-    
+
     /**
     *   削除
     *
@@ -130,7 +132,7 @@ class FileOperation
     public function delete(string $path)
     {
         $target     = $this->getFilterPath($path);
-        
+
         if (file_exists($target)) {
             set_error_handler([$this,  'errorHandler']);
             try {
@@ -144,7 +146,7 @@ class FileOperation
         }
         throw new InvalidArgumentException("file not found:{$target}");
     }
-    
+
     /**
     *   名前変更（移動）
     *
@@ -158,7 +160,7 @@ class FileOperation
     {
         $src    = $this->getFilterPath($from);
         $dest   = $this->getFilterPath($to);
-        
+
         if (file_exists($src)) {
             if (($overwrite) || (!$overwrite && !file_exists($dest))) {
                 set_error_handler([$this,  'errorHandler']);
@@ -179,7 +181,7 @@ class FileOperation
         }
         throw new InvalidArgumentException("file not found:{$src}");
     }
-    
+
     /**
     *   テンポラリフォルダ
     *
@@ -191,20 +193,16 @@ class FileOperation
     public function createTempDir(string $path, $delete = null)
     {
         $target = $this->getFilterPath($path);
-        
+
         set_error_handler([$this,  'errorHandler']);
-        
+
         try {
             if (!file_exists($target)) {
                 mkdir($target);
             }
-            if (!is_null($delete) && is_int($delete)) {
-                $delete = -1 * $delete;
-                exec(
-                    "forfiles /P {$target} /M *.* /D {$delete} /C \"cmd /c del @file\""
-                );
-            }
-            
+
+            $this->clearTempDir($path, $delete);
+
             restore_error_handler();
             return true;
         } catch (Exception $e) {
@@ -215,6 +213,39 @@ class FileOperation
                 $e
             );
         }
-        return false;
+    }
+
+    /**
+    *   テンポラリフォルダクリア
+    *
+    *   @param string $path パス
+    *   @param ?int $expire_day ファイル削除日数(X日前) null:削除無し
+    *   @return bool
+    *   @throws InvalidArgumentException, RuntimeException
+    */
+    public function clearTempDir(string $path, $expire_day = null)
+    {
+        $target = $this->getFilterPath($path);
+
+        set_error_handler([$this,  'errorHandler']);
+
+        try {
+            if (!is_null($expire_day) && is_int($expire_day)) {
+                $expire_day = -1 * $expire_day;
+                exec(
+                    "forfiles /P {$target} /M *.* /D {$expire_day} /C \"cmd /c del @file\""
+                );
+            }
+
+            restore_error_handler();
+            return true;
+        } catch (Exception $e) {
+            restore_error_handler();
+            throw new RuntimeException(
+                "temp dir clear error:{$path}",
+                0,
+                $e
+            );
+        }
     }
 }

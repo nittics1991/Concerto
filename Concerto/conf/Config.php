@@ -28,18 +28,18 @@ class Config extends ArrayObject
             ArrayObject::ARRAY_AS_PROPS
         );
     }
-    
+
     /**
     *   replace
     *
     *   @param ConfigReaderInterface $reader
     *   @return $this
-    **/
+    */
     public function replace(ConfigReaderInterface $reader)
     {
         $src = $this->getArrayCopy();
         $dest = $reader->read();
-        
+
         $data = array_replace_recursive($src, $dest);
         parent::__construct(
             $data,
@@ -47,14 +47,14 @@ class Config extends ArrayObject
         );
         return $this;
     }
-    
+
     /**
     *   set
     *
     *   @param string $dot
     *   @param mixed $val
     *   @return Config
-    **/
+    */
     public function set(string $dot, $val): Config
     {
         $data = ArrayDot::set($this->getArrayCopy(), $dot, $val);
@@ -64,35 +64,35 @@ class Config extends ArrayObject
         );
         return $this;
     }
-    
+
     /**
     *   get
     *
     *   @param string $dot
     *   @return mixed
-    **/
+    */
     public function get(string $dot)
     {
         return ArrayDot::get($this->getArrayCopy(), $dot);
     }
-    
+
     /**
     *   has
     *
     *   @param string $dot
     *   @return bool
-    **/
+    */
     public function has(string $dot)
     {
         return ArrayDot::has($this->getArrayCopy(), $dot);
     }
-    
+
     /**
     *   remove
     *
     *   @param string $dot
     *   @return Config
-    **/
+    */
     public function remove(string $dot): Config
     {
         $data = ArrayDot::remove($this->getArrayCopy(), $dot);

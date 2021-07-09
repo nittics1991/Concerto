@@ -3,7 +3,7 @@
 /**
 *   smtp4dev起動している事
 *
-**/
+*/
 
 declare(strict_types=1);
 
@@ -19,7 +19,7 @@ use Concerto\mail\MailSwiftSmtp;
 class MailSwiftSmtpTest extends ConcertoTestCase
 {
     private $object;
-    
+
     public function setUp(): void
     {
         $this->object = new MailSwiftSmtp([
@@ -30,16 +30,16 @@ class MailSwiftSmtpTest extends ConcertoTestCase
             'security' => null
         ]);
     }
-    
+
     /**
     *   setMailerException
     *
     *   @test
-    **/
+    */
     public function setMailerException()
     {
 //      $this->markTestIncomplete();
-        
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('invalid parameters');
         $params = [
@@ -50,10 +50,10 @@ class MailSwiftSmtpTest extends ConcertoTestCase
             'password' => null,
             'security' => null
         ];
-        
+
         $object = new MailSwiftSmtp($params);
     }
-    
+
     public function setMailerProvider()
     {
         return [
@@ -101,7 +101,7 @@ class MailSwiftSmtpTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   setMailer
     *
@@ -111,19 +111,19 @@ class MailSwiftSmtpTest extends ConcertoTestCase
     public function setMailer($params, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $object = new MailSwiftSmtp($params);
         $this->assertEquals($expect, $this->getPrivateProperty($object, 'params'));
         $this->assertInstanceOf(Swift_Mailer::class, $this->getPrivateProperty($object, 'mailer'));
     }
-     
+
     public function sendByMessageErrorProvider()
     {
         $stdClass = new StdClass();
         $invalidMessage = new MailMessage([
             'from' => []
         ]);
-        
+
         return [
             [
                 'DUMMY', 'DUMMY'],
@@ -131,7 +131,7 @@ class MailSwiftSmtpTest extends ConcertoTestCase
                 [$invalidMessage, $invalidMessage],
         ];
     }
-    
+
     /**
     *   message data
     *
@@ -141,10 +141,10 @@ class MailSwiftSmtpTest extends ConcertoTestCase
     public function sendByMessageError($message, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($expect, $this->object->send($message));
     }
-    
+
     public function sendProvider()
     {
         $params1 = [
@@ -165,7 +165,7 @@ class MailSwiftSmtpTest extends ConcertoTestCase
             ],
             'type' => 'text'
         ];
-        
+
         $params2 = [
             'from' => ['zzz@localhost' => 'ZZZ'],
             'to' => ['yyy@localhost' => 'YYY'],
@@ -198,13 +198,13 @@ class MailSwiftSmtpTest extends ConcertoTestCase
             ],
             'type' => 'html'
         ];
-        
+
         return [
             [new MailMessage($params1), true],
             [new MailMessage($params2), true]
         ];
     }
-    
+
     /**
     *   message data
     *
@@ -214,7 +214,7 @@ class MailSwiftSmtpTest extends ConcertoTestCase
     public function send($message, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $this->assertEquals($expect, $this->object->send($message));
     }
 }

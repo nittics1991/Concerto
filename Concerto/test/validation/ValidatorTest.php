@@ -20,25 +20,25 @@ class ValidatorTest extends ConcertoTestCase
     protected function getRuleresolver()
     {
         $container = new ServiceContainer();
-        
+
         $container->bind('validation.TestConstraint1', function () {
             return new TestConstraint1();
         });
-        
+
         $container->bind('validation.TestConstraint2', function () {
             return new TestConstraint2();
         });
-        
+
         $obj = new RuleResolver(
             $container,
             new Validation(new MessageGenerator(
                 new CurlyBracketMessageGenerator()
             ))
         );
-        
+
         return $obj;
     }
-    
+
     public function firstProvider()
     {
         return [
@@ -58,11 +58,11 @@ class ValidatorTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider firstProvider
-    **/
+    */
     public function first($values, $rules, $resolver)
     {
 //      $this->markTestIncomplete();
@@ -71,7 +71,7 @@ class ValidatorTest extends ConcertoTestCase
         $this->assertEquals(false, $obj->fails());
         $this->assertEquals([], $obj->errors());
     }
-    
+
     public function failureProvider()
     {
         return [
@@ -91,42 +91,42 @@ class ValidatorTest extends ConcertoTestCase
             ],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider failureProvider
-    **/
+    */
     public function failure($values, $rules, $resolver)
     {
 //      $this->markTestIncomplete();
         $obj = new Validator($resolver, $values, $rules);
         $this->assertEquals(false, $obj->isValid());
         $this->assertEquals(true, $obj->fails());
-        
+
         $errors = $obj->errors();
         $this->assertEquals(4, count($errors));
-        
+
         $this->assertEquals(true, $errors[0] instanceof ValidationInterface);
         $this->assertEquals('prop1', ($errors[0])->attribute());
         $this->assertEquals(10, ($errors[0])->value());
         $this->assertEquals([20], ($errors[0])->parameters());
         $this->assertEquals('TestConstraint1', ($errors[0])->constraint());
         $this->assertEquals('', ($errors[0])->message());
-        
+
         $this->assertEquals(true, $errors[1] instanceof ValidationInterface);
         $this->assertEquals('prop2', ($errors[1])->attribute());
         $this->assertEquals(20, ($errors[1])->value());
         $this->assertEquals([], ($errors[1])->parameters());
         $this->assertEquals('class@anonymous', ($errors[1])->constraint());
         $this->assertEquals('prop2:Closure Constraint:value=20', ($errors[1])->message());
-        
+
         $this->assertEquals(true, $errors[2] instanceof ValidationInterface);
         $this->assertEquals('prop3', ($errors[2])->attribute());
         $this->assertEquals(30, ($errors[2])->value());
         $this->assertEquals([40], ($errors[2])->parameters());
         $this->assertEquals('TestConstraint1', ($errors[2])->constraint());
         $this->assertEquals('', ($errors[2])->message());
-        
+
         $this->assertEquals(true, $errors[3] instanceof ValidationInterface);
         $this->assertEquals('prop3', ($errors[3])->attribute());
         $this->assertEquals(30, ($errors[3])->value());
@@ -134,11 +134,11 @@ class ValidatorTest extends ConcertoTestCase
         $this->assertEquals('OverWriteNameMethod', ($errors[3])->constraint());
         $this->assertEquals('OverWriteNameMethod value=30 param=30', ($errors[3])->message());
     }
-    
+
     /**
     *   @test
     *   @dataProvider failureProvider
-    **/
+    */
     public function immediately($values, $rules, $resolver)
     {
 //      $this->markTestIncomplete();
@@ -146,20 +146,20 @@ class ValidatorTest extends ConcertoTestCase
         $obj->immediately();
         $this->assertEquals(false, $obj->isValid());
         $this->assertEquals(true, $obj->fails());
-        
+
         $errors = $obj->errors();
         $this->assertEquals(1, count($errors));
-        
+
         $this->assertEquals(true, $errors[0] instanceof ValidationInterface);
         $this->assertEquals('prop1', ($errors[0])->attribute());
         $this->assertEquals(10, ($errors[0])->value());
         $this->assertEquals([20], ($errors[0])->parameters());
         $this->assertEquals('TestConstraint1', ($errors[0])->constraint());
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function setMessage()
     {
 //      $this->markTestIncomplete();
@@ -179,49 +179,49 @@ class ValidatorTest extends ConcertoTestCase
         $errors = $obj->errors();
         $this->assertEquals('set message pattern param=20 value=10', ($errors[0])->message());
     }
-    
+
     /**
     *   @test
     *   @dataProvider failureProvider
-    **/
+    */
     public function failureMessages($values, $rules, $resolver)
     {
 //      $this->markTestIncomplete();
         $obj = new Validator($resolver, $values, $rules);
         $this->assertEquals(false, $obj->isValid());
         $this->assertEquals(true, $obj->fails());
-        
+
         $errors = $obj->errors();
         $this->assertEquals(4, count($errors));
-        
+
         $expects = [
             '',
             'prop2:Closure Constraint:value=20',
             '',
             'OverWriteNameMethod value=30 param=30'
         ];
-        
+
         $this->assertEquals($expects, $obj->messages());
-        
+
         //setMessage
         $messages = [
             'TestConstraint1' => 'set message pattern param={{parameters0}} value={{value}}'
         ];
-        
+
         $obj = new Validator($resolver, $values, $rules, $messages);
         $this->assertEquals(false, $obj->isValid());
         $this->assertEquals(true, $obj->fails());
-        
+
         $errors = $obj->errors();
         $this->assertEquals(4, count($errors));
-        
+
         $expects = [
             'set message pattern param=20 value=10',
             'prop2:Closure Constraint:value=20',
             'set message pattern param=40 value=30',
             'OverWriteNameMethod value=30 param=30'
         ];
-        
+
         $this->assertEquals($expects, $obj->messages());
     }
 }

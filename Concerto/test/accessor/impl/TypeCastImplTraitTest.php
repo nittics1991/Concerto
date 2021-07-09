@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-declare(strict_types=1);
 
 namespace Concerto\test\accessor;
 
@@ -12,12 +11,12 @@ use Concerto\accessor\TypeCastInterface;
 class TestTypeCastImplTrait1 implements TypeCastInterface
 {
     use TypeCastImplTrait;
-    
+
     protected $propertyDefinitions = [
         'prop_b', 'prop_i', 'prop_f', 'prop_s', 'prop_a', 'prop_o',
         'prop_c', 'prop_n', 'prop_m', 'prop_t', 'prop_d', 'prop_y',
     ];
-    
+
     protected $getCastTypes = [
         'prop_b' => 'bool',
         'prop_i' => 'int',
@@ -26,7 +25,7 @@ class TestTypeCastImplTrait1 implements TypeCastInterface
         'prop_n' => 'null',
         'prop_m' => 'callable:getProp_m',
     ];
-    
+
     protected $setCastTypes = [
         'prop_s' => 'string',
         'prop_a' => 'array',
@@ -35,7 +34,7 @@ class TestTypeCastImplTrait1 implements TypeCastInterface
         'prop_d' => 'date',
         'prop_y' => 'dateformat:Y-m-d H:i:s',
     ];
-    
+
     protected function getProp_m($value)
     {
         return (string)$value . '_getProp_m';
@@ -55,7 +54,7 @@ class TypeCastImplTraitTest extends ConcertoTestCase
             ['prop_m', 123, '123_getProp_m'],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider actuallyGetSuccessProvider
@@ -63,25 +62,25 @@ class TypeCastImplTraitTest extends ConcertoTestCase
     public function actuallyGetSuccess($prop, $data, $result)
     {
 //      $this->markTestIncomplete();
-        
+
         $obj = new TestTypeCastImplTrait1();
-        
+
         $obj->$prop = $data;
         $this->assertEquals($result, $obj->$prop);
     }
-    
+
     public function actuallySetSuccessProvider()
     {
         $array = ['aaa' => 123, 'bbb' => 456];
-        
+
         $obj = new \StdClass();
         $obj->aaa = 123;
         $obj->bbb = 456;
-        
+
         $datetimeString = '2019-04-01 01:02:03';
         $datetime = new \DateTime($datetimeString);
         $date = (new \DateTime($datetimeString))->modify('today');
-        
+
         return [
             ['prop_s', 123, '123'],
             ['prop_a', $obj, $array],
@@ -91,7 +90,7 @@ class TypeCastImplTraitTest extends ConcertoTestCase
             ['prop_y', $datetime, $datetimeString],
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider actuallySetSuccessProvider
@@ -99,9 +98,9 @@ class TypeCastImplTraitTest extends ConcertoTestCase
     public function actuallySetSuccess($prop, $data, $result)
     {
      // $this->markTestIncomplete();
-        
+
         $obj = new TestTypeCastImplTrait1();
-        
+
         $obj->$prop = $data;
         $this->assertEquals($result, $obj->$prop);
     }

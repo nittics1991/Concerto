@@ -3,7 +3,7 @@
 /**
  *   ConfigReaderInterface
  *
- * @version 191210
+ * @version 210608
  */
 
 declare(strict_types=1);
@@ -21,20 +21,20 @@ class Config implements ArrayAccess, ConfigInterface
     /**
      *   container
      *
-     * @var array
+     * @var mixed[]
      */
     protected $container;
-    
+
     /**
      *   __construct
      *
-     * @param array $config
+     * @param mixed[] $config
      */
     public function __construct(array $config)
     {
         $this->container = $config;
     }
-    
+
     /**
      *   {inherit}
      */
@@ -42,7 +42,7 @@ class Config implements ArrayAccess, ConfigInterface
     {
         return ArrayDot::has($this->container, $name);
     }
-    
+
     /**
      *   {inherit}
      */
@@ -55,25 +55,25 @@ class Config implements ArrayAccess, ConfigInterface
         }
         return ArrayDot::get($this->container, $name);
     }
-    
+
     /**
      *   {inherit}
      */
     public function set(string $name, $value): ConfigInterface
     {
         $container = ArrayDot::set($this->container, $name, $value);
-        return new static($container);
+        return new self($container);
     }
-    
+
     /**
      *   {inherit}
      */
     public function remove(string $name): ConfigInterface
     {
         $container = ArrayDot::remove($this->container, $name);
-        return new static($container);
+        return new self($container);
     }
-    
+
     /**
      *   {inherit}
      */
@@ -81,47 +81,47 @@ class Config implements ArrayAccess, ConfigInterface
     {
         return $this->container;
     }
-    
+
     /**
      *   {inherit}
      */
-    public function offsetExists($name)
+    public function offsetExists(mixed $offset): bool
     {
-         return $this->has($name);
+         return $this->has($offset);
     }
-    
+
     /**
      *   {inherit}
      */
-    public function offsetGet($name)
+    public function offsetGet(mixed $offset): mixed
     {
-         return $this->get($name);
+         return $this->get($offset);
     }
-    
+
     /**
      *   {inherit}
      */
-    public function offsetSet($name, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new BadMethodCallException(
             "unsupported method:offsetSet"
         );
     }
-    
+
     /**
      *   {inherit}
      */
-    public function offsetUnset($name)
+    public function offsetUnset(mixed $offset): void
     {
         throw new BadMethodCallException(
             "unsupported method:offsetUnset"
         );
     }
-    
+
     /**
      *   replace
      *
-     * @param  ConfigInterface $config
+     * @param ConfigInterface $config
      * @return ConfigInterface
      */
     public function replace(ConfigInterface $config): ConfigInterface
@@ -130,6 +130,6 @@ class Config implements ArrayAccess, ConfigInterface
             $this->container,
             $config->toArray()
         );
-        return new static($container);
+        return new self($container);
     }
 }

@@ -23,7 +23,7 @@ class SetubiYoyaku extends ModelDb
     *   @var string
     */
     protected $schema = 'public.setubi_yoyaku';
-    
+
     /**
     *   isDuplicated
     *
@@ -44,7 +44,7 @@ class SetubiYoyaku extends ModelDb
                     (:start <= s_date AND e_date <= :end)
                     )
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':setubi', $where->cd_setubi, PDO::PARAM_STR);
         $stmt->bindValue(':start', $where->s_date, PDO::PARAM_STR);

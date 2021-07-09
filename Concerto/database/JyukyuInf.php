@@ -22,7 +22,7 @@ class JyukyuInf extends ModelDb
     *   @var string
     */
     protected $schema = 'public.jyukyu_inf';
-    
+
     /**
     *   新規採番
     *
@@ -38,27 +38,27 @@ class JyukyuInf extends ModelDb
                 "argv length must be 3 characters:{$code}"
             );
         }
-        
+
         $sql = "
             SELECT MAX(no_jyukyu)
             FROM {$this->schema}
             WHERE no_jyukyu LIKE SUBSTR(:code, 1, 4) || '%'
             GROUP BY SUBSTR(no_jyukyu, 1, 4)
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':code', "J{$code}", PDO::PARAM_STR);
         $stmt->execute();
         $no_jyukyu = $stmt->fetchColumn();
-        
+
         if (empty($no_jyukyu)) {
             return "J{$code}00001";
         }
-        
+
         $no = (int)mb_substr($no_jyukyu, 5) + 1;
         return "J{$code}" . sprintf('%05s', $no);
     }
-    
+
     /**
     *   年度リスト
     *
@@ -81,7 +81,7 @@ class JyukyuInf extends ModelDb
             FROM nendo
             ORDER BY kb_nendo DESC
         ";
-        
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return (array)$stmt->fetchAll();

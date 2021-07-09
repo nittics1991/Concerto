@@ -3,7 +3,7 @@
 /**
 *   mst_bumon
 *
-*   @version 200318
+*   @version 200730
 */
 
 declare(strict_types=1);
@@ -26,24 +26,24 @@ class MstBumonData extends ModelData
         'fg_hatuban' => parent::STRING,
         'fg_cost' => parent::STRING,
     ];
-    
+
     public function isValidCd_bumon($val)
     {
         return is_string($val)
             && mb_check_encoding($val)
-            && mb_ereg_match('\A[A-Z0-9]{5,6}\z', $val);
+            && mb_ereg_match('\A[A-Z0-9]{5}\z', $val);
     }
-    
+
     public function isValidNm_bumon($val)
     {
         return Validate::isText($val);
     }
-    
+
     public function isValidFg_hatuban($val)
     {
         return Validate::isTextBool($val);
     }
-    
+
     public function isValidFg_cost($val)
     {
         return Validate::isTextBool($val);

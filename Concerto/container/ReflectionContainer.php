@@ -3,9 +3,9 @@
 /**
 *   Service Container
 *
-*   @ver 170210
+*   @ver 210412
 *   @see https://github.com/ecfectus/container
-**/
+*/
 
 declare(strict_types=1);
 
@@ -23,11 +23,11 @@ class ReflectionContainer implements
     ContainerAwareInterface
 {
     use ContainerAwareTrait;
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function get($id)
     {
         if (!class_exists($id)) {
@@ -35,24 +35,24 @@ class ReflectionContainer implements
                 "{$id} is not an existing class"
             );
         }
-        
+
         $reflector = new ReflectionClass($id);
         $construct = $reflector->getConstructor();
         if ($construct === null) {
             return new $id();
         }
-        
+
         return $reflector->newInstanceArgs(
             $this->reflectArguments($construct)
         );
     }
-    
+
     /**
     *   reflectArguments
     *
     *   @param ReflectionMethod $method
-    *   @return array
-    **/
+    *   @return mixed[]
+    */
     private function reflectArguments(ReflectionMethod $method)
     {
         $arguments = array_map(
@@ -62,27 +62,27 @@ class ReflectionContainer implements
                 if (! is_null($class)) {
                     return $class->getName();
                 }
-                
+
                 if ($param->isDefaultValueAvailable()) {
                     return $param->getDefaultValue();
                 }
-                
+
                 throw new NotFoundException(
                     "Unable to resolve a value:{$name}"
                 );
             },
             $method->getParameters()
         );
-        
+
         return $this->resolveArguments($arguments);
     }
-    
+
     /**
     *   resolveArguments
     *
     *   @param array $arguments
-    *   @return array
-    **/
+    *   @return mixed[]
+    */
     private function resolveArguments(array $arguments)
     {
         foreach ($arguments as &$arg) {
@@ -90,7 +90,7 @@ class ReflectionContainer implements
                 continue;
             }
             $container = $this->getContainer();
-            
+
             if (! is_null($container) && $container->has($arg)) {
                 $arg = $container->get($arg);
                 continue;
@@ -98,12 +98,12 @@ class ReflectionContainer implements
         }
         return $arguments;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
-    public function has($id)
+    */
+    public function has($id): bool
     {
         return class_exists($id);
     }

@@ -4,7 +4,7 @@
 *   Event
 *
 *   @version 170220
-**/
+*/
 
 declare(strict_types=1);
 
@@ -20,56 +20,56 @@ class Event implements EventInterface
     *   propagationStopped
     *
     *   @var bool
-    **/
+    */
     private $propagationStopped = false;
-    
+
     /**
     *   name
     *
     *   @var string
-    **/
+    */
     private $name;
-    
+
     /**
     *   target
     *
     *   @var mixed
-    **/
+    */
     private $target;
-    
+
     /**
     *   params
     *
-    *   @var array
-    **/
+    *   @var mixed[]
+    */
     private $params;
-    
+
     /**
     *   constructor
     *
     *   @param string $name
     *   @param null|string|object $target
-    *   @param array $params
-    **/
+    *   @param mixed[] $params
+    */
     public function __construct($name = null, $target = null, $params = null)
     {
         if (!is_null($name)) {
             $this->setName($name);
         }
-        
+
         if (!is_null($target)) {
             $this->setTarget($target);
         }
-        
+
         if (!is_null($params)) {
             $this->setParams($params);
         }
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function getName()
     {
         return $this->name;
@@ -78,7 +78,7 @@ class Event implements EventInterface
     /**
     *   {inherit}
     *
-    **/
+    */
     public function getTarget()
     {
         return $this->target;
@@ -87,7 +87,7 @@ class Event implements EventInterface
     /**
     *   {inherit}
     *
-    **/
+    */
     public function getParams()
     {
         return $this->params;
@@ -96,7 +96,7 @@ class Event implements EventInterface
     /**
     *   {inherit}
     *
-    **/
+    */
     public function getParam($name)
     {
         if (!isset($this->params[$name])) {
@@ -108,7 +108,7 @@ class Event implements EventInterface
     /**
     *   {inherit}
     *
-    **/
+    */
     public function setName($name)
     {
         if (!is_string($name)) {
@@ -120,7 +120,7 @@ class Event implements EventInterface
     /**
     *   {inherit}
     *
-    **/
+    */
     public function setTarget($target)
     {
         if (!is_string($target) && !is_object($target) && !is_null($target)) {
@@ -132,7 +132,7 @@ class Event implements EventInterface
     /**
     *   {inherit}
     *
-    **/
+    */
     public function setParams(array $params)
     {
         if (!is_array($params)) {
@@ -140,20 +140,20 @@ class Event implements EventInterface
         }
         $this->params = $params;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function stopPropagation($flag)
     {
         $this->propagationStopped = ($flag) ? true : false;
     }
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     public function isPropagationStopped()
     {
         return $this->propagationStopped;

@@ -3,7 +3,7 @@
 /**
 *   mst_bunya_seizo
 *
-*   @version 200326
+*   @version 200615
 */
 
 declare(strict_types=1);
@@ -21,32 +21,29 @@ class MstBunyaSeizo extends ModelDb
     *   @var string
     */
     protected $schema = 'public.mst_bunya_seizo';
-    
+
     /**
     *   no_bunya最大値取得
     *
-    *   @param string $cd_system
     *   @return int|false|null
     */
-    public function getMaxNo(string $cd_system)
+    public function getMaxNo()
     {
         $sql = "
             SELECT MAX(no_bunya) AS no_bunya
             FROM {$this->schema}
-            WHERE cd_system = :system
         ";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':system', $cd_system, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetchColumn();
     }
-    
+
     /**
     *   分野リスト
     *
     *   @param string $cd_system
     *   @return array
-    **/
+    */
     public function getBunyaList(string $cd_system)
     {
         $sql = "

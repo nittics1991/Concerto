@@ -18,32 +18,32 @@ class SigmagridFilterInfo extends DataContainerValidatable
     /**
     *   Columns
     *
-    *   @var array
+    *   @var string[]
     */
     protected static $schema = array(
         'fieldName', 'value', 'logic', 'columnId'
     );
-    
+
     /**
     *   __construct
     *
-    *   @param array $params
-    **/
+    *   @param mixed[] $params
+    */
     public function __construct(array $params = [])
     {
         $this->fromArray($params);
     }
-    
+
     public function isValidFieldName($val)
     {
         return Validate::isAscii($val, 1);
     }
-    
+
     public function isValidValue($val)
     {
         return true;
     }
-    
+
     public function isValidLogic($val)
     {
         $values = array(
@@ -59,7 +59,7 @@ class SigmagridFilterInfo extends DataContainerValidatable
         );
         return in_array($val, $values);
     }
-    
+
     public function isValidColumnId($val)
     {
         if (is_null($val)) {

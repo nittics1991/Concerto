@@ -3,8 +3,10 @@
 /**
 *   Server
 *
-*   @version 190523
+*   @version 210609
 */
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
@@ -27,7 +29,7 @@ class Server
             $_SERVER
         );
     }
-    
+
     /**
     *    convert
     *
@@ -38,7 +40,7 @@ class Server
     {
         return strtolower($string);
     }
-    
+
     /**
     *   has
     *
@@ -51,23 +53,25 @@ class Server
         $name = self::convert($name);
         return array_key_exists($name, $data);
     }
-    
+
     /**
     *   get
     *
+    *   @param ?string $name
     *   @return mixed
     */
-    public static function get($name = null)
+    public static function get(?string $name = null)
     {
         $data = self::convertVariableName();
-        
+
         if (!isset($name)) {
             return $data;
         }
         $name = self::convert($name);
-        return (array_key_exists($name, $data)) ? $data[$name] : null;
+        return array_key_exists($name, $data) ?
+            $data[$name] : null;
     }
-    
+
     /**
     *   Ajax判定
     *
@@ -76,11 +80,12 @@ class Server
     public static function isAjax()
     {
         $data = self::convertVariableName();
-        
+
         return isset($data['http_x_requested_with'])
-            && (strtolower($data['http_x_requested_with']) == 'xmlhttprequest');
+            && strtolower((string)$data['http_x_requested_with'])
+                == 'xmlhttprequest';
     }
-    
+
     /**
     *   リクエストURL取得
     *
@@ -89,7 +94,7 @@ class Server
     public static function getRequestUrl()
     {
         $data = self::convertVariableName();
-        
+
         if (
             !isset($data['server_name'])
             || !isset($data['server_port'])
@@ -97,7 +102,7 @@ class Server
         ) {
             return '';
         }
-        
+
         $url = (isset($data['https']) && $data['https'] == 'on') ?
             'https://' : 'http://';
         $url .= "{$data['server_name']}";
@@ -105,7 +110,7 @@ class Server
         $url .= $data['request_uri'];
         return $url;
     }
-    
+
     /**
     *   リクエストURL取得(query文字無し)
     *
@@ -114,7 +119,7 @@ class Server
     public static function getRequestSelfUrl()
     {
         $data = self::convertVariableName();
-        
+
         if (
             !isset($data['server_name'])
             || !isset($data['server_port'])
@@ -122,17 +127,22 @@ class Server
         ) {
             return '';
         }
-        
+
         $url = (isset($data['https']) && $data['https'] == 'on') ?
             'https://' : 'http://';
         $url .= "{$data['server_name']}";
         $url .= ":{$data['server_port']}";
-        
+
         $splited = mb_split('\?', $data['request_uri']);
+
+        if ($splited === false) {
+            return $url;
+        }
+
         $url .= $splited[0];
         return $url;
     }
-    
+
     /**
     *   リクエスト親URL取得
     *
@@ -141,7 +151,7 @@ class Server
     public static function getRequestParentUrl()
     {
         $data = self::convertVariableName();
-        
+
         if (
             !isset($data['server_name'])
             || !isset($data['server_port'])
@@ -149,15 +159,79 @@ class Server
         ) {
             return '';
         }
-        
+
         $url = (isset($data['https']) && $data['https'] == 'on') ?
             'https://' : 'http://';
         $url .= "{$data['server_name']}";
         $url .= ":{$data['server_port']}";
-        
+
         $splited = mb_split('\?', $data['request_uri']);
+
+        if ($splited === false) {
+            return $url;
+        }
+
         $pos = mb_strrpos($splited[0], '/');
         $url .= mb_substr($splited[0], 0, $pos + 1);
+        return $url;
+    }
+
+    /**
+    *   リクエスト オリジン取得
+    *
+    *   @return string
+    */
+    public static function getRequestOrigin()
+    {
+        $data = self::convertVariableName();
+
+        if (
+            !isset($data['server_name'])
+            || !isset($data['server_port'])
+        ) {
+            return '';
+        }
+
+        $url = (isset($data['https']) && $data['https'] == 'on') ?
+            'https://' : 'http://';
+        $url .= "{$data['server_name']}";
+        $url .= ":{$data['server_port']}/";
+
+        return $url;
+    }
+
+    /**
+    *   リクエスト MAIN URL取得
+    *
+    *   @return string
+    *   @example http://domain:port/itc_workX/
+    */
+    public static function getRequestMainUrl()
+    {
+        $data = self::convertVariableName();
+
+        if (
+            !isset($data['server_name'])
+            || !isset($data['server_port'])
+            || !isset($data['request_uri'])
+        ) {
+            return '';
+        }
+
+        $url = (isset($data['https']) && $data['https'] == 'on') ?
+            'https://' : 'http://';
+        $url .= "{$data['server_name']}";
+        $url .= ":{$data['server_port']}";
+
+        $splited = mb_split('/', $data['request_uri']);
+
+        if ($splited === false || !isset($splited[1])) {
+            return "{$url}/";
+        }
+
+        $url .= mb_ereg_match('itc_work[0-9]', $splited[1]) ?
+            "/{$splited[1]}/" : '/';
+
         return $url;
     }
 }

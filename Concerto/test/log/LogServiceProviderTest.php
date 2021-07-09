@@ -17,13 +17,13 @@ class LogServiceProviderTest extends ConcertoTestCase
 {
     private $container;
     private $config;
-    
+
     public function setUp(): void
     {
         $this->container = new ServiceContainer();
         $this->container->delegate(new ServiceProviderContainer());
         $this->container->addServiceProvider(LogServiceProvider::class);
-        
+
         $this->config =
             [
                 'log' => [
@@ -35,14 +35,14 @@ class LogServiceProviderTest extends ConcertoTestCase
             ];
         $this->container->bind('configSystem', $this->config);
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function getObject()
     {
 //       $this->markTestIncomplete();
-        
+
         $this->assertEquals($this->config, $this->container->get('configSystem'));
         $this->assertInstanceOf(LogWriterErrorLog::class, $this->container->get('Concerto\log\LogWriterErrorLog'));
         $this->assertInstanceOf(LogWriterErrorLog::class, $this->container->get(LogWriterErrorLog::class));

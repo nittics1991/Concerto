@@ -22,13 +22,13 @@ abstract class abstractSqliteTestCase extends TestCase
     protected $dns = 'sqlite::memory:';
     protected static $pdo;
     protected $con;
-    
+
     use PrivateTestTrait;
-    
+
     /**
     *   {inherit}
     *
-    **/
+    */
     final public function getConnection()
     {
         if (!isset($this->con)) {
@@ -40,11 +40,11 @@ abstract class abstractSqliteTestCase extends TestCase
         }
         return $this->con;
     }
-    
+
     /**
     *   PDO初期化
     *
-    **/
+    */
     public function initPdo()
     {
         if (!isset(self::$pdo)) {
@@ -57,36 +57,36 @@ abstract class abstractSqliteTestCase extends TestCase
         }
         return self::$pdo;
     }
-    
+
     /**
     *   テーブル作成
     *
     *   @param ModelDb テーブル定義
     *   @param ModelData カラム定義
     *   @return string テーブル名
-    **/
+    */
     public function setupTable(ModelDb $table, ModelData $columns)
     {
         if ($this->existsTable($table)) {
             return;
         }
-        
+
         $sqlite = new Sqlite($table, $columns);
         $sql = $sqlite->createTable();
         $this->initPdo();
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute();
-        
+
         $splits = explode(' ', $sql);
         return (isset($splits[2])) ? $splits[2] : null;
     }
-    
+
     /**
     *   テーブル存在確認
     *
     *   @param ModelDb
     *   @return bool
-    **/
+    */
     public function existsTable(ModelDb $table)
     {
         $schema = $table->getSchema();
@@ -95,7 +95,7 @@ abstract class abstractSqliteTestCase extends TestCase
             WHERE type = 'table'
                 AND name = :name
         ";
-        
+
         $stmt = self::$pdo->prepare($sql);
         $stmt->bindValue(':name', $schema, PDO::PARAM_STR);
         $stmt->execute();

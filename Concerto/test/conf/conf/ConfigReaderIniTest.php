@@ -15,46 +15,46 @@ class ConfigReaderIniTest extends ConcertoTestCase
 {
     /**
     *   @test
-    **/
+    */
     public function section1()
     {
 //      $this->markTestIncomplete();
-        
+
         $reader = new ConfigReaderIni();
-        
+
         $this->assertEquals(
             false,
             $this->getPrivateProperty($reader, 'section')
         );
-        
+
         $reader->useSection();
         $this->assertEquals(
             true,
             $this->getPrivateProperty($reader, 'section')
         );
     }
-    
+
     /**
     *   @test
-    **/
+    */
     public function mode1()
     {
 //      $this->markTestIncomplete();
-        
+
         $reader = new ConfigReaderIni();
-        
+
         $this->assertEquals(
             ConfigReaderIni::TYPED,
             $this->getPrivateProperty($reader, 'mode')
         );
-        
+
         $reader->mode(ConfigReaderIni::RAW);
         $this->assertEquals(
             ConfigReaderIni::RAW,
             $this->getPrivateProperty($reader, 'mode')
         );
     }
-    
+
     /**
     *
     */
@@ -78,7 +78,7 @@ class ConfigReaderIniTest extends ConcertoTestCase
                     ],
                 ],
             ],  //DATA
-                
+
             [
                 realpath(__DIR__ . '/../data/read.ini'),
                 ConfigReaderIni::TYPED,
@@ -96,7 +96,7 @@ class ConfigReaderIniTest extends ConcertoTestCase
                     ],
                 ],
             ],  //DATA
-            
+
             [
                 realpath(__DIR__ . '/../data/read.ini'),
                 ConfigReaderIni::RAW,
@@ -114,7 +114,7 @@ class ConfigReaderIniTest extends ConcertoTestCase
                     ],
                 ],
             ],  //DATA
-            
+
             [
                 realpath(__DIR__ . '/../data/read.ini'),
                 ConfigReaderIni::NORMAL,
@@ -138,18 +138,18 @@ class ConfigReaderIniTest extends ConcertoTestCase
             ],  //DATA
         ];
     }
-    
+
     /**
     *   @test
     *   @dataProvider buildProvider
-    **/
+    */
     public function build1($path, $mode, $section, $expect)
     {
 //      $this->markTestIncomplete();
-        
+
         $reader = new ConfigReaderIni($mode, $section);
         $config = $reader->build($path);
-        
+
         $this->assertEquals(true, $config instanceof ConfigInterface);
         $actual = $config->toArray();
         $this->assertEquals([], ArrayUtil::compare($expect, $actual));

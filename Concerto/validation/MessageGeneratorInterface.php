@@ -4,7 +4,7 @@
 *   CurlBracketMessage
 *
 *   @ver 180618
-**/
+*/
 
 declare(strict_types=1);
 
@@ -19,14 +19,14 @@ interface MessageGeneratorInterface
     *
     *   @param string
     *   @return MessageGeneratorInterface
-    **/
+    */
     public function create($message);
-    
+
     /**
     *   generate
     *
     *   @param ValidationInterface
     *   @return string
-    **/
+    */
     public function generate(ValidationInterface $validation);
 }

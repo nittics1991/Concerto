@@ -3,7 +3,7 @@
 /**
 *   データコンテナValidatable
 *
-*   @version 191017
+*   @version 210614
 */
 
 declare(strict_types=1);
@@ -20,19 +20,21 @@ abstract class DataContainerValidatable extends DataContainer implements
     /**
     *   バリデートエラー情報
     *
-    *   @var array ['column' => []]
+    *   @var mixed[] ['column' => []]
     */
     protected $valid = [];
-    
+
     /**
     *   {inherit}
     *
     */
-    public static function __callStatic($name, $arguments)
-    {
+    public static function __callStatic(
+        string $name,
+        array $arguments
+    ): mixed {
         $obj = new static();
         $method = 'is' . mb_convert_case($name, MB_CASE_TITLE);
-        
+
         if (
             mb_ereg_match('\AisValid', $method)
                 && method_exists($obj, $method)
@@ -41,74 +43,74 @@ abstract class DataContainerValidatable extends DataContainer implements
         }
         return parent::__callStatic($name, $arguments);
     }
-    
+
     /**
     *   バリデート
     *
     *   @return bool
     */
-    public function isValid()
+    public function isValid(): bool
     {
         $this->valid = [];
         $result = true;
-        
+
         foreach (static::$schema as $prop) {
             $val = isset($this->data[$prop]) ? $this->data[$prop] : null;
             $result = $this->validCom($prop, $val) && $result;
             $result = $this->validCustom($prop, $val) && $result;
         }
         $result = $this->validRelation() && $result;
-        
+
         return $result;
     }
-    
+
     /**
     *   バリデート全変数共通処理
     *
     *   @param string $key 変数名
     *   @param mixed $val データ
     *   @return bool
-    **/
-    protected function validCom($key, $val)
+    */
+    protected function validCom($key, $val): bool
     {
         return true;
     }
-    
+
     /**
     *   バリデートプロパティ間処理
     *
     *   @return bool
-    **/
-    protected function validRelation()
+    */
+    protected function validRelation(): bool
     {
         return true;
     }
-    
+
     /**
     *   バリデート個別変数処理
     *
     *   @param string $key 変数名
     *   @param mixed $val データ
     *   @return bool
-    **/
-    protected function validCustom($key, $val)
+    */
+    protected function validCustom($key, $val): bool
     {
         $function = 'isValid' . ucfirst($key);
         if (!method_exists(get_called_class(), $function)) {
             return true;
         }
-        
+
         $result = $this->$function($val);
-        
+
         if ($result === true) {
             return true;
         }
-        
+
         if ($result === false) {
             $this->valid[$key][] = '';
             return false;
         }
-        
+
         if (is_array($result)) {
             $this->valid[$key] = (array_key_exists($key, $this->valid)) ?
                 $this->valid[$key] : array();
@@ -118,7 +120,7 @@ abstract class DataContainerValidatable extends DataContainer implements
         $this->valid[$key][] = $result;
         return false;
     }
-    
+
     /**
     *   バリデートエラーキー取得
     *
@@ -131,19 +133,22 @@ abstract class DataContainerValidatable extends DataContainer implements
             $this->getRecursiveError($this)
         );
     }
-    
+
     /**
     *   getRecursiveError
     *
     *   @param iterable $target
     *   @return array
-    **/
+    */
     protected function getRecursiveError($target)
     {
         $valid = [];
-        
+
         foreach ($target as $key => $val) {
-            if (is_object($val) && ($val instanceof Validatable)) {
+            if (
+                is_object($val)
+                    && $val instanceof DataContainerValidatable
+            ) {
                 $result = $val->getValidError();
                 if (!empty($result)) {
                     $valid[$key] = $result;
@@ -157,14 +162,14 @@ abstract class DataContainerValidatable extends DataContainer implements
         }
         return $valid;
     }
-    
+
      /**
     *   isValidRecursive
     *
     *   @param array $targets
     *   @param callable $callback
     *   @return bool
-    **/
+    */
     protected function isValidRecursive(
         array $targets,
         callable $callback
@@ -175,7 +180,7 @@ abstract class DataContainerValidatable extends DataContainer implements
         }
         return $result;
     }
-   
+
     /**
     *   個別パラメータバリデート
     *

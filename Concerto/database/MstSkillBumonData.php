@@ -3,8 +3,8 @@
 /**
 *   mst_skill_bumon
 *
-*   @version 171101
-**/
+*   @version 210118
+*/
 
 declare(strict_types=1);
 
@@ -20,30 +20,19 @@ class MstSkillBumonData extends ModelData
     *
     *   @var array
     */
-    protected static $schema = array(
-        "update" => parent::STRING
-        , "editor" => parent::STRING
-        , "cd_bumon" => parent::STRING
-        , "nm_bumon" => parent::STRING
-        , "cd_status" => parent::STRING
-        , "disp_seq" => parent::STRING
-    );
-    
-    public function isValidUpdate($val)
-    {
-        return Validate::isTextDate($val);
-    }
-    
-    public function isValidEditor($val)
-    {
-        return Validate::isTanto($val);
-    }
-    
+    protected static $schema = [
+        'cd_bumon' => parent::STRING,
+        'nm_bumon' => parent::STRING,
+        'cd_status' => parent::STRING,
+        'disp_seq' => parent::STRING,
+    ];
+
     public function isValidCd_bumon($val)
     {
-        return Validate::isBumon($val) && mb_ereg_match('\AX(S|E|T)[A-Z]\d{2}\z', $val);
+        return Validate::isBumon($val)
+            && mb_ereg_match('\AX\d{4}\z', $val);
     }
-    
+
     public function isValidNm_bumon($val)
     {
         return Validate::isTextEscape($val, 0, null, null, '\r\n\t　')
@@ -51,7 +40,7 @@ class MstSkillBumonData extends ModelData
             && !Validate::hasTextHtml($val)
             && !Validate::hasTextDatabase($val);
     }
-    
+
     public function isValidCd_status($val)
     {
         if ($val == '') {
@@ -59,12 +48,11 @@ class MstSkillBumonData extends ModelData
         }
         return Validate::isTextBool($val);
     }
-    
+
     public function isValidDisp_seq($val)
     {
-        if (mb_check_encoding($val) && mb_ereg_match('\A[\x20-\x7eぁ-ん]+\z', $val) && is_string($val)) {
-            return true;
-        }
-        return false;
+        return is_string($val)
+            && mb_check_encoding($val)
+            && mb_ereg_match('\A[\x20-\x7eぁ-ん]+\z', $val);
     }
 }

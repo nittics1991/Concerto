@@ -30,12 +30,12 @@ class DocInfData extends ModelData
         , "nm_upfile_url" => parent::STRING
         , "nm_upfile_dir  " => parent::STRING
     );
-    
+
     public function isValidIns_date($val)
     {
         return mb_ereg_match('\A\d{4}/\d{2}/\d{2}_\d{2}:\d{2}:\d{2}(\.\d*)*\z', $val);
     }
-    
+
     public function isValidCd_kbn_01($val)
     {
         if (!is_null($val)) {
@@ -43,7 +43,7 @@ class DocInfData extends ModelData
         }
         return true;
     }
-    
+
     public function isValidCd_kbn_02($val)
     {
         if (!is_null($val)) {
@@ -51,7 +51,7 @@ class DocInfData extends ModelData
         }
         return true;
     }
-    
+
     public function isValidNm_doc($val)
     {
         if (!is_null($val)) {
@@ -59,7 +59,7 @@ class DocInfData extends ModelData
         }
         return true;
     }
-    
+
     public function isValidNm_doc_inf($val)
     {
         if (!is_null($val)) {
@@ -67,12 +67,12 @@ class DocInfData extends ModelData
         }
         return true;
     }
-    
+
     public function isValidCd_tanto($val)
     {
         return Validate::isTanto($val);
     }
-    
+
     public function isValidNm_upfile_url($val)
     {
         if (!is_null($val)) {
@@ -80,7 +80,7 @@ class DocInfData extends ModelData
         }
         return true;
     }
-    
+
     public function isValidNm_upfile_dir($val)
     {
         if (!is_null($val)) {

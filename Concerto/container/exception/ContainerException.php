@@ -4,7 +4,7 @@
 *   ContainerException
 *
 *   @ver 170208
-**/
+*/
 
 declare(strict_types=1);
 

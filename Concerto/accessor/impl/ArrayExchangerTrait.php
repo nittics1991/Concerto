@@ -15,11 +15,11 @@ use Concerto\accessor\impl\AttributeImplTrait;
 trait ArrayExchangerTrait
 {
     use AttributeImplTrait;
-    
+
     /**
     *    {inherit}
     *
-    **/
+    */
     public function toArray(): array
     {
         $result = [];
@@ -28,13 +28,13 @@ trait ArrayExchangerTrait
         }
         return $result;
     }
-    
+
     /**
     *    配列から変換
     *
-    *   @param array $dataset
+    *   @param mixed[] $dataset
     *   @return $this
-    **/
+    */
     public function fromArray(array $dataset)
     {
         foreach ($dataset as $key => $val) {

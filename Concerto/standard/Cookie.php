@@ -3,8 +3,10 @@
 /**
 *   COOKIE
 *
-*   @version 190611
+*   @version 201022
 */
+
+declare(strict_types=1);
 
 namespace Concerto\standard;
 
@@ -15,26 +17,26 @@ class Cookie
     /**
     *   Cookie設定
     *
-    *   @var array
+    *   @var mixed[]
     */
     protected $params = [
         'expire' => 0,
         'path' => '/',
-        'domain' => null,
+        'domain' => '',
         'secure' => false,
         'httponly' => true,
     ];
-    
+
     /**
     *   __construct
     *
-    *   @param array $params 設定値
+    *   @param mixed[] $params 設定値
     */
     public function __construct(array $params = [])
     {
         $this->params = array_replace($this->params, $params);
     }
-    
+
     /**
     *   {inherit}
     *
@@ -48,7 +50,7 @@ class Cookie
         }
         return $_COOKIE[$key];
     }
-    
+
     /**
     *   {inherit}
     *
@@ -60,7 +62,7 @@ class Cookie
                 "__set error:data type error:{$key}"
             );
         }
-        
+
         setcookie(
             $key,
             $val,
@@ -71,7 +73,7 @@ class Cookie
             $this->params['httponly']
         );
     }
-    
+
     /**
     *   {inherit}
     *
@@ -80,7 +82,7 @@ class Cookie
     {
         return isset($_COOKIE[$key]);
     }
-    
+
     /**
     *   {inherit}
     *
@@ -97,7 +99,7 @@ class Cookie
             $this->params['httponly']
         );
     }
-    
+
     /**
     *   全削除
     *

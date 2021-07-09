@@ -8,9 +8,9 @@ class DomainService
 {
     public function __construct(Container $container)
     {
-        $this->container =$container;
+        $this->container = $container;
     }
-    
+
     public function save(Input $input)
     {
         $factory = $this->container->get('domainfactory');
@@ -24,14 +24,14 @@ class Repository
 {
     public function __construct(Container $container)
     {
-        $this->container =$container;
+        $this->container = $container;
     }
-    
-    public function save(Domain $domain) :id
+
+    public function save(Domain $domain): id
     {
         $factory = $this->container->get('dataMapperfactory');
         $modelData = $factory->create($domain);
-        
+
         $dataMapper = $this->container->get('dataMapper');
         $dataMapper->insert($modelData);
         return $modelData->id;
