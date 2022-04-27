@@ -1,0 +1,491 @@
+//部門
+class CompanyDepartment
+{
+    CompanyDepartmentId $companyDepartmentId;
+    $name;
+    Date $startDate;
+    Date $endDate;
+    
+}
+
+//社員所属
+class EmployeeAfferiation
+{
+    EmployeeId $employeeId;
+    CompanyDepartmentId $companyDepartmentId;
+    Date $startDate;
+    Date $endDate;
+    
+}
+
+//社員
+class Employee
+{
+    EmployeeId $employeeId;
+    $name;
+    Contact $contact;
+    Date $startDate;
+    Date $endDate;
+    
+}
+
+//原価部門
+class CostDepartment
+{
+    CostDepartmentId $costDepartmentId;
+    $name;
+    Date $startDate;
+    Date $endDate;
+    
+}
+
+//原価部門所属
+class CostDepartmentAfferiation
+{
+    EmployeeId $employeeId;
+    CostDepartmentId $costDepartmentId;
+    Date $startDate;
+    Date $endDate;
+    
+}
+
+//原価部門の会社部門所属
+class CostDepartmentBelongToComponyDepartment
+{
+    CompanyDepartmentId $companyDepartmentId;
+    CostDepartmentId $costDepartmentId;
+    Date $startDate;
+    Date $endDate;
+    
+}
+
+/////////////////////////////////////
+
+//組織部門ID
+class CompanyDepartmentId
+    $id
+    division()          //事業部
+    department()   //部
+    section()          //課
+    
+//社員ID
+class EmployeeId
+    $id
+    fiscalYear()        //年度
+    classification()    //区分
+    seq()                   //SEQ
+    
+//原価部門ID
+class CostDepartmentId
+    $id
+    division()          //事業部
+    department()   //部
+    section()          //課
+    type()              //種別
+
+/////////////////////////////////////
+
+//連絡先
+class Contact   //valueObject DB用にサロゲートキー
+{
+    $zip;
+    $address;
+    $telephon;
+    $email;
+}
+
+/////////////////////////////////////
+
+//BusinessPartnerで取引が異なる 両方の場合がある
+
+//取引先
+class BusinessPartner
+{
+    BusinessPartnerId $businessPartnerId;
+    $name;
+    //連絡先
+    array $contacts;
+     //支払契約
+    //PaymentContract $paymentContract;
+    
+}
+
+//得意先
+class Customer extends AbstractBusinessPartner
+{
+    CustomerId $customerId; //extends BusinessPartnerId
+    $name;
+    //連絡先
+    array $contacts;
+     //支払契約
+    //PaymentContract $paymentContract;
+   
+}
+
+//仕入先
+class Supplier extends AbstractBusinessPartner
+{
+    SupplierId $customerId; //extends BusinessPartnerId
+    $name;
+    //連絡先
+    array $contacts;
+    //支払契約
+    //PaymentContract $paymentContract;
+    
+}
+
+////////////////////////////////////////////
+
+//商品
+class Product
+{
+    ProductId $productId;
+    $name;
+    $model;
+    
+}
+
+//商品単価
+class ProductPrice
+{
+    ProductId $productId;
+    Money $price;
+    Date $startDate;
+    Date $endDate;
+    
+}
+
+////////////////////////////////////
+
+//注文で得意先と仕入れ先で同じかも
+
+
+//得意先注文
+class SalesOrder
+
+class CustomerOrder
+{
+    //注文ID
+    CustomerOrderId $customerOrderId;
+    //契約日
+    Date $contractDate;
+    //完成予定日
+    Date $scheduledComlitetionDate;
+    //契約者ID
+    EmployeeId $contractor;
+    //得意先ID
+    CustomerId $customer;
+    //販売価格
+    Money $salesPrice;
+    //税率
+    int $taxRate;
+    //税込価格
+    Money $taxedPrice;
+    //支払契約
+    //PaymentContract $paymentContract;
+    //支払予定日
+    Date $scheduledPaymentDate;
+    
+}
+
+//得意先注文明細
+class CustomerOrderItem
+{
+    //注文ID
+    CustomerOrderId $customerOrderId;
+    //注文明細ID
+    CustomerOrderItemId $customerOrderItemId;
+    //商品ID
+    ProductId $productId;
+    //単価
+    Money $unitPrice;
+    //数量
+    int $quantity;
+    //単位
+    InvoiceUnitEnum $unit;
+    //価格
+    Money $price;
+}
+
+////////////////////////////////////////////
+
+class CustomerOrderId
+    $id
+    costDepartment()    //原価部門
+    classification()       //区分
+    seq()                 //SEQ
+    subSeq()          //補足SEQ
+    
+class CustomerOrderItemId
+    $id
+    costDepartment()    //原価部門
+    seqNo()                 //SEQ.NO
+
+
+
+////////////////////////////////////////////
+
+//製品部品
+class ProductMaterial   //abstract
+{
+    //材料ID
+    ProductMaterialId $productMaterialId;
+    $name;
+    $model;
+    
+}
+
+//製品部品単価
+class ProductMaterialPrice
+{
+    MaterialId $materialId;
+    Money $price;
+    Date $startDate;
+    Date $endDate;
+    
+}
+
+
+/////////////////////////////////////
+
+//分納は拡張で
+
+//仕入先注文
+class SupplierOrder
+{
+    //注文ID
+    SupplierOrderId $supplierOrderId;
+    //契約日
+    Date $contractDate;
+    //納入予定日
+    Date $scheduledComlitetionDate;
+    //契約者ID
+    EmployeeId $contractor;
+    //仕入先ID
+    SupplierId $supplier;
+    //購入価格
+    Money $purchasePrice;
+    //税率
+    int $taxRate;
+    //税込価格
+    Money $taxedPlice;
+    //支払契約
+    PaymentContract $paymentContract;
+    //支払予定日
+    Date $scheduledPaymentDate;
+    
+}
+
+//仕入先注文明細
+class SupplierOrderItem
+{
+    //注文ID
+    SupplierOrderId $supplierOrderId;
+    //注文明細ID
+    SupplierOrderItemId $supplierOrderItemId;
+    
+    //部品登録されていない場合もあり、部品IDでは無理では
+    //製品部品ID
+    ProductMaterialId $productMaterialId;
+    
+    
+   //単価
+    Money $unitPrice;
+    //数量
+    int $quantity;
+    //単位
+    InvoiceUnitEnum $unit;
+    //価格
+    Money $price;
+}
+
+//購入品入荷
+class ReceiptOfPurchase
+{
+    //購入品入荷ID
+    ReceiptOfPurchaseId  $receiptOfPurchaseId;
+    //注文ID
+    SupplierOrderId $supplierOrderId;
+    //検収日
+    Date $acceptanceDate;
+    //受取人
+    EmployeeId $receiver;
+    //数量
+    int $quantity;
+    //単位
+    InvoiceUnitEnum $unit;
+    
+}
+
+/////////////////////////////////////
+//受給品は購入品の変形みたいなもの
+//価格を0として資産計算はどうする? 有償無償で処理が違うが
+
+//受給品
+class SuppliedParts
+{
+    //受給品ID
+    SuppliedPartsId $suppliedPartsId;
+    //契約日
+    Date $contractDate;
+    //納入予定日
+    Date $scheduledComlitetionDate;
+    //契約者ID
+    EmployeeId $contractor;
+    //仕入先ID
+    SupplierId $supplier;
+    //購入価格
+    Money $purchasePrice;   //=0
+    //税率
+    int $taxRate;   //=0
+    //税込価格
+    Money $taxedPlice;  //=0
+    //支払契約
+    PaymentContract $paymentContract;   //non
+    //支払予定日
+    Date $scheduledPaymentDate; //non
+    
+}
+
+//受給品明細
+class SupplierOrderItem
+{
+    //受給品ID
+    SuppliedPartsId $suppliedParts;
+    //受給品明細ID
+    SuppliedPartsItemId $suppliedPartsItemId;
+    //製品部品ID
+    ProductMaterialId $productMaterialId;
+   //単価
+    Money $unitPrice;
+    //数量
+    int $quantity;
+    //単位
+    InvoiceUnitEnum $unit;
+    //価格
+    Money $price;
+    
+    //
+    
+    
+}
+
+//受給品入荷 //購入品入荷のようなもの
+class ReceiptOfSuppliedParts
+{
+    //受給品入荷ID
+    ReceiptOfPurchaseId  $receiptOfPurchaseId;
+    //受給品ID
+    SupplierOrderId $supplierOrderId;
+    //検収日
+    Date $acceptanceDate;
+    //受取人
+    EmployeeId $receiver;
+    //数量
+    int $quantity;
+    //単位
+    InvoiceUnitEnum $unit;
+    
+}
+
+/////////////////////////////////////
+
+//在庫    //社内に存在する部品
+class Inventory
+{
+    
+    
+}
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////
+
+
+//入庫
+class Storage
+{
+    
+    
+}
+
+//倉庫
+class Warehouse
+{
+    
+    
+}
+
+//出庫
+class Shipping
+{
+    
+    
+}
+
+//加工
+//加工品
+//製作
+//外注
+//外注品入荷
+//半製品
+//
+
+
+//工場出荷
+class FactoryShipment
+{
+    
+    
+}
+
+//製品納品
+class Delivery
+{
+    
+    
+}
+
+
+
+
+//請求
+class Bill
+{
+    
+    
+}
+
+//売買契約
+class PaymentContract
+{
+    PaymentTypeEnum $paymentTypeEnum; //現金 掛け
+    PaymentMethodEnum $paymentModeEnum;//現金 銀行振込 手形30/60/90 口座振替
+    CutOffDateTypeEnum $cutOffDateTypeEnum; //月末締め 翌月末払い
+    
+}
+
+
+
+
+
+
+//支払
+class Payment
+{
+    
+    
+}
+
+//売上
+
+
+
+//////////////////////////
+//コストについて

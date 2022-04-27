@@ -1,0 +1,29 @@
+
+viewでpatternやmaxなどを連動したい
+
+Validatorの設定をLaravel風に
+
+Validatorの設定力からView用設定をget
+
+///////////////////////
+
+respect validatorを利用
+
+respect_ruleを組み立て、returnを再利用
+
+$respect = $this->respect;
+
+foreach ($this.rules as $rule) {
+    foreach ($rules as $method_text) {
+        
+        $method = $this->respectParser->getMethod($method_text);
+        $argv = $this->respectParser->getArgv($method_text);
+        
+        //privete method化
+        //全部実行・途中終了・(throwパターン)を切り替えたい
+        $respect = call_user_func_array([$respect, $method], $argv);
+    }
+}
+
+///////////////////////
+

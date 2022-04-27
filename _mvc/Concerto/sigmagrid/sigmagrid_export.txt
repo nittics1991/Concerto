@@ -1,0 +1,268 @@
+object(stdClass)#3 (10) {
+  ["recordType"]=>
+  string(5) "array"
+  ["pageInfo"]=>
+  object(stdClass)#4 (6) {
+    ["pageSize"]=>
+    int(10000)
+    ["pageNum"]=>
+    int(1)
+    ["totalRowNum"]=>
+    int(442)
+    ["totalPageNum"]=>
+    int(1)
+    ["startRowNum"]=>
+    int(1)
+    ["endRowNum"]=>
+    int(442)
+  }
+  ["columnInfo"]=>
+  array(12) {
+    [0]=>
+    object(stdClass)#5 (8) {
+      ["id"]=>
+      string(6) "no_cyu"
+      ["header"]=>
+      string(6) "製番"
+      ["fieldName"]=>
+      string(6) "no_cyu"
+      ["fieldIndex"]=>
+      int(0)
+      ["sortOrder"]=>
+      NULL
+      ["hidden"]=>
+      bool(false)
+      ["exportable"]=>
+      bool(true)
+      ["printable"]=>
+      bool(true)
+    }
+    [1]=>
+    object(stdClass)#6 (8) {
+      ["id"]=>
+      string(7) "no_page"
+      ["header"]=>
+      string(2) "No"
+      ["fieldName"]=>
+      string(7) "no_page"
+      ["fieldIndex"]=>
+      int(1)
+      ["sortOrder"]=>
+      NULL
+      ["hidden"]=>
+      bool(false)
+      ["exportable"]=>
+      bool(true)
+      ["printable"]=>
+      bool(true)
+    }
+    [2]=>
+    object(stdClass)#7 (8) {
+      ["id"]=>
+      string(9) "nm_syohin"
+      ["header"]=>
+      string(6) "品名"
+      ["fieldName"]=>
+      string(9) "nm_syohin"
+      ["fieldIndex"]=>
+      int(2)
+      ["sortOrder"]=>
+      NULL
+      ["hidden"]=>
+      bool(false)
+      ["exportable"]=>
+      bool(true)
+      ["printable"]=>
+      bool(true)
+    }
+    [3]=>
+    object(stdClass)#8 (8) {
+      ["id"]=>
+      string(8) "nm_setti"
+      ["header"]=>
+      string(12) "設置場所"
+      ["fieldName"]=>
+      string(8) "nm_setti"
+      ["fieldIndex"]=>
+      int(3)
+      ["sortOrder"]=>
+      NULL
+      ["hidden"]=>
+      bool(false)
+      ["exportable"]=>
+      bool(true)
+      ["printable"]=>
+      bool(true)
+    }
+    [4]=>
+    object(stdClass)#9 (8) {
+      ["id"]=>
+      string(7) "fg_fuyo"
+      ["header"]=>
+      string(6) "不要"
+      ["fieldName"]=>
+      string(7) "fg_fuyo"
+      ["fieldIndex"]=>
+      int(7)
+      ["sortOrder"]=>
+      NULL
+      ["hidden"]=>
+      bool(false)
+      ["exportable"]=>
+      bool(true)
+      ["printable"]=>
+      bool(true)
+    }
+    [5]=>
+    object(stdClass)#10 (8) {
+      ["id"]=>
+      string(8) "dt_dra_p"
+      ["header"]=>
+      string(4) "DR-A"
+      ["fieldName"]=>
+      string(8) "dt_dra_p"
+      ["fieldIndex"]=>
+      int(22)
+      ["sortOrder"]=>
+      NULL
+      ["hidden"]=>
+      bool(false)
+      ["exportable"]=>
+      bool(true)
+      ["printable"]=>
+      bool(true)
+    }
+    [6]=>
+    object(stdClass)#11 (8) {
+      ["id"]=>
+      string(8) "dt_drb_p"
+      ["header"]=>
+      string(4) "DR-B"
+      ["fieldName"]=>
+      string(8) "dt_drb_p"
+      ["fieldIndex"]=>
+      int(23)
+      ["sortOrder"]=>
+      NULL
+      ["hidden"]=>
+      bool(false)
+      ["exportable"]=>
+      bool(true)
+      ["printable"]=>
+      bool(true)
+    }
+    [7]=>
+    object(stdClass)#12 (8) {
+      ["id"]=>
+      string(8) "dt_dre_p"
+      ["header"]=>
+      string(4) "DR-E"
+      ["fieldName"]=>
+      string(8) "dt_dre_p"
+      ["fieldIndex"]=>
+      int(24)
+      ["sortOrder"]=>
+      NULL
+      ["hidden"]=>
+      bool(false)
+      ["exportable"]=>
+      bool(true)
+      ["printable"]=>
+      bool(true)
+    }
+    [8]=>
+    object(stdClass)#13 (8) {
+      ["id"]=>
+      string(8) "dt_drf_p"
+      ["header"]=>
+      string(4) "DR-F"
+      ["fieldName"]=>
+      string(8) "dt_drf_p"
+      ["fieldIndex"]=>
+      int(25)
+      ["sortOrder"]=>
+      NULL
+      ["hidden"]=>
+      bool(false)
+      ["exportable"]=>
+      bool(true)
+      ["printable"]=>
+      bool(true)
+    }
+    [9]=>
+    object(stdClass)#14 (8) {
+      ["id"]=>
+      string(8) "dt_drg_p"
+      ["header"]=>
+      string(4) "DR-G"
+      ["fieldName"]=>
+      string(8) "dt_drg_p"
+      ["fieldIndex"]=>
+      int(27)
+      ["sortOrder"]=>
+      NULL
+      ["hidden"]=>
+      bool(false)
+      ["exportable"]=>
+      bool(true)
+      ["printable"]=>
+      bool(true)
+    }
+    [10]=>
+    object(stdClass)#15 (8) {
+      ["id"]=>
+      string(8) "dt_drh_p"
+      ["header"]=>
+      string(4) "DR-H"
+      ["fieldName"]=>
+      string(8) "dt_drh_p"
+      ["fieldIndex"]=>
+      int(28)
+      ["sortOrder"]=>
+      NULL
+      ["hidden"]=>
+      bool(false)
+      ["exportable"]=>
+      bool(true)
+      ["printable"]=>
+      bool(true)
+    }
+    [11]=>
+    object(stdClass)#16 (8) {
+      ["id"]=>
+      string(6) "hidden"
+      ["header"]=>
+      string(1) " "
+      ["fieldName"]=>
+      string(6) "hidden"
+      ["fieldIndex"]=>
+      string(6) "hidden"
+      ["sortOrder"]=>
+      NULL
+      ["hidden"]=>
+      bool(false)
+      ["exportable"]=>
+      bool(true)
+      ["printable"]=>
+      bool(true)
+    }
+  }
+  ["sortInfo"]=>
+  array(0) {
+  }
+  ["filterInfo"]=>
+  array(0) {
+  }
+  ["remotePaging"]=>
+  bool(false)
+  ["parameters"]=>
+  object(stdClass)#17 (0) {
+  }
+  ["action"]=>
+  string(6) "export"
+  ["exportType"]=>
+  string(3) "csv"
+  ["exportFileName"]=>
+  string(15) "test_export_doc"
+}
+

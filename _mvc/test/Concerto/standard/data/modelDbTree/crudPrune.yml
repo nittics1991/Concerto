@@ -1,0 +1,51 @@
+test._modeldbtree: 
+ - 
+  cd_id: "000000"
+  cd_parent: "888"
+  no_data: 1
+  nm_data: "ITC"
+ - 
+  cd_id: "560000"
+  cd_parent: "000000"
+  no_data: 2
+  nm_data: "(SIジ)"
+ - 
+  cd_id: "560001"
+  cd_parent: "560000"
+  no_data: 3
+  nm_data: "(SI企)"
+ - 
+  cd_id: "560002"
+  cd_parent: "560000"
+  no_data: 4
+  nm_data: "(SI管)"
+ - 
+  cd_id: "560300"
+  cd_parent: "560000"
+  no_data: 6
+  nm_data: "[施S営技]"
+ - 
+  cd_id: "560700"
+  cd_parent: "560000"
+  no_data: 5
+  nm_data: "[産環営技]"
+ - 
+  cd_id: "560702"
+  cd_parent: "560700"
+  no_data: 8
+  nm_data: "(産環営)"
+ - 
+  cd_id: "560703"
+  cd_parent: "560700"
+  no_data: 9
+  nm_data: "(産S技)"
+ - 
+  cd_id: "560800"
+  cd_parent: "560000"
+  no_data: 7
+  nm_data: "[産環Sブ]"
+ - 
+  cd_id: "888"
+  cd_parent: null
+  no_data: 22
+  nm_data: "root1"

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+###
+PHP_CURL=php8.1-curl
+
+PHAR_PATH="$(dirname $0)/../tmp"
+
+[[ $(apt  list --installed 2>/dev/null |grep -i "php.*curl" |wc -l) = 0 ]] && \
+    sudo apt install -y ${PHP_CURL}
+
+php -d phar.readonly=off "${PHAR_PATH}/phar-composer.phar" "$@"

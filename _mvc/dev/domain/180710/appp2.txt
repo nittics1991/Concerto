@@ -1,0 +1,88 @@
+<?php
+//queryの場合
+//commandの場合、rootEntityでtransactionを管理
+
+class CyubanSonekiDispRootEntity
+	array $bumons
+	array $nendos
+	$isOrLater
+	$workInProgress
+	$mine
+	array $tantos
+	
+	array $keikakus
+	array $yosokus
+	array $jissekis
+	array $rankAs
+	array $rankBs
+	array $rankCs
+	
+	array $fiscalYearYosans
+	array $fiscalYearJissekis
+	array $fiscalYearSabuns
+	
+	public function setbumons(array $dataset)
+	public function setnendos(array $dataset)
+	public function setisOrLater(array $dataset)
+	public function setworkInProgress(array $dataset)
+	public function setmine(array $dataset)
+	public function settantos(array $dataset)
+	
+	public function setkeikakus(array $dataset)
+	public function setyosokus(array $dataset)
+	public function setjissekis(array $dataset)
+	public function setrankAs(array $dataset)
+	public function setrankBs(array $dataset)
+	public function setrankCs(array $dataset)
+	
+	public function setfiscalYearYosans(array $dataset)
+	public function setfiscalYearJissekis(array $dataset)
+	public function setfiscalYearSabuns(array $dataset)
+
+---------------------------------------
+
+class CyubanSonekiDispRepository
+	public function bumons($nendo)
+	public function nendos()
+	
+	//serviceで$seq->XXXを引数に
+	public function isOrLater($isOrLater)
+	public function workInProgress($workInProgress)
+	public function mine($mine)
+	
+	public function tantos($bumon)
+	
+	public function keikakus($req)
+	public function yosokus($req)
+	public function jissekis($req)
+	public function rankAs($req)
+	public function rankBs($req)
+	public function rankCs($req)
+	
+	public function fiscalYearYosans($req)
+	public function fiscalYearJissekis($req)
+	public function fiscalYearSabuns($req)
+
+
+---------------------------------------
+	
+class CyubanSonekiDispBumonsRepository
+	$pdo
+	
+	public function list($bumon):array[array]
+		$sql = ""
+		
+		return $stmt->fetchAll()
+	
+	
+class CyubanSonekiDispNendosRepository
+	$modelDb
+	$modelData
+	
+	public function list():array[array]
+		$dataset = $modelDb->select($modelData);
+		return array_map(
+			function($obj) {
+				return $obj->toArray()
+			},
+			$dataset

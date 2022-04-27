@@ -1,0 +1,17 @@
+
+$formatter = new EnumFormatter(array $config);
+
+$formatter = $formatter->appendConf(array $config);
+
+$formatter->format(Enum $enum) :string
+
+$config = [
+	MyEnum::class => [
+		'aaa' => '値1',	//MyEnum->key()と一致
+		'bbb' => '値2',
+		'ccc' => '値3',
+	],
+	
+	
+]
+

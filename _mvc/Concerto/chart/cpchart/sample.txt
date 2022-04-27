@@ -1,0 +1,133 @@
+
+return [
+    'file' => '/path/to/file.png',
+    'palette' => '/path/to/file.color',
+    'points' => [
+        //チャートIDとデータ
+       'data1' => [1230768000, 1230768001, 1230768002, 1230768003, 1230768004],
+       'data2' => [11, 12, 13, 14, 15],
+       'data3' => [21, 22, 23, 24, 25],
+       'data4' => [31, 32, 33, 34, 35],
+    ],
+    'canvas' => [
+        'width' => 800,
+        'height' => 600,
+        'rgba' => '#aa1299ff'
+    ],
+    //'beforeChartArea' => function ($factory, $data, $image, $builder) {}
+    'chartArea' => [
+        'marginTop' => 100,
+        'marginBottom' => 100,
+        'marginLeft' => 100,
+        'marginRight' => 100,
+        'rgba' => '#aa1299ff'
+    ],
+    //'afterChartArea' => function ($factory, $data, $image, $builder) {}
+    'dataset' => [
+        //dataset functionのsetXXXのsetを除いた文字と引数
+        [
+            'Abscissa' => 'data4',
+        ],
+        [
+            'axisUnit' => [
+                1,
+                '%'
+            ]
+        ],
+        [
+            'AxisUnit' => [
+                2,
+                '℃'
+            ]
+        ],
+    ],
+    'scale' => [
+        'format' => [
+            //drawScalの引数
+            'Pos' => SCALE_POS_TOPBOTTOM
+        ],
+        'font' => [
+            //setFontPropertiesの引数
+            FontSize => 12,
+        ]
+    ],
+    //'afterScale' => function ($factory, $data, $image, $builder) {}
+    'charts' => [
+        [
+            //setSerieDrawableでtrueにあたるチャートID
+            'drawable' => ['chart1', 'chart2'],
+            //chart functionのdrawXXXのdrawを除いた名前
+            'type' => 'Line',
+            'format' => [
+                //drawXXXの引数
+                DisplayValues => true
+            ],
+            'font' => [
+                //setFontPropertiesの引数
+                FontSize => 12,
+            ]
+        ],
+        [
+            'drawable' => ['chart1', 'chart2'],
+            //chart objectのdrawXXXのdrawを除いた名前
+            'type' => '2DPie',
+            //newするchart object名
+            'class' => 'pie',
+            'options' => [
+                //drawXXXの引数
+                120,
+                60,
+                [
+                    'Radius' => 50,
+                ]
+            ],
+        ],
+    ],
+    //'afterCharts' => function ($factory, $data, $image, $builder) {}
+    'legend' => [
+        'drawable' => ['chart1', 'chart2'],
+        'options' => [
+            //drawXXXLegendの引数
+            100,
+            50,
+            [
+                'FontName' => '',
+            ],
+        ]
+    ],
+    'title' => [
+        //drawTextの引数
+        null,   //['canvas']['width']/2
+        20,
+        '題目',
+        [
+            'FontName' => 'Arias.ttf',
+            'FontSize' => '12',
+            'R' => 255,
+            'G' => 255,
+            'B' => 255,
+            'Alpha' => 255,
+            'Align' => TEXT_ALIGN_TOP_MIDDLE,
+        ],
+    ],
+    'dataTable' => [
+        'table' => [
+            //drawFilledRectangleの引数
+            50,
+            520,
+            750,
+            580,
+        ],
+        'cell' => [
+            //drawFilledRectangleのformat引数
+            'R' => 255,
+            'G' => 255,
+            'B' => 255,
+        ],
+        'font' => [
+            //setFontPropertiesの引数
+            FontSize => 12,
+        ],
+        'padding' => 4,
+    ],
+];

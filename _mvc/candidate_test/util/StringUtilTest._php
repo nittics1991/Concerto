@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+namespace test\Concerto\util;
+
+use test\Concerto\ConcertoTestCase;
+use Concerto\util\implement\StringUtil;
+
+class StringUtilTest extends ConcertoTestCase
+{
+
+
+
+
+
+
+
+
+}
