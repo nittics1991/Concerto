@@ -307,7 +307,7 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     }
 
     /**
-    *   破棄
+    *   clear
     *
     *   @return void
     */
@@ -345,7 +345,17 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     }
 
     /**
-    *   ID変更
+    *   getID
+    *
+    *   @return string
+    */
+    public function getID(): string
+    {
+        return strval(session_id());
+    }
+
+    /**
+    *   changeID
     *
     *   @return void
     */
