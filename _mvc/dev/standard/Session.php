@@ -30,11 +30,6 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     protected bool $isCli;
 
     /**
-    *   @var ?mixed[]
-    */
-    protected ?array $data;
-
-    /**
     *   @var ?string
     */
     protected ?string $namespace;
@@ -43,6 +38,11 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     *   @var ?int
     */
     protected ?int $max_life_time;
+
+    /**
+    *   @var ?mixed[]
+    */
+    protected ?array $data;
 
     /**
     *   @var int
@@ -61,28 +61,32 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
         ?array $data = null,
         ?int $max_life_time = null,
     ) {
-        in_array(php_sapi_name(), static::SAPI_CLIS) ?
         $this->namespace = $namespace;
         $this->max_life_time = $max_life_time ?? 60 * 60 * 4;
         $this->checkSapi();
+        $this->start();
+        $this->setStartTime();
         $this->initData($data);
     }
 
     /**
     *   {inherit}
     */
-    public function __get(string $name): mixed
+    public function __get(
+        string $name
+    ): mixed
     {
         $this->start();
-        $result = (isset($this->data[$name])) ?
-            $this->data[$name] : null;
-        return $result;
+        return $this->data[$name]?? null;
     }
 
     /**
     *   {inherit}
     */
-    public function __set(string $name, mixed $value): void
+    public function __set(
+        string $name,
+        mixed $value
+    ): void
     {
         $this->start();
         $this->data[$name] = $value;
@@ -92,11 +96,12 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     /**
     *   {inherit}
     */
-    public function __isset(string $name): bool
+    public function __isset(
+        string $name
+    ): bool
     {
         $this->start();
-        $result = isset($this->data[$name]);
-        return $result;
+        return = isset($this->data[$name]);
     }
 
     /**
@@ -113,33 +118,45 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     /**
     *   {inherit}
     */
-    public function offsetGet(mixed $offset): mixed
+    public function offsetGet(
+        mixed $offset
+    ): mixed
     {
-        return $this->__get($offset);
+        return $this->__get(strval($offset));
     }
 
     /**
     *   {inherit}
     */
-    public function offsetSet(mixed $offset, mixed $value): void
+    public function offsetSet(
+        mixed $offset,
+         mixed $value
+     ): void
     {
-        $this->__set($offset, $value);
+        $this->__set(
+            strval($offset),
+            $value
+        );
     }
 
     /**
     *   {inherit}
     */
-    public function offsetExists(mixed $offset): bool
+    public function offsetExists(
+        mixed $offset
+    ): bool
     {
-        return $this->__isset($offset);
+        return $this->__isset(strval($offset));
     }
 
     /**
     *   {inherit}
     */
-    public function offsetUnset(mixed $offset): void
+    public function offsetUnset(
+        mixed $offset
+    ): void
     {
-        $this->__unset($offset);
+        $this->__unset(strval($offset));
     }
 
     /**
@@ -211,33 +228,16 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     }
 
     /**
-    *   initData
-    *
-    *   @param ?array $data
-    */
-    protected function initData(?array $data): void
-    {
-        if (isset($data)) {
-            $this->fromArray($data);
-        }
-
-        $this->start();
-
-        if (!isset($_SESSION['session_create_time'])) {
-            $current_time = time();
-            $_SESSION['session_create_time'] = $current_time;
-            $this->commit();
-        }
-        $this->start_time = $_SESSION['session_create_time'];
-    }
-
-    /**
     *   start
     *
+    *   @return void
     */
     public function start(): void
     {
-        if (isset($this->start_time) && !$this->inLifeTime()) {
+        if (
+            isset($this->start_time) &&
+             !$this->inLifeTime()
+        ) {
             $this->clear();
 
             throw new RuntimeException(
@@ -257,8 +257,21 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     }
 
     /**
+    *   start CLI
+    *
+    *   @return void
+    */
+    protected function startCli(): void
+    {
+        if (!isset($_SESSION)) {
+            $_SESSION = [];
+        }
+    }
+
+    /**
     *   start SAPI
     *
+    *   @return void
     */
     protected function startSapi(): void
     {
@@ -271,17 +284,6 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
             throw new RuntimeException(
                 "failure session start"
             );
-        }
-    }
-
-    /**
-    *   start CLI
-    *
-    */
-    protected function startCli(): void
-    {
-        if (!isset($_SESSION)) {
-            $_SESSION = [];
         }
     }
 
@@ -398,5 +400,35 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
             }
         }
         return true;
+    }
+
+    /**
+    *   setStartTime
+    *
+    *   @return void
+    */
+    protected function setStartTime(): void
+    {
+        if (!isset($_SESSION['session_create_time'])) {
+            $current_time = time();
+            $_SESSION['session_create_time'] = $current_time;
+            $this->commit();
+        }
+        $this->start_time = $_SESSION['session_create_time'];
+    }
+
+    /**
+    *   initData
+    *
+    *   @param ?array $data
+    *   @return void
+    */
+    protected function initData(
+        ?array $data,
+    ): void
+    {
+        if (isset($data)) {
+            $this->fromArray($data);
+        }
     }
 }
