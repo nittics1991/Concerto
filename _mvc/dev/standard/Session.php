@@ -3,7 +3,7 @@
 /**
 *   Session
 *
-*   @version 210826
+*   @version 221230
 */
 
 declare(strict_types=1);
@@ -52,9 +52,9 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     /**
     *   __construct
     *
-    *   @param ?string $namespace SESSION空間名
-    *   @param ?array $data セッションデータ
-    *   @param ?int $max_life_time 最大ライフタイム
+    *   @param ?string $namespace
+    *   @param ?array $data
+    *   @param ?int $max_life_time
     */
     public function __construct(
         ?string $namespace = null,
@@ -108,7 +108,9 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     *   {inherit}
     *
     */
-    public function __unset(string $name): void
+    public function __unset(
+        string $name
+    ): void
     {
         $this->start();
         $this->data[$name] = null;
@@ -194,12 +196,13 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     *
     *   @param array $array
     */
-    public function fromArray(array $array): void
+    public function fromArray(
+        array $array
+    ): void
     {
         $this->start();
         $this->data = $array;
         $this->commit();
-        return;
     }
 
     /**
@@ -210,8 +213,7 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     public function toArray(): array
     {
         $this->start();
-        $result = (array)$this->data;
-        return $result;
+        return (array)$this->data;
     }
 
     /**
@@ -249,10 +251,9 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
         $this->isCli?
             $this->startCli() : $this->startSapi();
 
-        if (isset($this->namespace)) {
-            $this->data = &$_SESSION[$this->namespace];
-        } else {
-            $this->data = &$_SESSION;
+        $this->data = $this->namespace?
+            &$_SESSION[$this->namespace]:
+            &$_SESSION;
         }
     }
 
@@ -290,21 +291,43 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     /**
     *   write and close
     *
+    *   @return void
     */
     public function commit(): void
     {
-        session_write_close();
+        if (!$this->isCli) {
+            $result = session_write_close();
+
+            if (!$result) {
+                throw new RuntimeException(
+                    "sessin write close error",
+                );
+            }
+        }
     }
 
     /**
     *   破棄
     *
+    *   @return void
     */
     public function clear(): void
     {
         @session_start();
         $_SESSION = [];
 
+        if (!$this->isCli) {
+            $this->clearCookie();
+        }
+    }
+
+    /**
+    *   clearCookie
+    *
+    *   @return void
+    */
+    protected function clearCookie(): void
+    {
         if (ini_get("session.use_cookies")) {
             $params = @session_get_cookie_params();
 
@@ -324,6 +347,7 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     /**
     *   ID変更
     *
+    *   @return void
     */
     public function changeID(): void
     {
@@ -335,6 +359,7 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     /**
     *   ガーベージコレクション
     *
+    *   @return void
     */
     public function gc(): void
     {
@@ -350,7 +375,7 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     */
     public function inLifeTime(): bool
     {
-        return $this->start_time + $this->max_life_time > time();
+        return ($this->start_time + $this->max_life_time) > time();
     }
 
     /**
@@ -359,7 +384,9 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     *   @param ?string $key
     *   @return bool
     */
-    public function isEmpty(?string $key = null): bool
+    public function isEmpty(
+        ?string $key = null
+    ): bool
     {
         if (empty($this->data)) {
             return  true;
