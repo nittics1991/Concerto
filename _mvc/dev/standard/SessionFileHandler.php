@@ -10,53 +10,76 @@ declare(strict_types=1);
 
 namespace Concerto\standard;
 
-use ArrayAccess;
-use ArrayIterator;
-use Countable;
-use IteratorAggregate;
-use RuntimeException;
-use Traversable;
+use SessionHandlerInterface;
+use SplFileInfo;
 
-class Session implements ArrayAccess, IteratorAggregate, Countable
+class SessionFileHandler implements SessionHandlerInterface
 {
     /**
-    *   @var string[]
+    *   @var SplFileObject
     */
-    protected const SAPI_CLIS = ['cli', 'phpdbg'];
-
-    /**
-    *   @var SessionSapiInterface
-    */
-    protected SessionSapiInterface $aaaa;
-
-    /**
-    *   @var ?string
-    */
-    protected ?string $namespace;
-
-    /**
-    *   @var ?int
-    */
-    protected ?int $max_life_time;
-
-    /**
-    *   @var ?mixed[]
-    */
-    protected ?array $data;
-
-    /**
-    *   @var int
-    */
-    protected int $start_time;
+    protected SplFileObject $storage;
 
     /**
     *   __construct
     *
-    *   @param ?string $namespace
-    *   @param ?array $data
-    *   @param ?int $max_life_time
+    *   @param ?string $file_name
     */
     public function __construct(
+        ?string $file_name = null,
+    ) {
+        return $file_name === null?
+            $this->createSessionFile():
+            $this->setSessionFile($file_name);
+    }
+
+    /**
+    *   createSessionFile
+    *
+    *   @return static
+    */
+    protected function createSessionFile():static
+    {
+        $save_path = session_save_path();
+
+        if ($save_path === false) {
+            throw new RuntimeException(
+                "get session save path error",
+            );
+        }
+        
+        $id = session_create_id();
+
+        if ($id === false) {
+            throw new RuntimeException(
+                "create session id error",
+            );
+        }
+
+        $this->storage = new SplFileObject(
+            $save_path . DIRECTORY_SEPARATOR . $id,
+            'w+',
+        );
+    }
+
+
+
+
+
+    /**
+    *   
+    */
+    protected function setSessionFile(
+        string $file_name
+
+    
+
+
+        $save_path = session_save_path();
+
+        
+        
+        
         ?string $namespace = null,
         ?array $data = null,
         ?int $max_life_time = null,
@@ -64,7 +87,7 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
         $this->namespace = $namespace;
         $this->max_life_time = $max_life_time ?? 60 * 60 * 4;
 
-        
+
 
         
         $this->checkSapi();

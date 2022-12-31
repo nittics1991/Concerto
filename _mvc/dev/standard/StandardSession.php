@@ -25,9 +25,9 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     protected const SAPI_CLIS = ['cli', 'phpdbg'];
 
     /**
-    *   @var SessionSapiInterface
+    *   @var bool
     */
-    protected SessionSapiInterface $aaaa;
+    protected bool $isCli;
 
     /**
     *   @var ?string
@@ -63,14 +63,9 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     ) {
         $this->namespace = $namespace;
         $this->max_life_time = $max_life_time ?? 60 * 60 * 4;
-
-        
-
-        
         $this->checkSapi();
         $this->start();
         $this->setStartTime();
-
         $this->initData($data);
     }
 
