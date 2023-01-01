@@ -3,63 +3,45 @@
 /**
 *   Session
 *
-*   @version 221230
+*   @version 230101
 */
 
 declare(strict_types=1);
 
 namespace Concerto\standard;
 
+use CallbackFilterIterator;
+use DateTimeImmutable;
+use FilesystemIterator;
+use RuntimeException;
 use SessionHandlerInterface;
-use SplFileInfo;
 
 class SessionFileHandler implements SessionHandlerInterface
 {
     /**
-    *   @var SplFileObject
+    *   @var string
     */
-    protected SplFileObject $storage;
+    protected string $path;
 
     /**
-    *   __construct
-    *
-    *   @param ?string $file_name
+    *   @var string
     */
-    public function __construct(
-        ?string $file_name = null,
-    ) {
-        //return $file_name === null?
-            //$this->createSessionFile():
-            //$this->setSessionFile($file_name);
-    }
+    protected string $id;
 
     /**
-    *   createSessionFile
-    *
-    *   @return static
+    *   @inheritDoc
     */
-    protected function createSessionFile():static
+    public function __destruct()
     {
-        $save_path = session_save_path();
-
-        if ($save_path === false) {
-            throw new RuntimeException(
-                "get session save path error",
+        if (
+            isset($this->path) &&
+            isset($this->id)
+        ) {
+            $this->write(
+                $this->id,
+                $_SESSION,
             );
         }
-        
-        $id = session_create_id();
-
-        if ($id === false) {
-            throw new RuntimeException(
-                "create session id error",
-            );
-        }
-
-        $this->storage = new SplFileObject(
-            $save_path . DIRECTORY_SEPARATOR . $id,
-            'w+',
-        );
     }
 
     /**
@@ -70,7 +52,7 @@ class SessionFileHandler implements SessionHandlerInterface
         string $name
     ): bool
     {
-        var_dump("OPEN path={$path} name={$name}");
+        $this->path = $path;
         return true;
     }
 
@@ -89,8 +71,19 @@ class SessionFileHandler implements SessionHandlerInterface
         string $id
     ): string|false
     {
-        var_dump("READ id={$id}");
-        return "true";
+        $this->id = $id;
+
+        $encoded_contents = file_get_contents(
+            $this->path . DIRECTORY_SEPARATOR . $id
+        );
+
+        if ($encoded_contents === false) {
+            $_SESSION = [];
+        } else {
+            $_SESSION = unserialize($encoded_contents);
+        }
+        
+        return "";
     }
 
     /**
@@ -101,7 +94,20 @@ class SessionFileHandler implements SessionHandlerInterface
         string $data
     ): bool
     {
-        var_dump("READ id={$id}");
+        $this->id = $id;
+
+        $length = file_put_contents(
+            $this->path . DIRECTORY_SEPARATOR . $id,
+            serialize($data),
+            LOCK_EX,
+        );
+
+        if ($length === false) {
+            throw new RuntimeException(
+                "write error id={$id}",
+            );
+        }
+        
         return true;
     }
     
@@ -112,7 +118,8 @@ class SessionFileHandler implements SessionHandlerInterface
         string $id
     ): bool
     {
-        var_dump("DESTROY id={$id}");
+        $_SESSION = [];
+        $this->write($id, []);
         return true;
     }
     
@@ -123,7 +130,36 @@ class SessionFileHandler implements SessionHandlerInterface
         int $max_lifetime
     ): int|false
     {
-        var_dump("GC max_lifetime={$max_lifetime}");
-        return $max_lifetime;
+        $timestamp = (new DateTimeImmutable($max_lifetime . ' sec'))
+            ->getTimestamp();
+
+        $iterator = new CallbackFilterIterator(
+            new FilesystemIterator(
+                $this->path,
+                FilesystemIterator::KEY_AS_PATHNAME |
+                    FilesystemIterator::CURRENT_AS_FILEINFO |
+                    FilesystemIterator::SKIP_DOTS
+            ),
+            function ($fileInfo, $path, $iterator) use ($timestamp) {
+                return $fileinfo->getMTime() < $timestamp;
+            }
+        );
+
+        $count = 0;
+
+        foreach ($iterator as $path => $fileInfo) {
+            $result = unlink($fileInfo->getFileName();
+
+            if ($result === false) {
+                throw new RuntimeException(
+                    "file delete error:" .
+                        $fileInfo->getFileName(),
+                );
+            }
+
+            $count++;
+        }
+        
+        return $count;
     }
 }
