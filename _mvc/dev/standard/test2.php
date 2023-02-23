@@ -12,6 +12,15 @@ $handler = new Concerto\standard\SessionFileHandler();
 
 session_set_save_handler($handler,false);
 
+
+//session_write_close();
+//session_start();
+//session_write_close();
+
+$user_id = "abcdefgh";
+
+session_id($user_id);
+
 session_start();
 
 echo "---\n";
@@ -22,8 +31,11 @@ echo "---\n";
 var_dump("data=" , $_SESSION);
 echo "---\n";
 
-$_SESSION['a'] = uniqid();
-$_SESSION['b'] = uniqid();
+//$_SESSION['a'] = uniqid();
+//$_SESSION['b'] = uniqid();
+
+$_SESSION['a'] = 'ABCDEFGH';
+$_SESSION['b'] = 'QWERTYUI';
 
 echo "---\n";
 var_dump("data=" , $_SESSION);

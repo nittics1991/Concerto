@@ -8,6 +8,9 @@ test2 SessionFileHandlerの動作確認
 - session_wite_close()後 再度 session_start()
     -Session cannot be started after headers have already been sent
     @session_start()で抑制が必要
+- session_id("XXXX")で設定
+    - 新規ID=新規ファイルではsession_id()=XXXX
+    - 再度実行=既存ファイルではsession_id=empty
 
 
 

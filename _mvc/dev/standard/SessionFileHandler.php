@@ -76,21 +76,17 @@ class SessionFileHandler implements SessionHandlerInterface
         $file_path = $this->path . DIRECTORY_SEPARATOR . $id;
 
         if (!file_exists($file_path)) {
-            $_SESSION = [];
             return "";
         }
 
         $encoded_contents = file_get_contents(
-            $file,
+            $file_path,
         );
 
         if ($encoded_contents === false) {
-            $_SESSION = [];
-        } else {
-            $_SESSION = unserialize($encoded_contents);
+            return "";
         }
-        
-        return "";
+        return unserialize($encoded_contents);
     }
 
     /**
@@ -126,7 +122,7 @@ class SessionFileHandler implements SessionHandlerInterface
     ): bool
     {
         $_SESSION = [];
-        $this->write($id, []);
+        $this->write($id, '');
         return true;
     }
     
