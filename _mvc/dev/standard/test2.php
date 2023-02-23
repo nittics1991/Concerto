@@ -8,9 +8,9 @@ session_save_path('/home/user/DL');
 //ini_set('session.gc_divisor', '1');
 //ini_set('session.gc_maxlifetime', '1');
 
-//$handler = new Concerto\standard\SessionFileHandler();
+$handler = new Concerto\standard\SessionFileHandler();
 
-//session_set_save_handler($handler,false);
+session_set_save_handler($handler,false);
 
 session_start();
 
@@ -18,12 +18,12 @@ echo "---\n";
 var_dump("ID=" . session_id());
 echo "---\n";
 
-//echo "---\n";
-//var_dump("data=" , $_SESSION);
-//echo "---\n";
+echo "---\n";
+var_dump("data=" , $_SESSION);
+echo "---\n";
 
-$_SESSION['a'] = 'AAA';
-$_SESSION['b'] = 'BBB';
+$_SESSION['a'] = uniqid();
+$_SESSION['b'] = uniqid();
 
 echo "---\n";
 var_dump("data=" , $_SESSION);
@@ -45,9 +45,26 @@ echo "---\n";
 //var_dump("ID=" . session_id());
 //echo "---\n";
 
-//session_write_close();
+session_write_close();
 
-//echo "---cloased\n";
+
+echo "---write_close\n";
+
+
+@session_start();
+
+echo "---\n";
+var_dump("ID=" . session_id());
+echo "---\n";
+
+echo "---\n";
+var_dump("data=" , $_SESSION);
+echo "---\n";
+
+
+
+
+
 
 //session_gc();
 

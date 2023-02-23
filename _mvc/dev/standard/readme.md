@@ -1,6 +1,31 @@
 #
 
-##230101 session
+## 230223 session
+
+test2 SessionFileHandlerの動作確認
+
+- session_start()でread()がcallされる
+- session_wite_close()後 再度 session_start()
+    -Session cannot be started after headers have already been sent
+    @session_start()で抑制が必要
+
+
+
+
+test1 標準session動作確認
+
+- CLIでもsession自体は動作する
+    - session_wite_cloese()でデータ保存はする
+    - ただし毎回idは変わる=保存ファイルも変わる
+- session_start()前にsession_status()=1するとwarning
+    - その後sessionは動作しない status=1 ID=empty
+- session_start()後にsession_start()=2
+    - 従って session_statusは実行しないほうが良い
+- $_SESSION session_start()前 NULL 後 []
+- session_regenerate_id() は warning
+    - id　は変わらない
+
+## 230101 session
 
 test1 SessionFileHanlder動作確認
 

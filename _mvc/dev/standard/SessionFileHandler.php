@@ -39,7 +39,7 @@ class SessionFileHandler implements SessionHandlerInterface
         ) {
             $this->write(
                 $this->id,
-                $_SESSION,
+                serialize($_SESSION),
             );
         }
     }
@@ -73,8 +73,15 @@ class SessionFileHandler implements SessionHandlerInterface
     {
         $this->id = $id;
 
+        $file_path = $this->path . DIRECTORY_SEPARATOR . $id;
+
+        if (!file_exists($file_path)) {
+            $_SESSION = [];
+            return "";
+        }
+
         $encoded_contents = file_get_contents(
-            $this->path . DIRECTORY_SEPARATOR . $id
+            $file,
         );
 
         if ($encoded_contents === false) {
@@ -148,7 +155,7 @@ class SessionFileHandler implements SessionHandlerInterface
         $count = 0;
 
         foreach ($iterator as $path => $fileInfo) {
-            $result = unlink($fileInfo->getFileName();
+            $result = unlink($fileInfo->getFileName());
 
             if ($result === false) {
                 throw new RuntimeException(
