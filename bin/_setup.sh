@@ -6,10 +6,10 @@ set -x
 ###
 # user setting
 ###
-PHP_VER=8.1-
-PHPUNIT=phpunit-9.5.10.phar
-PHPCS_VER=3.6.2
-PHPSTAN_VER=1.4.2
+PHP_VER=8.2-
+PHPUNIT=phpunit-10.0.11.phar
+PHPCS_VER=3.7.2
+PHPSTAN_VER=1.10.2
 
 CURRENT_PATH="$(cd $(dirname $0)/../tmp && pwd)"
 
@@ -36,7 +36,8 @@ wget "https://phar.phpunit.de/${PHPUNIT}"
 mv "${PHPUNIT}" phpunit.phar
 
 ###dbunit
-wget https://phar.phpunit.de/dbunit.phar
+#230224 not found
+#wget https://phar.phpunit.de/dbunit.phar
 
 ###phpcs/phpcbf
 wget "https://github.com/squizlabs/PHP_CodeSniffer/releases/download/${PHPCS_VER}/phpcs.phar"
@@ -44,4 +45,7 @@ wget "https://github.com/squizlabs/PHP_CodeSniffer/releases/download/${PHPCS_VER
 
 ###phpstan
 wget "https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VER}/phpstan.phar"
+
+###set autoloader
+../bin/composer dump-autoload
 
