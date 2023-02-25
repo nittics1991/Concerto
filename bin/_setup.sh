@@ -47,5 +47,5 @@ wget "https://github.com/squizlabs/PHP_CodeSniffer/releases/download/${PHPCS_VER
 wget "https://github.com/phpstan/phpstan/releases/download/${PHPSTAN_VER}/phpstan.phar"
 
 ###set autoloader
-../bin/composer dump-autoload
+(cd .. ; bin/composer dump-autoload; )
 
