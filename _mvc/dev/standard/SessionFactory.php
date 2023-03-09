@@ -10,7 +10,8 @@ declare(strict_types=1);
 
 namespace Concerto\standard\session;
 
-use Concerto\standard\session\FileSessionHandler;
+use RuntimeException;
+use Concerto\standard\Session;
 
 class SessionFactory
 {
@@ -28,18 +29,19 @@ class SessionFactory
     *   @param ?array $data セッションデータ
     *   @param ?int $max_life_time 最大ライフタイム
     */
-    public function __construct(
+    public function build(
         ?string $namespace = null,
         ?array $data = null,
         ?int $max_life_time = null,
     ):Session {
         if (in_array(php_sapi_name(), static::SAPI_CLIS)) {
-            $username = DIRECTOY_SEPARATOR === '/' ?
-                $_SERVER['user']?? '':
-                $_SERVER['username']?? '';
-
+            $username = DIRECTORY_SEPARATOR === '/' ?
+                $_SERVER['USER']?? '':
+                $_SERVER['USERNAME']?? '';
+            
             if (trim($username) === '') {
-                throw new RuntimeException(
+                //throw new RuntimeException(
+                throw new \Exception(
                     "faild get user name",
                 );
             }
