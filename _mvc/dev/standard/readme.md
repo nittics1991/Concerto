@@ -2,10 +2,13 @@
 
 ## 230309
 
+test22
+
+- session_status 動作不安定 実行禁止
+
 test21 FileSessionHandler動作確認
 
 - githubよりサンプルコピー
-
 
 ## 230223 session
 

@@ -3,7 +3,7 @@
 /**
 *   Session
 *
-*   @version 210826
+*   @version 221230
 */
 
 declare(strict_types=1);
@@ -20,46 +20,41 @@ use Traversable;
 class Session implements ArrayAccess, IteratorAggregate, Countable
 {
     /**
-    *   SAPI CLI判定文字列
-    *
     *   @var string[]
     */
     protected const SAPI_CLIS = ['cli', 'phpdbg'];
 
     /**
-    *   データコンテナ
-    *
-    *   @var ?mixed[]
+    *   @var SessionSapiInterface
     */
-    protected $data;
+    protected SessionSapiInterface $aaaa;
 
     /**
-    *   空間名
-    *
     *   @var ?string
     */
-    protected $namespace;
+    protected ?string $namespace;
 
     /**
-    *   最大ライフタイム
-    *
     *   @var ?int
     */
-    protected $max_life_time;
+    protected ?int $max_life_time;
 
     /**
-    *   スタート時間
-    *
+    *   @var ?mixed[]
+    */
+    protected ?array $data;
+
+    /**
     *   @var int
     */
-    protected $start_time;
+    protected int $start_time;
 
     /**
     *   __construct
     *
-    *   @param ?string $namespace SESSION空間名
-    *   @param ?array $data セッションデータ
-    *   @param ?int $max_life_time 最大ライフタイム
+    *   @param ?string $namespace
+    *   @param ?array $data
+    *   @param ?int $max_life_time
     */
     public function __construct(
         ?string $namespace = null,
@@ -68,24 +63,35 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     ) {
         $this->namespace = $namespace;
         $this->max_life_time = $max_life_time ?? 60 * 60 * 4;
+
+        
+
+        
+        $this->checkSapi();
+        $this->start();
+        $this->setStartTime();
+
         $this->initData($data);
     }
 
     /**
     *   {inherit}
     */
-    public function __get(string $name): mixed
+    public function __get(
+        string $name
+    ): mixed
     {
         $this->start();
-        $result = (isset($this->data[$name])) ?
-            $this->data[$name] : null;
-        return $result;
+        return $this->data[$name]?? null;
     }
 
     /**
     *   {inherit}
     */
-    public function __set(string $name, mixed $value): void
+    public function __set(
+        string $name,
+        mixed $value
+    ): void
     {
         $this->start();
         $this->data[$name] = $value;
@@ -95,18 +101,21 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     /**
     *   {inherit}
     */
-    public function __isset(string $name): bool
+    public function __isset(
+        string $name
+    ): bool
     {
         $this->start();
-        $result = isset($this->data[$name]);
-        return $result;
+        return = isset($this->data[$name]);
     }
 
     /**
     *   {inherit}
     *
     */
-    public function __unset(string $name): void
+    public function __unset(
+        string $name
+    ): void
     {
         $this->start();
         $this->data[$name] = null;
@@ -116,33 +125,45 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     /**
     *   {inherit}
     */
-    public function offsetGet(mixed $offset): mixed
+    public function offsetGet(
+        mixed $offset
+    ): mixed
     {
-        return $this->__get($offset);
+        return $this->__get(strval($offset));
     }
 
     /**
     *   {inherit}
     */
-    public function offsetSet(mixed $offset, mixed $value): void
+    public function offsetSet(
+        mixed $offset,
+         mixed $value
+     ): void
     {
-        $this->__set($offset, $value);
+        $this->__set(
+            strval($offset),
+            $value
+        );
     }
 
     /**
     *   {inherit}
     */
-    public function offsetExists(mixed $offset): bool
+    public function offsetExists(
+        mixed $offset
+    ): bool
     {
-        return $this->__isset($offset);
+        return $this->__isset(strval($offset));
     }
 
     /**
     *   {inherit}
     */
-    public function offsetUnset(mixed $offset): void
+    public function offsetUnset(
+        mixed $offset
+    ): void
     {
-        $this->__unset($offset);
+        $this->__unset(strval($offset));
     }
 
     /**
@@ -180,12 +201,13 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     *
     *   @param array $array
     */
-    public function fromArray(array $array): void
+    public function fromArray(
+        array $array
+    ): void
     {
         $this->start();
         $this->data = $array;
         $this->commit();
-        return;
     }
 
     /**
@@ -196,38 +218,33 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     public function toArray(): array
     {
         $this->start();
-        $result = (array)$this->data;
-        return $result;
+        return (array)$this->data;
     }
 
     /**
-    *   initData
+    *   checkSapi
     *
-    *   @param ?array $data
+    *   @return void
     */
-    protected function initData(?array $data): void
+    protected function checkSapi(): void
     {
-        if (isset($data)) {
-            $this->fromArray($data);
-        }
-
-        $this->start();
-
-        if (!isset($_SESSION['session_create_time'])) {
-            $current_time = time();
-            $_SESSION['session_create_time'] = $current_time;
-            $this->commit();
-        }
-        $this->start_time = $_SESSION['session_create_time'];
+        $this->isCli = in_array(
+            strval(php_sapi_name()),
+            static::SAPI_CLIS,
+        );
     }
 
     /**
     *   start
     *
+    *   @return void
     */
     public function start(): void
     {
-        if (isset($this->start_time) && !$this->inLifeTime()) {
+        if (
+            isset($this->start_time) &&
+             !$this->inLifeTime()
+        ) {
             $this->clear();
 
             throw new RuntimeException(
@@ -236,19 +253,31 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
             );
         }
 
-        in_array(php_sapi_name(), static::SAPI_CLIS) ?
+        $this->isCli?
             $this->startCli() : $this->startSapi();
 
-        if (isset($this->namespace)) {
-            $this->data = &$_SESSION[$this->namespace];
-        } else {
-            $this->data = &$_SESSION;
+        $this->data = $this->namespace?
+            &$_SESSION[$this->namespace]:
+            &$_SESSION;
+        }
+    }
+
+    /**
+    *   start CLI
+    *
+    *   @return void
+    */
+    protected function startCli(): void
+    {
+        if (!isset($_SESSION)) {
+            $_SESSION = [];
         }
     }
 
     /**
     *   start SAPI
     *
+    *   @return void
     */
     protected function startSapi(): void
     {
@@ -265,34 +294,45 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     }
 
     /**
-    *   start CLI
+    *   write and close
     *
+    *   @return void
     */
-    protected function startCli(): void
+    public function commit(): void
     {
-        if (!isset($_SESSION)) {
-            $_SESSION = [];
+        if (!$this->isCli) {
+            $result = session_write_close();
+
+            if (!$result) {
+                throw new RuntimeException(
+                    "sessin write close error",
+                );
+            }
         }
     }
 
     /**
-    *   write and close
+    *   clear
     *
-    */
-    public function commit(): void
-    {
-        session_write_close();
-    }
-
-    /**
-    *   破棄
-    *
+    *   @return void
     */
     public function clear(): void
     {
         @session_start();
         $_SESSION = [];
 
+        if (!$this->isCli) {
+            $this->clearCookie();
+        }
+    }
+
+    /**
+    *   clearCookie
+    *
+    *   @return void
+    */
+    protected function clearCookie(): void
+    {
         if (ini_get("session.use_cookies")) {
             $params = @session_get_cookie_params();
 
@@ -310,8 +350,19 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     }
 
     /**
-    *   ID変更
+    *   getID
     *
+    *   @return string
+    */
+    public function getID(): string
+    {
+        return strval(session_id());
+    }
+
+    /**
+    *   changeID
+    *
+    *   @return void
     */
     public function changeID(): void
     {
@@ -323,6 +374,7 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     /**
     *   ガーベージコレクション
     *
+    *   @return void
     */
     public function gc(): void
     {
@@ -338,7 +390,7 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     */
     public function inLifeTime(): bool
     {
-        return $this->start_time + $this->max_life_time > time();
+        return ($this->start_time + $this->max_life_time) > time();
     }
 
     /**
@@ -347,7 +399,9 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
     *   @param ?string $key
     *   @return bool
     */
-    public function isEmpty(?string $key = null): bool
+    public function isEmpty(
+        ?string $key = null
+    ): bool
     {
         if (empty($this->data)) {
             return  true;
@@ -388,5 +442,35 @@ class Session implements ArrayAccess, IteratorAggregate, Countable
             }
         }
         return true;
+    }
+
+    /**
+    *   setStartTime
+    *
+    *   @return void
+    */
+    protected function setStartTime(): void
+    {
+        if (!isset($_SESSION['session_create_time'])) {
+            $current_time = time();
+            $_SESSION['session_create_time'] = $current_time;
+            $this->commit();
+        }
+        $this->start_time = $_SESSION['session_create_time'];
+    }
+
+    /**
+    *   initData
+    *
+    *   @param ?array $data
+    *   @return void
+    */
+    protected function initData(
+        ?array $data,
+    ): void
+    {
+        if (isset($data)) {
+            $this->fromArray($data);
+        }
     }
 }
