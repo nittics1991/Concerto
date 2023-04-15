@@ -38,4 +38,38 @@ select * from sales_by_year;
 
 ```
 
+### purchase
+
+```sql
+
+-- rows
+select distinct date from purchase order by date;
+
+-- columns
+select shop from purchase group by shop order by shop;
+
+-- values
+select date, shop, SUM(money) AS money from purchase group by date,shop order by date,shop;
+
+-- pivot
+
+CREATE VIRTUAL TABLE date_shop_money using pivot_vtab (
+  (select distinct date from purchase order by date),
+  (select shop, shop from purchase group by shop order by shop),
+  (select SUM(money) AS money from purchase where date = ?1 and shop = ?2 group by date, shop)
+)
+
+select * from date_shop_money;
+
+
+
+
+```
+
+
+
+
+
+
+
 
