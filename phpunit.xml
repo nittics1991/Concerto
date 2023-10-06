@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="./vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="all">
+            <directory suffix="Test.php">./_mvc/_mvc/test/Concerto</directory>
+        </testsuite>
+    </testsuites>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+    </coverage>
+    <php>
+        <ini name="date.timezone" value="Asia/Tokyo"/>
+        <var name="DB_DSN" value="sqlite:"/>
+    </php>
+</phpunit>

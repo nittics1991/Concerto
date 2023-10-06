@@ -1,0 +1,51 @@
+    <?php foreach($entries as $entry): ?>
+	<entry>
+        <?php foreach($categories as $category): ?>
+        <category term="<?= $category['url']?? ''; ?>" scheme="<?= $category['scheme']?? ''; ?>" label="<?= $category['label']?? ''; ?>">
+        <?= $category['content']?? ''; ?>
+        </category>
+        <?php endforeach; ?>
+		
+        <content>
+        <?= $content?? ''; ?>
+        </content>
+		
+        <?php foreach($contributors as $contributor): ?>
+        <contributor>
+            <name><?= $contributor['name']?? ''; ?></name>
+            <url><?= $contributor['url']?? ''; ?></url>
+            <email><?= $contributor['email']?? ''; ?></email>
+        </contributor>
+        <?php endforeach; ?>
+		
+        <id>
+        <?= $id?? ''; ?>
+        </id>
+		
+        <?php foreach($links as $link): ?>
+        <link href="<?= $link['href']?? ''; ?>" rel="<?= $link['rel']?? ''; ?>" type="<?= $link['type']?? ''; ?>" hreflang="<?= $link['hreflang']?? ''; ?>" title="<?= $link['title']?? ''; ?>" length="<?= $link['length']?? ''; ?>">
+        <?= $link['content']?? ''; ?>
+        </link>
+        <?php endforeach; ?>
+		
+        <published>
+        <?= $published?? ''; ?>
+        </published>
+		
+        <rights>
+        <?= $rights?? ''; ?>
+        </rights>
+		
+        <summary>
+        <?= $summary?? ''; ?>
+        </summary>
+		
+        <title>
+        <?= $title?? ''; ?>
+        </title>
+		
+        <updated>
+        <?= $updated?? ''; ?>
+        </updated>
+    </entry>
+    <?php endforeach; ?>

@@ -1,0 +1,57 @@
+app
+	http
+		middleware
+		router
+	kernel
+	providers
+	cli	
+bootstrap
+config
+vendor
+	Psr
+	Concerto
+log
+temp
+bin
+project
+	project1
+		domain
+			entity
+				aggregate1
+					RootEntity.php
+					Entity1.php
+					ValueObject.php
+				aggregate2
+			repository
+			service
+			validator
+			factory
+		application
+			service
+			controller
+			//usecase
+		infrastructure
+			repository
+			datamapper
+		presentation
+			web
+				template
+				js
+				css
+				image
+			command
+		resource
+			config
+			i18n
+				default
+				ja
+				en
+		router
+		test
+		bin
+web
+	js
+	css
+	image
+	index.php
+command

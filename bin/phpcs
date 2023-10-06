@@ -1,0 +1,13 @@
+#!/bin/bash
+
+###
+STANDARDS=PSR1,PSR12
+
+PHAR_PATH="$(dirname $0)/../tmp"
+
+php "${PHAR_PATH}/phpcs.phar" \
+    --standard=${STANDARDS} \
+    --report-summary \
+    --report-info \
+    --report-full \
+    "$@"

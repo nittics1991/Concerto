@@ -1,0 +1,51 @@
+{
+    "name": "nittics1991/concerto",
+    "type": "project",
+    "description": "php test project",
+    "keywords": ["test"],
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "ext-curl": "*",
+        "ext-gd": "*",
+        "ext-ldap": "*",
+        "ext-mbstring": "*",
+        "ext-sqlite3": "*",
+        "ext-xml": "*",
+        "psr/cache": "^3.0",
+        "psr/container": "^2.0",
+        "psr/log": "^3.0",
+        "psr/simple-cache": "^3.0",
+        "psr/http-message": "^1.0",
+        "erusev/parsedown": "^1.7",
+        "mikey179/vfsstream": "^1.6",
+        "swiftmailer/swiftmailer": "^6.3",
+        "szymach/c-pchart": "3.0.11"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "symfony/yaml": "^6.0",
+        "league/csv": "^9.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Concerto\\" : "_mvc/Concerto/",
+            "test\\" : "_mvc/test/",
+            "candidate\\" : "_mvc/candidate/",
+            "candidate_test\\" : "_mvc/candidate_test/",
+            "dev\\" : "_mvc/dev/",
+            "dev_test\\" : "_mvc/dev_test/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+        }
+    },
+    "scripts": {
+    },
+    "extra": {
+    },
+    "config": {
+    }
+}

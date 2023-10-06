@@ -1,0 +1,177 @@
+//<?php
+
+//基本構造案
+//Concerto\@\boot参照
+
+
+//routerのcallをどうする？
+
+//HTTP/CLI framework依存 UseCase依存
+class HttpController
+class CliController
+{
+	//rest POST
+	public function add()
+	{
+		/**pattern1**/
+        $psr7Request = convert($frameworkRequest);
+		$psr7Responce = convert($frameworkResponse);
+		
+		//引数にresponceも必要?
+		$psr7Responce = $httpUseCaseController->add($psr7Request);
+        
+        
+		/**pattern2**/
+        //あるいはビルダーパターンで?
+        $httpUseCaseController = $factory->buildController(
+            'httpUseCaseController',
+            $psr7Request,
+            $psr7Responce
+        );
+        $psr7Responce = $httpUseCaseController->add();
+        
+        
+		return $frameworkResponce = convert($psr7Responce);
+		
+	}
+	
+}
+
+//HTTP/CLI UseCase依存
+class HttpUseCaseController
+{
+	//rest POST
+	//引数にresponceも必要?
+	public function add(Psr7Request $request, Psr7Responce $responce):Psr7Responce
+	{
+		
+        /**pattern1**/
+        $addRootDomain = $factory->get();
+		
+		//CLI/HTTP除外する＝＝＞DTO?
+		$input = $this->convertRequestToInput($request);
+		$output = $this->convertRequestToOutput($responce);
+        
+		$addRootDomain
+			->input($input, $output)
+			->validate();	//validate
+		
+        
+        /**pattern2**/
+		//あるいはbuilder patternでaddRootDomainを組み立てる
+        $addRootDomain = $factory->buildAddRootDomain($input, $output);
+        //or
+        $addRootDomain = $factory->buildAddRootDomain($request, $responce);
+        
+		$addRootDomain
+			->validate();	//validate
+		
+        
+        
+		//logger
+		if ($addRootDomain->fails()) {
+			$logger->write("");
+			//rest GET call
+			return $this->view($request);
+		}
+		
+		try {
+			$addRootDomain->save();
+		}catch() {
+			$logger->write("");
+		}	
+		
+		//rest GET call
+		return $this->view($request, $responce);
+	}
+	
+	//rest GET method
+	public function view(Psr7Request $request, Psr7Responce $responce):Psr7Responce
+	{
+		$viewRootDomain = $factory->get()
+		$viewRootDomain
+			->input($request, $responce)
+			->validate()	//validate
+			->buildData()	//データを作る
+			->createChart();	//チャートなど単純データ以外	//excelどうする?
+		
+		return $this->emitter->run($viewRootDomain);	//build view,json etc
+	}
+}
+
+//UseCase依存ROOT DOMAIN
+class UseCaseRootDomain //addRootDomain,viewRootDomain {
+	private BusinessTime $createAt;
+	private UserCode $user;
+	
+	public function save()
+	{
+		try {
+			$useCaseRootRepository->insert($this);
+		} catch(){
+			//エラーメッセージ
+			$this->errorMessage = "";	
+		}
+	}
+	
+	
+}
+
+//UseCase依存
+class UseCaseRootRepository
+{
+	public function insert(UseCaseRootDomain $domain)
+	{
+		try {
+			$pdo->biginTransaction();
+			
+			$subRepositoryData->prop1 = $domain->user->name;
+			
+			if ($subRepositoryData->fails()) {
+				throw new XXException("");
+			}
+			$subRepository->insert($subRepositoryData);
+			
+			$subRepositoryData2->prop1 = $domain->comment;
+			if ($subRepositoryData2->fails()) {
+				throw new XXException2("");
+			}
+			$subRepository2->insert($subRepositoryData2);
+			
+			$pdo->commit();
+		} catch {
+			$pdo->rollback();
+			throw $e;
+			
+		}
+		
+	}
+}
+
+//DomainOnly
+class DomainRepositoryImpl
+{
+	public function insert(DaoData $daoData)
+		$dao->insert($daoData);
+	}
+}
+
+//DAO
+class DaoTable
+{
+	public function insert(DaoData $daoData)
+	{
+		$sql = ""
+		$stmt->execute();
+	}
+	
+}
+
+//DAO data
+class DaoData
+{
+	
+	
+	
+}
+

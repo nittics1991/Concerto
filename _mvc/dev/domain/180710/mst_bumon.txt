@@ -1,0 +1,22 @@
+<?php
+
+class CostDepartmentId extends Entity
+    $id
+    
+class CostDepartment
+    CostDepartmentId $costDepartmentId
+    string $costDepartmentName
+    Date $startDate
+    Date $endDate
+    
+class RegisterCostDepartmentUseCase
+    CostDepartment $costDepartment
+    
+    //authで外に出すか?
+    bool $useCostManagement
+    bool $useScheduleManagement
+    bool $useCustomerOrderManagement
+    
+    
+    
+    

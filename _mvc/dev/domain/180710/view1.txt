@@ -1,0 +1,136 @@
+<?php
+
+/Configにprefix設定
+//transcerator等の設定を楽にできないか？
+//設定を楽には難しいので
+//取得を楽にできないか
+
+$langConfig['article.title'];	==> resource.lang.ja.article.title
+
+//domainアイテム検討
+
+trait AccessorMutableTrait implements AccessorMutableTraitInterface {
+	protected $container = ['prop1'];
+	protected $properties = [];
+	protected $attributes = [
+		'prop1' => 'EmployeeId',
+		'prop2' => 'string',
+	];
+	
+	
+	//自動CAST許可 setter
+	protected $isSetFilter = [	//property名を再検討
+	
+	];
+	
+	//自動CAST許可 getter
+	protected $isGetFilter = [
+	
+	];
+	
+	
+	//set時自動で
+	//objectの場合,自動で
+	
+	
+	
+	
+
+	//assertで$containerを確認
+	assert(property_exists($this, 'container');
+	
+}
+
+trait AccessorImmutableTrait
+
+trait ArrayAccessTrait
+
+//RootEntityで内部のclassに
+
+
+
+
+/************************************************/
+
+//どこかでlang定義を行う必要がある
+//どこかで定義ファイルを読み込む
+//service providerで読み込み?
+
+/resource
+	/lang
+		/ja
+			/message1.php
+
+
+
+
+//EDIT時のradio button表示
+//view templateで
+$t->get('common.choice_edit.update');	//==>function「_」?
+_('common.choice_edit.update');
+
+
+//message1で
+return [
+	'common.choice_edit.update' => '編集',
+	'common.choice_edit.delete' => '削除',
+	'common.choice_edit.copy' => '流用',
+];
+
+//ならば関数でcheckedとかselectedができないか?
+//input のpatternとか
+//テンプレートエンジンで使ってない記号?またはショート文字
+
+_ip('html.input.pattern.not_hankaku');
+<input type="text" pattern="<?= _ip('html.input.pattern.not_hankaku'); ?>">
+
+
+//名前空間で関数を定義?
+use Concerto\view\_;
+
+function _($keyword)
+{
+	
+}
+//service providerで読み込みなら,class methodのaliace?
+
+
+
+//composer.jsonのfileに定義追加?
+//その為には自分ライブラリもcomposer登録に?
+
+
+
+
+
+/************************************************/
+
+//例えばviewでtransferをcallして一括変数の置換?
+//kb_nendoはClosureなどで日本語、英語切り替えたい?
+class Transefer
+{
+	public function appendSpecification(File $faile)
+	{
+	
+	}
+	
+	public function appendSpecification(array $document)
+	{
+	
+	}
+	
+	//
+	//定義にcallable
+	//例えばFiscalYearEnumをselect boxに出力する場合
+	//callableで日本語「2018年上期」や「2018/1H」などconfigで設定した値
+	public function exec(array $dataset)
+	{
+		
+	}
+	
+	
+	
+	
+	
+	
+}

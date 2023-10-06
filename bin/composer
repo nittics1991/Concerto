@@ -1,0 +1,5 @@
+#!/bin/bash
+
+PHAR_PATH="$(dirname $0)/../tmp"
+
+php "${PHAR_PATH}/composer.phar" "$@"
