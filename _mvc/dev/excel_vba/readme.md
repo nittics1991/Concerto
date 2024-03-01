@@ -1,5 +1,13 @@
 # Excel VBA 2024
 
+## 検討
+
+- 文字列から関数を実行する方法
+    - 呼び出す時、引数長が不定
+
+
+
+## src
 
 --------------------------------------------------------------------------------
 ### constant
@@ -9,9 +17,11 @@
 Public Const DEFINITION_TABLE_SHEET = "メニュー"
 Public Const DEFINITION_TABLE_BASE_CELL = "C10"
 
-Public Const ERR_PARSE_INVALID_NUM = 601
-Public Const ERR_PARSE_INVALID_DES = "マクロ定義異常.番号="
+'Public Const ERR_DATATYPE_NUM = 601
+'Public Const ERR_DATATYPE_DES = "データ型異常."
 
+'Public Const ERR_DATADOMAIN_NUM = 602
+'Public Const ERR_DATADOMAIN_DES = "データ定義不一致."
 
 ```
 --------------------------------------------------------------------------------
@@ -55,9 +65,27 @@ Public Function render()
 
     For Each def In iterator
         If def.isExec Then
-            Apprication.Run def.macro def.args
+            callMacro def.macro def.args
         End If
     Next
+    
+End Function
+
+Private Function callMacro( _
+    name As String, _
+    args As Variant, _
+)
+
+        Set defs = args.getIterator()
+        
+
+        For Each key As defs
+
+
+        Next
+        
+        Apprication.Run def.macro def.args
+
     
 End Function
 
@@ -92,14 +120,6 @@ Public Function parse()
             .create()
         End With 
 
-        If def.invalid() Then
-            Err.Raise( _
-                ERR_PARSE_INVALID_NUM, _
-                , _
-                ERR_PARSE_INVALID_DES & i _
-            )
-        End If
-
         defs.Add def
         
     Next i
@@ -124,33 +144,77 @@ End Function
 
 ```vba
 
+Private Const DEF_COUNT = 4
+
+Public name As Srring
+Public macro As Srring
+Public args As Variant
+Public isExec As Boolean
+
 Private def_array As Variant
-Private in_valid As Boolean
 
 Public Function init( _
     defArray As Variant, _
 )
     def_array = defArray
-    invalid = True
     
 End Function
 
 Public Function create()
+    call validate
+    name = def_array(1)
+    macro = def_array(2)
+    args = createArgs(def_array(3))
+    isExec = determineExec(def_array(4))
     
 End Function
 
-Public Function invalid() As Boolean
-    invalid = in_valid
+Private Function validate()
+
+    If Not IsArray(def_array) Then
+        Err.Raise ERR_DATATYPE_NUM, _
+            , _
+            , ERR_DATATYPE_DES & "配列データではない"
+    End If
+
+    If UBound(def_array) - LBound(def_array) + 1 <> Me.DEF_COUNT Then
+        Err.Raise ERR_DATADOMAIN_NUM, _
+            , _
+            , ERR_DATADOMAIN_DES & "配列数が一致しない"
+    
+    End If
+    
 End Function
 
+Private Function createArgs( _
+    rangeStr As String _
+) As Varinat 'Array
 
 
 
+
+
+    
+End Function
+
+Private Function determineExec(
+    execString As String
+) As Boolean
+    Dim str As String
+    str = Trim(execString)
+
+    If str = "" Then
+        determineExec = False
+    Else
+        determineExec = True
+    End If
+    
+End Function
 
 ```
 
 --------------------------------------------------------------------------------
-### 
+## Definitions
 
 
 
