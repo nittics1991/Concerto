@@ -1,0 +1,4 @@
+b_prop	i_prop	f_prop	d_prop	s_prop	t_prop
+true	1	2.0	3.0	Double Quote	1234-01-23 12:34:56
+false	11	12.3	13.33	少数点以下を含む	2000-1-1 0:0:0
+false	11	12.3	13.33	ダブルクォート	2000-1-1 0:0:0+0:00

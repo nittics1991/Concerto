@@ -1,0 +1,19 @@
+<?php
+
+declare(strict_types=1);
+
+namespace candidate_test\reflection\tester;
+
+use candidate_test\reflection\tester\ReflectionDataTypeTester1;
+
+class ReflectionDataTypeTester2 extends ReflectionDataTypeTester1
+{
+    public self $self;
+    public parent $parent;
+    public ReflectionDataTypeTester1 $tester1;
+
+    public function retrunStatic(): static
+    {
+        return $this;
+    }
+}

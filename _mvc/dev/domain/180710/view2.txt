@@ -1,0 +1,103 @@
+<?php
+
+
+///////////////////////////////////////////////////////
+//他と上手く合わせられないか？
+
+class ResponceView extends abstractView
+{
+	protected $responce;
+	
+	public function __construct(ResponceInterface $responce)
+	{
+		$this->responce = $responce;
+	}
+	
+	//override
+	public function emit($domain)
+	{
+		$this->responce->setBody($domain->toString());
+		$this->doEmit($this->responce);
+	}
+	
+	//override
+	protected function doEmit(mixed $responce)
+	{
+		return $responce;
+	}
+}
+
+///////////////////////////////////////////////////////
+
+
+class PrintView extends abstractView
+{
+	protected $template;
+
+	public function __construct(Template $template)
+	{
+		$this->template = $template;
+	}
+
+	//override
+	protected function doEmit(mixed $val)
+	{
+		print $this->template->render($val);
+	}
+}
+
+///////////////////////////////////////////////////////
+//abstract化
+abstract class abstractView implement Emitter {
+	public function emit(Domain $domain)
+	{
+		$this->doEmit($domain->toArray());
+	}
+	
+	abstract protected function doEmit(mixed $val):mixed; }
+
+
+interface Emitter
+{
+	public function emit(Domain $domain);
+}
+
+abstract Domain implements ToArrayInterface, ToStringInterface {
+	public function toArray();
+	public function toString();
+}
+
+
+///////////////////////////////////////////////////////
+
+class JsonView extends abstractView
+{
+	
+	//containerも未使用の場合があるので
+	public function __construct(Container $container)
+	{
+		$this->container = $container;
+	}
+	
+	protected function doEmit($val)
+	{
+		print StringHelper::toJason($val);
+	}
+}
+
+
+class CyubanSonekiView extends JsonView
+{
+	public function emit($domain)
+	{
+		//処理が何かあれば
+		$nm_nendo_parser =
+$this->container->get('resource.jp.common.nm_nendo_parser');
+		$domain->nm_nendo = $nm_nendo_parser($domain->kb_nendo);
+		
+		$transfer = $this->container->get('config.transfer');
+		$domain->title_nendo = $transfer->get('title_nendo');
+		
+		$this->doEmit($domain->toArray());
+	}
+}

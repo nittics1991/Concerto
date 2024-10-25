@@ -1,0 +1,7 @@
+composer.lock
+*.cache
+*.log
+*.png
+/tmp/*
+!/tmp/.gitkeep
+/vendor/

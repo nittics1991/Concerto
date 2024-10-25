@@ -1,0 +1,499 @@
+object(stdClass)#3 (6) {
+  ["fieldsName"]=>
+  array(89) {
+    [0]=>
+    string(6) "no_cyu"
+    [1]=>
+    string(7) "no_page"
+    [2]=>
+    string(9) "nm_syohin"
+    [3]=>
+    string(8) "nm_setti"
+    [4]=>
+    string(10) "dt_puriage"
+    [5]=>
+    string(9) "dt_uriage"
+    [6]=>
+    string(8) "cd_bumon"
+    [7]=>
+    string(7) "fg_fuyo"
+    [8]=>
+    string(8) "nm_tanto"
+    [9]=>
+    string(8) "no_cyu_t"
+    [10]=>
+    string(5) "tm_wt"
+    [11]=>
+    string(8) "kb_kensa"
+    [12]=>
+    string(11) "nm_zanken_s"
+    [13]=>
+    string(11) "kb_zanken_s"
+    [14]=>
+    string(11) "nm_zanken_g"
+    [15]=>
+    string(11) "kb_zanken_g"
+    [16]=>
+    string(6) "no_seq"
+    [17]=>
+    string(7) "nm_biko"
+    [18]=>
+    string(11) "kb_siteki_s"
+    [19]=>
+    string(11) "kb_siteki_g"
+    [20]=>
+    string(8) "kb_tehai"
+    [21]=>
+    string(8) "dt_drq_p"
+    [22]=>
+    string(8) "dt_dra_p"
+    [23]=>
+    string(8) "dt_drb_p"
+    [24]=>
+    string(8) "dt_dre_p"
+    [25]=>
+    string(8) "dt_drf_p"
+    [26]=>
+    string(9) "dt_drf1_p"
+    [27]=>
+    string(8) "dt_drg_p"
+    [28]=>
+    string(8) "dt_drh_p"
+    [29]=>
+    string(9) "dt_drsi_p"
+    [30]=>
+    string(9) "dt_drst_p"
+    [31]=>
+    string(11) "dt_syukka_p"
+    [32]=>
+    string(11) "dt_gentis_p"
+    [33]=>
+    string(11) "dt_gentie_p"
+    [34]=>
+    string(8) "dt_cpi_p"
+    [35]=>
+    string(8) "dt_cpt_p"
+    [36]=>
+    string(8) "dt_doc_p"
+    [37]=>
+    string(13) "dt_zanken_s_p"
+    [38]=>
+    string(13) "dt_zanken_g_p"
+    [39]=>
+    string(11) "dt_koutei_p"
+    [40]=>
+    string(12) "dt_cyotatu_p"
+    [41]=>
+    string(11) "dt_cyunyu_p"
+    [42]=>
+    string(12) "dt_hattyuu_p"
+    [43]=>
+    string(11) "dt_sikyuu_p"
+    [44]=>
+    string(11) "dt_ukeire_p"
+    [45]=>
+    string(11) "dt_sikens_p"
+    [46]=>
+    string(11) "dt_sikene_p"
+    [47]=>
+    string(15) "dt_kyakutatis_p"
+    [48]=>
+    string(15) "dt_kyakutatie_p"
+    [49]=>
+    string(10) "dt_virus_p"
+    [50]=>
+    string(12) "dt_soutatu_p"
+    [51]=>
+    string(8) "dt_pmh_p"
+    [52]=>
+    string(8) "dt_tov_p"
+    [53]=>
+    string(10) "dt_tehai_p"
+    [54]=>
+    string(12) "dt_service_p"
+    [55]=>
+    string(8) "dt_drq_r"
+    [56]=>
+    string(8) "dt_dra_r"
+    [57]=>
+    string(8) "dt_drb_r"
+    [58]=>
+    string(8) "dt_dre_r"
+    [59]=>
+    string(8) "dt_drf_r"
+    [60]=>
+    string(9) "dt_drf1_r"
+    [61]=>
+    string(8) "dt_drg_r"
+    [62]=>
+    string(8) "dt_drh_r"
+    [63]=>
+    string(9) "dt_drsi_r"
+    [64]=>
+    string(9) "dt_drst_r"
+    [65]=>
+    string(11) "dt_syukka_r"
+    [66]=>
+    string(11) "dt_gentis_r"
+    [67]=>
+    string(11) "dt_gentie_r"
+    [68]=>
+    string(8) "dt_cpi_r"
+    [69]=>
+    string(8) "dt_cpt_r"
+    [70]=>
+    string(8) "dt_doc_r"
+    [71]=>
+    string(13) "dt_zanken_s_r"
+    [72]=>
+    string(13) "dt_zanken_g_r"
+    [73]=>
+    string(11) "dt_koutei_r"
+    [74]=>
+    string(12) "dt_cyotatu_r"
+    [75]=>
+    string(11) "dt_cyunyu_r"
+    [76]=>
+    string(12) "dt_hattyuu_r"
+    [77]=>
+    string(11) "dt_sikyuu_r"
+    [78]=>
+    string(11) "dt_ukeire_r"
+    [79]=>
+    string(11) "dt_sikens_r"
+    [80]=>
+    string(11) "dt_sikene_r"
+    [81]=>
+    string(15) "dt_kyakutatis_r"
+    [82]=>
+    string(15) "dt_kyakutatie_r"
+    [83]=>
+    string(10) "dt_virus_r"
+    [84]=>
+    string(12) "dt_soutatu_r"
+    [85]=>
+    string(8) "dt_pmh_r"
+    [86]=>
+    string(8) "dt_tov_r"
+    [87]=>
+    string(10) "dt_tehai_r"
+    [88]=>
+    string(12) "dt_service_r"
+  }
+  ["recordType"]=>
+  string(5) "array"
+  ["parameters"]=>
+  object(stdClass)#4 (0) {
+  }
+  ["action"]=>
+  string(10) "saveConfig"
+  ["columnList"]=>
+  array(12) {
+    [0]=>
+    object(stdClass)#5 (11) {
+      ["align"]=>
+      string(4) "left"
+      ["colIndex"]=>
+      int(0)
+      ["editor"]=>
+      NULL
+      ["frozen"]=>
+      bool(true)
+      ["headAlign"]=>
+      string(6) "center"
+      ["header"]=>
+      string(6) "製番"
+      ["hidden"]=>
+      bool(false)
+      ["id"]=>
+      string(6) "no_cyu"
+      ["sortable"]=>
+      bool(true)
+      ["styleClass"]=>
+      string(21) "gt-col-tasklog-no_cyu"
+      ["width"]=>
+      int(80)
+    }
+    [1]=>
+    object(stdClass)#6 (11) {
+      ["align"]=>
+      string(6) "center"
+      ["colIndex"]=>
+      int(1)
+      ["editor"]=>
+      NULL
+      ["frozen"]=>
+      bool(true)
+      ["headAlign"]=>
+      string(6) "center"
+      ["header"]=>
+      string(2) "No"
+      ["hidden"]=>
+      bool(false)
+      ["id"]=>
+      string(7) "no_page"
+      ["sortable"]=>
+      bool(true)
+      ["styleClass"]=>
+      string(22) "gt-col-tasklog-no_page"
+      ["width"]=>
+      int(40)
+    }
+    [2]=>
+    object(stdClass)#7 (11) {
+      ["align"]=>
+      string(4) "left"
+      ["colIndex"]=>
+      int(2)
+      ["editor"]=>
+      NULL
+      ["frozen"]=>
+      bool(false)
+      ["headAlign"]=>
+      string(6) "center"
+      ["header"]=>
+      string(6) "品名"
+      ["hidden"]=>
+      bool(false)
+      ["id"]=>
+      string(9) "nm_syohin"
+      ["sortable"]=>
+      bool(true)
+      ["styleClass"]=>
+      string(24) "gt-col-tasklog-nm_syohin"
+      ["width"]=>
+      int(150)
+    }
+    [3]=>
+    object(stdClass)#8 (11) {
+      ["align"]=>
+      string(4) "left"
+      ["colIndex"]=>
+      int(3)
+      ["editor"]=>
+      NULL
+      ["frozen"]=>
+      bool(false)
+      ["headAlign"]=>
+      string(6) "center"
+      ["header"]=>
+      string(12) "設置場所"
+      ["hidden"]=>
+      bool(false)
+      ["id"]=>
+      string(8) "nm_setti"
+      ["sortable"]=>
+      bool(true)
+      ["styleClass"]=>
+      string(23) "gt-col-tasklog-nm_setti"
+      ["width"]=>
+      int(150)
+    }
+    [4]=>
+    object(stdClass)#9 (11) {
+      ["align"]=>
+      string(5) "right"
+      ["colIndex"]=>
+      int(4)
+      ["editor"]=>
+      NULL
+      ["frozen"]=>
+      bool(false)
+      ["headAlign"]=>
+      string(6) "center"
+      ["header"]=>
+      string(6) "不要"
+      ["hidden"]=>
+      bool(false)
+      ["id"]=>
+      string(7) "fg_fuyo"
+      ["sortable"]=>
+      bool(true)
+      ["styleClass"]=>
+      string(22) "gt-col-tasklog-fg_fuyo"
+      ["width"]=>
+      int(40)
+    }
+    [5]=>
+    object(stdClass)#10 (11) {
+      ["align"]=>
+      string(6) "center"
+      ["colIndex"]=>
+      int(5)
+      ["editor"]=>
+      NULL
+      ["frozen"]=>
+      bool(false)
+      ["headAlign"]=>
+      string(6) "center"
+      ["header"]=>
+      string(4) "DR-A"
+      ["hidden"]=>
+      bool(false)
+      ["id"]=>
+      string(8) "dt_dra_p"
+      ["sortable"]=>
+      bool(true)
+      ["styleClass"]=>
+      string(23) "gt-col-tasklog-dt_dra_p"
+      ["width"]=>
+      int(50)
+    }
+    [6]=>
+    object(stdClass)#11 (11) {
+      ["align"]=>
+      string(6) "center"
+      ["colIndex"]=>
+      int(6)
+      ["editor"]=>
+      NULL
+      ["frozen"]=>
+      bool(false)
+      ["headAlign"]=>
+      string(6) "center"
+      ["header"]=>
+      string(4) "DR-B"
+      ["hidden"]=>
+      bool(false)
+      ["id"]=>
+      string(8) "dt_drb_p"
+      ["sortable"]=>
+      bool(true)
+      ["styleClass"]=>
+      string(23) "gt-col-tasklog-dt_drb_p"
+      ["width"]=>
+      int(50)
+    }
+    [7]=>
+    object(stdClass)#12 (11) {
+      ["align"]=>
+      string(6) "center"
+      ["colIndex"]=>
+      int(7)
+      ["editor"]=>
+      NULL
+      ["frozen"]=>
+      bool(false)
+      ["headAlign"]=>
+      string(6) "center"
+      ["header"]=>
+      string(4) "DR-E"
+      ["hidden"]=>
+      bool(false)
+      ["id"]=>
+      string(8) "dt_dre_p"
+      ["sortable"]=>
+      bool(true)
+      ["styleClass"]=>
+      string(23) "gt-col-tasklog-dt_dre_p"
+      ["width"]=>
+      int(50)
+    }
+    [8]=>
+    object(stdClass)#13 (11) {
+      ["align"]=>
+      string(6) "center"
+      ["colIndex"]=>
+      int(8)
+      ["editor"]=>
+      NULL
+      ["frozen"]=>
+      bool(false)
+      ["headAlign"]=>
+      string(6) "center"
+      ["header"]=>
+      string(4) "DR-F"
+      ["hidden"]=>
+      bool(false)
+      ["id"]=>
+      string(8) "dt_drf_p"
+      ["sortable"]=>
+      bool(true)
+      ["styleClass"]=>
+      string(23) "gt-col-tasklog-dt_drf_p"
+      ["width"]=>
+      int(50)
+    }
+    [9]=>
+    object(stdClass)#14 (11) {
+      ["align"]=>
+      string(6) "center"
+      ["colIndex"]=>
+      int(9)
+      ["editor"]=>
+      NULL
+      ["frozen"]=>
+      bool(false)
+      ["headAlign"]=>
+      string(6) "center"
+      ["header"]=>
+      string(4) "DR-G"
+      ["hidden"]=>
+      bool(false)
+      ["id"]=>
+      string(8) "dt_drg_p"
+      ["sortable"]=>
+      bool(true)
+      ["styleClass"]=>
+      string(23) "gt-col-tasklog-dt_drg_p"
+      ["width"]=>
+      int(50)
+    }
+    [10]=>
+    object(stdClass)#15 (11) {
+      ["align"]=>
+      string(6) "center"
+      ["colIndex"]=>
+      int(10)
+      ["editor"]=>
+      NULL
+      ["frozen"]=>
+      bool(false)
+      ["headAlign"]=>
+      string(6) "center"
+      ["header"]=>
+      string(4) "DR-H"
+      ["hidden"]=>
+      bool(false)
+      ["id"]=>
+      string(8) "dt_drh_p"
+      ["sortable"]=>
+      bool(true)
+      ["styleClass"]=>
+      string(23) "gt-col-tasklog-dt_drh_p"
+      ["width"]=>
+      int(50)
+    }
+    [11]=>
+    object(stdClass)#16 (11) {
+      ["align"]=>
+      string(4) "left"
+      ["colIndex"]=>
+      int(11)
+      ["editor"]=>
+      NULL
+      ["frozen"]=>
+      bool(false)
+      ["headAlign"]=>
+      string(6) "center"
+      ["header"]=>
+      string(1) " "
+      ["hidden"]=>
+      bool(false)
+      ["id"]=>
+      string(6) "hidden"
+      ["sortable"]=>
+      bool(true)
+      ["styleClass"]=>
+      string(21) "gt-col-tasklog-hidden"
+      ["width"]=>
+      int(1)
+    }
+  }
+  ["config"]=>
+  object(stdClass)#17 (1) {
+    ["skin"]=>
+    string(7) "default"
+  }
+}
+

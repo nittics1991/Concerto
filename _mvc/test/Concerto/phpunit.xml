@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" bootstrap="e:\www\ConcertoDev3\project\_bootstrap\boot.php">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">e:\www\ConcertoDev3\project\_mvc\Concerto\</directory>
+    </include>
+    <exclude>
+      <directory suffix=".php">e:\www\ConcertoDev3\project\_mvc\Concerto\@\</directory>
+      <directory suffix=".php">e:\www\ConcertoDev3\project\_mvc\Concerto\test\</directory>
+    </exclude>
+  </coverage>
+  <testsuites>
+    <testsuite name="main">
+      <directory>e:\www\ConcertoDev3\project\_mvc\Concerto\test</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <!-- E_ALL & !E_DEPRECATED & ! E_STRICT & !E_STRICT -->
+    <ini name="error_reporting" value="6143"/>
+    <!-- desable xdebug var_dump -->
+    <ini name="xdebug.var_display_max_children" value="-1"/>
+    <ini name="xdebug.var_display_max_data" value="-1"/>
+    <ini name="xdebug.var_display_max_depth" value="-1"/>
+    <ini name="memory_limit" value="512M"/>
+    <var name="DB_DSN" value="pgsql:host=localhost port=5436 dbname=itc_work"/>
+    <var name="DB_USER" value="concerto"/>
+    <var name="DB_PASSWD" value="manager"/>
+    <var name="DB_DBNAME" value="itc_work"/>
+    <var name="SYMPHONY_DSN" value="oci:dbname=ITCA;"/>
+    <var name="SYMPHONY_USER" value="ITC_USER"/>
+    <var name="SYMPHONY_PASSWD" value="ITC_201304"/>
+  </php>
+</phpunit>

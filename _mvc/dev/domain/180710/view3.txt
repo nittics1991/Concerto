@@ -1,0 +1,137 @@
+<?php
+
+
+/////////////////////////////////////////////////////////////////
+//htmlに渡す時、class化したらどうなる?
+
+//$dtoの型はどうする? domain|array|Request&Responce|fimeName...
+$view = (new HtmlView())->emmit(mixed $etc); //HtmlView //JsonView //ExcelView //FileDownloadView //CsvView
+
+//Domainの場合を考えると
+class HtmlView
+{
+	public function emmit($domain)
+	{
+		//どうなるんだ?
+		$htmlClass = $this->build($domain->toObj());
+		extract($htmlClass->toArray());
+	}
+}
+
+//結果的に、template内で$this->xxx->attrでaccess?
+//結構長いが...
+//extractすれば $xxx->attr or $xxx[attr]
+
+//$htmlClassは？
+//大変なんですけど...
+//SimpleXlm使ったら?
+//どんどんframewaorkと違ってきている
+
+/////////////////////////////////////////////////////////////////
+
+sigmagridに関数 number_format
+
+/////////////////////////////////////////////////////////////////
+
+//意味あるか?
+
+<input type="number" name="no_code" value="<?= $no_code['value']; ?>"
+min="<?= $no_code['min']; ?>" max="<?= $no_code['max']; ?>">
+
+
+class HtmlInput
+{
+	
+}
+
+//そうなるとclass Numberが欲しくなる
+//数値自体のwrapは大変だから
+
+class HtmlNumber
+{
+	//項目として例えば
+	private $value;
+	private $min;
+	private $min;
+	private $step
+
+}
+
+//domainで専用の型クラスのほうがマシでは
+
+$no_nenrei
+
+class Nenrei
+
+
+
+/////////////////////////////////////////////////////////////////
+
+class FormHelper
+{
+	protected $patterns = [
+		'b'	=> '\x20',	//空白
+		'c' => '\x00-\x19\x1b-\x1c\x1e\x1f\x7f',	//制御文字\r\n\s除外
+		'k' => '｡-ﾟ',	//半角カタカ
+		'm' => '\x21-\x2f\x3a-\x40\x5b-\x60\x7b-\x7e',	//記号
+		'r' => '\x0a\x0d',	//\r\n
+	];
+	
+	public static function pattern($marks)
+	{
+		$splited = preg_split("//u", $str, 0, PREG_SPLIT_NO_EMPTY);
+		
+		return array_reduce(
+			(array)$splited,
+			function ($carry, $char) {
+				if (!in_array($char, $patterns)) {
+					throw new InvalidArgumentException(
+						"not defined:{$char}."
+					);
+				}
+				return $curry . $item;
+			},
+			''
+		);
+	}
+}
+
+
+/////////////////////////////////////////////////////////////////
+
+
+//素直にhtml属性名をarrayのhash名に定義する
+class HtmlSelect implements IteratorAggregate {
+	
+	const $UNNECESSARIES = [
+		'selected', 'disabled',
+	];
+	
+	private $container;
+	
+	public function _construct(array $dataset)
+	{
+		$this->container = $dataset;
+	}
+	
+	public function getIterator()
+	{
+		foreach ($this->container as $list) {
+			$obj = new ArrayObject([], ArrayObject::ARRAY_AS_PROPS);
+			foreach ($list as $name => $val) {
+				$val = in_array($val, HtmlSelect::UNNECESSARIES)?
+					$name:$val;
+					
+				//できないか?
+				//$obj->$name = $val;
+				//$obj[$name] = $val;
+				$obj->offsetSet($name, $val);
+				
+				
+				
+				
+			}
+			yield $obj;
+		}
+	}
+}

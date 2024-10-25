@@ -1,0 +1,163 @@
+<?php
+
+------------------------------	
+//RootEntity
+
+//大きいのでRootRepoから生成でなくsetXXXで各propertyを生成
+//小さければRootRepoでRootEntityを生成
+CyubanSonekiDispRootEntity
+	BumonsEntityCollection $bumons
+	$nendos
+	$isOrLater
+	$workInProgress
+	$mine
+	$tantos
+	
+	$keikakus
+	$yosokus
+	$jissekis
+	$rankAs
+	$rankBs
+	$rankCs
+	
+	$fiscalYearYosans
+	$fiscalYearJissekis
+	$fiscalYearSabuns
+	
+	setBumons(array $dataset):$this
+	setXXX(array $dataset):$this
+	setYYY(array $dataset):$this
+	
+
+CyubanSonekiGridRootEntity
+	$dataset
+
+
+------------------------------	
+//Entity
+
+BumonsEntity
+	$id
+	$name
+
+BumonsEntityCollection
+	array $container
+	
+	fromArray(array $dataset)
+		$this->container[] = new BumonsEntity(
+			$dataset['gb_cd'],
+			$dataset['name'],
+		)
+
+------------------------------	
+//Repository
+
+//methodはRootEntityのpropertyと同じ
+CyubanSonekiDispRepository
+	bumons($req):BumonsEntity
+		//大きいので委譲
+		$list = CyubanSonekiDispBumonsRepository->list($req):array
+		//必要があればRootEntityの子Entityを生成してreturn
+		return new BumonsEntityCollection($list);
+	nendos($req):array
+		//arrayで良ければ(スカラ値)
+		return CyubanSonekiDispNendosRepository->list($req):array
+	isOrLater($req):OrLaterValueObject
+		$val =  CyubanSonekiDispOrLaterRepository->get($req):string
+		//ValurObject
+		return new OrLater($val)
+	workInProgress($req)
+	mine($req)
+	tantos($req)
+	
+	keikakus($req)
+	yosokus($req)
+	jissekis($req)
+	rankAs($req)
+	rankBs($req)
+	rankCs($req)
+	
+	fiscalYearYosans($req)
+	fiscalYearJissekis($req)
+	fiscalYearSabuns($req)
+	
+CyubanSonekiGridRepository
+	dataset($req)
+	
+------------------------------	
+//DomainService
+
+CyubanSonekiDispDomainService
+	__invoke($req)
+		
+		$root = $factory->get()
+		
+		$validator = $factory->get()
+		
+		if ($validator->validate($req)->fails()) {
+			//前回reqestに置換
+			//あるいは__invokeの引数か?
+			$session = $factory->get()
+			
+			$req = $session->previousRequest();
+			//error設定(日本語メッセージはfactoryで$validatorに設定)
+			$root->setError($validator->errors());
+		}
+		
+		$repository = $factory->get()
+		$root->setXXX($repository->XXX($req))
+			->setYYY($repository->YYY($req))
+			...;
+			
+			
+			
+		
+		//SESSIONに保存するため
+		$root->setRequest($req);
+			
+		return $root;
+
+------------------------------	
+//AppService
+
+CyubanSonekiDispAction
+	index($req)
+		//reqは引数or factory
+		$req = $factory->get()
+		
+		$domainService = $factory->get()
+		$domain = $domainService($req)
+		
+		//SESSIONに前回値保存
+		$session->setPrevious($domain->request);
+		
+		$view = $factory->get()
+		$responce = $view->emmit($domain)
+		return $responce;
+
+------------------------------	
+//View
+
+CyubanSonekiDispView
+	emmit($domain)
+		$psrResponce = $factory->get()
+		$psrResponce->body($this->doEmmit($domain))
+	
+	doEmmit($domain)
+		//thisに展開
+		extract($domain->toArray());
+		//あるいは表示用変数に置換
+		$this->yn_sp = $domain->SalesPrice->price;
+		
+		//国際化
+		$this->lang = $this->config->get()
+		
+		//表示変換はここ or template内
+		$this->yn_tov = number_format($this->yn_tov);
+		
+		
+	cache()
+		ob_start()
+		importTemplate()
+		$cache = ob_end_clean()
+		return $cache

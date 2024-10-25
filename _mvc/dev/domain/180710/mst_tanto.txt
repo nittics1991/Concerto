@@ -1,0 +1,58 @@
+<?php
+
+class EmployeeId extends Entity
+    $id
+    
+class Employee extends Entity
+    EmployeeId $employeeId
+    $employeeName
+    Date $startDate
+    Date $endDate
+    
+class EmployeeEmailAddress extends EmailAddress
+    EmailAddress $emailAddress
+    validate()
+    
+class Credential extends ValueObject
+    $password
+    DateTime $updateOfPassword
+    
+class AuthorityLevel extends Enum
+    ORDINALY
+    SUBMANAGER
+    MANAGER
+    
+//option
+class EmployeeType extends Enum
+    REGULAR //一般
+    TEMPLRARY   //派遣
+    ENTRUSTMENT //嘱託
+    INTERN  //実習生
+    
+class UnifiedUserId extends Entity
+    $id
+    
+//namespace department    
+class CostDepartmentId extends Entity
+    $id
+    
+class RegisterEmployeeUseCase
+    Employee $employee
+    string $indicator
+    UnifiedUserId $unifiedUserId
+    EmployeeEmailAddress $emailAddress
+    CostDepartmentId $costDepartmentId
+    
+    Credential $credential
+    
+    //authで外に出すか?
+    AuthorityLevel $authorityLevel
+    
+    //authで外に出すか?
+    bool $allowDatabase
+    bool $useCookie
+    bool $useEmail
+    
+    
+    
+    

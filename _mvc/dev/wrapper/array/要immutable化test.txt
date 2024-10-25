@@ -1,0 +1,1 @@
+construct引数にrelatedValue追加して対応？
